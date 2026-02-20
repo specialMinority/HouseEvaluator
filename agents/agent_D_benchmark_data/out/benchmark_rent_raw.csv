@@ -161,14 +161,27 @@ JP,osaka,堺市西区,1R,all,46000,CHINTAI,https://www.chintai.net/osaka/area/27
 JP,osaka,大阪市中央区,1DK,all,100000,CHINTAI,https://www.chintai.net/osaka/area/27128/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市中央区,1DK,rc,97000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=184)
 JP,osaka,大阪市中央区,1DK,steel,74000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=30)
+JP,osaka,大阪市中央区,1DK,wood,84500,estimated_from_rc,,2026-02-20,2026-02-20,RC(97000) x ratio(0.871)
+JP,osaka,大阪市中央区,1DK,light_steel,81500,estimated_from_rc,,2026-02-20,2026-02-20,RC(97000) x ratio(0.840)
+JP,osaka,大阪市中央区,1DK,src,97000,estimated_from_rc,,2026-02-20,2026-02-20,RC(97000) x ratio(1.000)
 JP,osaka,大阪市中央区,1K,all,90000,CHINTAI,https://www.chintai.net/osaka/area/27128/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市中央区,1K,rc,77000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=204)
+JP,osaka,大阪市中央区,1K,wood,62300,estimated_from_rc,,2026-02-20,2026-02-20,RC(77000) x ratio(0.809)
+JP,osaka,大阪市中央区,1K,light_steel,63600,estimated_from_rc,,2026-02-20,2026-02-20,RC(77000) x ratio(0.827)
+JP,osaka,大阪市中央区,1K,steel,63700,estimated_from_rc,,2026-02-20,2026-02-20,RC(77000) x ratio(0.827)
+JP,osaka,大阪市中央区,1K,src,62800,estimated_from_rc,,2026-02-20,2026-02-20,RC(77000) x ratio(0.815)
 JP,osaka,大阪市中央区,1LDK,all,134000,CHINTAI,https://www.chintai.net/osaka/area/27128/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分13.4万円参考。
 JP,osaka,大阪市中央区,1LDK,rc,129000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=223)
+JP,osaka,大阪市中央区,1LDK,wood,100300,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.778)
+JP,osaka,大阪市中央区,1LDK,light_steel,111400,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.864)
+JP,osaka,大阪市中央区,1LDK,steel,110700,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.858)
+JP,osaka,大阪市中央区,1LDK,src,129400,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(1.003)
 JP,osaka,大阪市中央区,1R,all,73000,CHINTAI,https://www.chintai.net/osaka/area/27128/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分7.3万円参考。
 JP,osaka,大阪市中央区,1R,rc,79500,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=116)
 JP,osaka,大阪市中央区,1R,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=27)
 JP,osaka,大阪市中央区,1R,src,69000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=35)
+JP,osaka,大阪市中央区,1R,wood,59000,estimated_from_rc,,2026-02-20,2026-02-20,RC(79500) x ratio(0.742)
+JP,osaka,大阪市中央区,1R,light_steel,66800,estimated_from_rc,,2026-02-20,2026-02-20,RC(79500) x ratio(0.840)
 JP,osaka,大阪市住之江区,1DK,all,63000,CHINTAI,https://www.chintai.net/osaka/area/27125/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市住之江区,1DK,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=28)
 JP,osaka,大阪市住之江区,1DK,wood,65000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=22)
@@ -176,6 +189,8 @@ JP,osaka,大阪市住之江区,1K,all,56000,CHINTAI,https://www.chintai.net/osak
 JP,osaka,大阪市住之江区,1K,rc,61000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40)
 JP,osaka,大阪市住之江区,1K,steel,49500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=52)
 JP,osaka,大阪市住之江区,1K,wood,55500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=86)
+JP,osaka,大阪市住之江区,1K,light_steel,50400,estimated_from_rc,,2026-02-20,2026-02-20,RC(61000) x ratio(0.827)
+JP,osaka,大阪市住之江区,1K,src,49700,estimated_from_rc,,2026-02-20,2026-02-20,RC(61000) x ratio(0.815)
 JP,osaka,大阪市住之江区,1LDK,all,78100,CHINTAI,https://www.chintai.net/osaka/area/27125/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate7.81万円参考。
 JP,osaka,大阪市住之江区,1LDK,steel,65000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22)
 JP,osaka,大阪市住之江区,1LDK,wood,68500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=73)
@@ -186,153 +201,243 @@ JP,osaka,大阪市住吉区,1DK,rc,53000,CHINTAI,https://www.chintai.net/osaka/a
 JP,osaka,大阪市住吉区,1DK,steel,48500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=68)
 JP,osaka,大阪市住吉区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=63)
 JP,osaka,大阪市住吉区,1DK,all,55000,NIFTY,https://myhome.nifty.com/rent/osaka/osakashisumiyoshiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市住吉区,1DK,light_steel,44500,estimated_from_rc,,2026-02-20,2026-02-20,RC(53000) x ratio(0.840)
+JP,osaka,大阪市住吉区,1DK,src,53000,estimated_from_rc,,2026-02-20,2026-02-20,RC(53000) x ratio(1.000)
 JP,osaka,大阪市住吉区,1K,all,54000,CHINTAI,https://www.chintai.net/osaka/area/27120/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市住吉区,1K,rc,56000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=60)
 JP,osaka,大阪市住吉区,1K,steel,49000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=71)
 JP,osaka,大阪市住吉区,1K,wood,57000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=114)
 JP,osaka,大阪市住吉区,1K,all,49400,NIFTY,https://myhome.nifty.com/rent/osaka/osakashisumiyoshiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市住吉区,1K,light_steel,46300,estimated_from_rc,,2026-02-20,2026-02-20,RC(56000) x ratio(0.827)
+JP,osaka,大阪市住吉区,1K,src,45600,estimated_from_rc,,2026-02-20,2026-02-20,RC(56000) x ratio(0.815)
 JP,osaka,大阪市住吉区,1LDK,all,76000,CHINTAI,https://www.chintai.net/osaka/area/27120/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市住吉区,1LDK,rc,78500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30)
 JP,osaka,大阪市住吉区,1LDK,steel,79000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39)
 JP,osaka,大阪市住吉区,1LDK,wood,68000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=131)
 JP,osaka,大阪市住吉区,1LDK,light_steel,99000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page9/?m=3,2026-02-20,2026-02-20,List Median (N=27) retry
 JP,osaka,大阪市住吉区,1LDK,all,78900,NIFTY,https://myhome.nifty.com/rent/osaka/osakashisumiyoshiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市住吉区,1LDK,src,78700,estimated_from_rc,,2026-02-20,2026-02-20,RC(78500) x ratio(1.003)
 JP,osaka,大阪市住吉区,1R,all,46000,CHINTAI,https://www.chintai.net/osaka/area/27120/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市住吉区,1R,rc,45500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24)
 JP,osaka,大阪市住吉区,1R,steel,35000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=93)
 JP,osaka,大阪市住吉区,1R,all,41400,NIFTY,https://myhome.nifty.com/rent/osaka/osakashisumiyoshiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市住吉区,1R,wood,33800,estimated_from_rc,,2026-02-20,2026-02-20,RC(45500) x ratio(0.742)
+JP,osaka,大阪市住吉区,1R,light_steel,38200,estimated_from_rc,,2026-02-20,2026-02-20,RC(45500) x ratio(0.840)
+JP,osaka,大阪市住吉区,1R,src,39500,estimated_from_rc,,2026-02-20,2026-02-20,RC(45500) x ratio(0.868)
 JP,osaka,大阪市北区,1DK,all,100000,CHINTAI,https://www.chintai.net/osaka/area/27127/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市北区,1DK,rc,92000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=102)
 JP,osaka,大阪市北区,1DK,steel,59000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=28) retry
 JP,osaka,大阪市北区,1DK,all,97900,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_kita-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市北区,1DK,all,90500,NIFTY,https://myhome.nifty.com/rent/osaka/osakashikitaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市北区,1DK,wood,80100,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.871)
+JP,osaka,大阪市北区,1DK,light_steel,77300,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.840)
+JP,osaka,大阪市北区,1DK,src,92000,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(1.000)
 JP,osaka,大阪市北区,1K,all,82500,CHINTAI,https://www.chintai.net/osaka/area/27127/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市北区,1K,rc,72000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=185)
 JP,osaka,大阪市北区,1K,steel,62000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=39) retry
 JP,osaka,大阪市北区,1K,src,56000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry
 JP,osaka,大阪市北区,1K,all,75100,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_kita-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市北区,1K,all,71400,NIFTY,https://myhome.nifty.com/rent/osaka/osakashikitaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市北区,1K,wood,58200,estimated_from_rc,,2026-02-20,2026-02-20,RC(72000) x ratio(0.809)
+JP,osaka,大阪市北区,1K,light_steel,59500,estimated_from_rc,,2026-02-20,2026-02-20,RC(72000) x ratio(0.827)
 JP,osaka,大阪市北区,1LDK,all,132900,CHINTAI,https://www.chintai.net/osaka/area/27127/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市北区,1LDK,rc,125000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=217)
 JP,osaka,大阪市北区,1LDK,steel,119000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23)
 JP,osaka,大阪市北区,1LDK,all,140000,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_kita-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市北区,1LDK,all,139500,NIFTY,https://myhome.nifty.com/rent/osaka/osakashikitaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市北区,1LDK,wood,97200,estimated_from_rc,,2026-02-20,2026-02-20,RC(125000) x ratio(0.778)
+JP,osaka,大阪市北区,1LDK,light_steel,108000,estimated_from_rc,,2026-02-20,2026-02-20,RC(125000) x ratio(0.864)
+JP,osaka,大阪市北区,1LDK,src,125400,estimated_from_rc,,2026-02-20,2026-02-20,RC(125000) x ratio(1.003)
 JP,osaka,大阪市北区,1R,all,71000,CHINTAI,https://www.chintai.net/osaka/area/27127/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市北区,1R,rc,81000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=126)
 JP,osaka,大阪市北区,1R,steel,46500,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=34)
 JP,osaka,大阪市北区,1R,src,56000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=21)
 JP,osaka,大阪市北区,1R,all,78400,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_kita-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市北区,1R,all,67600,NIFTY,https://myhome.nifty.com/rent/osaka/osakashikitaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市北区,1R,wood,60100,estimated_from_rc,,2026-02-20,2026-02-20,RC(81000) x ratio(0.742)
+JP,osaka,大阪市北区,1R,light_steel,68000,estimated_from_rc,,2026-02-20,2026-02-20,RC(81000) x ratio(0.840)
 JP,osaka,大阪市城東区,1DK,all,72000,CHINTAI,https://www.chintai.net/osaka/area/27118/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市城東区,1DK,rc,74000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=59)
 JP,osaka,大阪市城東区,1DK,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36)
 JP,osaka,大阪市城東区,1DK,wood,72000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=33)
+JP,osaka,大阪市城東区,1DK,light_steel,62200,estimated_from_rc,,2026-02-20,2026-02-20,RC(74000) x ratio(0.840)
+JP,osaka,大阪市城東区,1DK,src,74000,estimated_from_rc,,2026-02-20,2026-02-20,RC(74000) x ratio(1.000)
 JP,osaka,大阪市城東区,1K,all,62600,CHINTAI,https://www.chintai.net/osaka/area/27118/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市城東区,1K,rc,68700,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=125)
+JP,osaka,大阪市城東区,1K,wood,55600,estimated_from_rc,,2026-02-20,2026-02-20,RC(68700) x ratio(0.809)
+JP,osaka,大阪市城東区,1K,light_steel,56800,estimated_from_rc,,2026-02-20,2026-02-20,RC(68700) x ratio(0.827)
+JP,osaka,大阪市城東区,1K,steel,56800,estimated_from_rc,,2026-02-20,2026-02-20,RC(68700) x ratio(0.827)
+JP,osaka,大阪市城東区,1K,src,56000,estimated_from_rc,,2026-02-20,2026-02-20,RC(68700) x ratio(0.815)
 JP,osaka,大阪市城東区,1LDK,all,90800,CHINTAI,https://www.chintai.net/osaka/area/27118/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate9.08万円参考。
 JP,osaka,大阪市城東区,1LDK,rc,96500,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=82)
 JP,osaka,大阪市城東区,1LDK,steel,79000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20)
 JP,osaka,大阪市城東区,1LDK,wood,74000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49)
+JP,osaka,大阪市城東区,1LDK,light_steel,83300,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(0.864)
+JP,osaka,大阪市城東区,1LDK,src,96800,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(1.003)
 JP,osaka,大阪市城東区,1R,all,60000,CHINTAI,https://www.chintai.net/osaka/area/27118/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分6.5万円参考。
 JP,osaka,大阪市城東区,1R,rc,58000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29)
 JP,osaka,大阪市城東区,1R,steel,36000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=71)
+JP,osaka,大阪市城東区,1R,wood,43100,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.742)
+JP,osaka,大阪市城東区,1R,light_steel,48700,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.840)
+JP,osaka,大阪市城東区,1R,src,50300,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.868)
 JP,osaka,大阪市大正区,1DK,all,72000,CHINTAI,https://www.chintai.net/osaka/area/27108/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市大正区,1K,all,65100,CHINTAI,https://www.chintai.net/osaka/area/27108/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市大正区,1K,rc,64800,CHINTAI,https://www.chintai.net/osaka/area/27108/list/page4/?m=1,2026-02-20,2026-02-20,List Median (N=85)
+JP,osaka,大阪市大正区,1K,wood,52400,estimated_from_rc,,2026-02-20,2026-02-20,RC(64800) x ratio(0.809)
+JP,osaka,大阪市大正区,1K,light_steel,53600,estimated_from_rc,,2026-02-20,2026-02-20,RC(64800) x ratio(0.827)
+JP,osaka,大阪市大正区,1K,steel,53600,estimated_from_rc,,2026-02-20,2026-02-20,RC(64800) x ratio(0.827)
+JP,osaka,大阪市大正区,1K,src,52800,estimated_from_rc,,2026-02-20,2026-02-20,RC(64800) x ratio(0.815)
 JP,osaka,大阪市大正区,1LDK,all,88000,CHINTAI,https://www.chintai.net/osaka/area/27108/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市大正区,1LDK,rc,102400,CHINTAI,https://www.chintai.net/osaka/area/27108/list/page2/?m=3,2026-02-20,2026-02-20,List Median (N=22)
+JP,osaka,大阪市大正区,1LDK,wood,79600,estimated_from_rc,,2026-02-20,2026-02-20,RC(102400) x ratio(0.778)
+JP,osaka,大阪市大正区,1LDK,light_steel,88400,estimated_from_rc,,2026-02-20,2026-02-20,RC(102400) x ratio(0.864)
+JP,osaka,大阪市大正区,1LDK,steel,87900,estimated_from_rc,,2026-02-20,2026-02-20,RC(102400) x ratio(0.858)
+JP,osaka,大阪市大正区,1LDK,src,102700,estimated_from_rc,,2026-02-20,2026-02-20,RC(102400) x ratio(1.003)
 JP,osaka,大阪市大正区,1R,all,52000,CHINTAI,https://www.chintai.net/osaka/area/27108/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分6.1万円参考。
 JP,osaka,大阪市天王寺区,1DK,all,91000,CHINTAI,https://www.chintai.net/osaka/area/27109/rent/1dk/,2026-02-19,2026-02-19,平均賃料。SUUMO新築駅徒歩1-5分9.1万円参考。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市天王寺区,1DK,rc,86000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=54)
 JP,osaka,大阪市天王寺区,1DK,all,78100,NIFTY,https://myhome.nifty.com/rent/osaka/osakashitennojiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市天王寺区,1DK,wood,74900,estimated_from_rc,,2026-02-20,2026-02-20,RC(86000) x ratio(0.871)
+JP,osaka,大阪市天王寺区,1DK,light_steel,72200,estimated_from_rc,,2026-02-20,2026-02-20,RC(86000) x ratio(0.840)
+JP,osaka,大阪市天王寺区,1DK,steel,64500,estimated_from_rc,,2026-02-20,2026-02-20,RC(86000) x ratio(0.750)
+JP,osaka,大阪市天王寺区,1DK,src,86000,estimated_from_rc,,2026-02-20,2026-02-20,RC(86000) x ratio(1.000)
 JP,osaka,大阪市天王寺区,1K,all,74000,CHINTAI,https://www.chintai.net/osaka/area/27109/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市天王寺区,1K,rc,70000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=157)
 JP,osaka,大阪市天王寺区,1K,steel,53250,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28)
 JP,osaka,大阪市天王寺区,1K,all,69700,NIFTY,https://myhome.nifty.com/rent/osaka/osakashitennojiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市天王寺区,1K,wood,56600,estimated_from_rc,,2026-02-20,2026-02-20,RC(70000) x ratio(0.809)
+JP,osaka,大阪市天王寺区,1K,light_steel,57900,estimated_from_rc,,2026-02-20,2026-02-20,RC(70000) x ratio(0.827)
+JP,osaka,大阪市天王寺区,1K,src,57100,estimated_from_rc,,2026-02-20,2026-02-20,RC(70000) x ratio(0.815)
 JP,osaka,大阪市天王寺区,1LDK,all,118000,CHINTAI,https://www.chintai.net/osaka/area/27109/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市天王寺区,1LDK,rc,128000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=135)
 JP,osaka,大阪市天王寺区,1LDK,steel,72000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21)
 JP,osaka,大阪市天王寺区,1LDK,all,134100,NIFTY,https://myhome.nifty.com/rent/osaka/osakashitennojiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市天王寺区,1LDK,wood,99600,estimated_from_rc,,2026-02-20,2026-02-20,RC(128000) x ratio(0.778)
+JP,osaka,大阪市天王寺区,1LDK,light_steel,110500,estimated_from_rc,,2026-02-20,2026-02-20,RC(128000) x ratio(0.864)
+JP,osaka,大阪市天王寺区,1LDK,src,128400,estimated_from_rc,,2026-02-20,2026-02-20,RC(128000) x ratio(1.003)
 JP,osaka,大阪市天王寺区,1R,all,68000,CHINTAI,https://www.chintai.net/osaka/area/27109/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市天王寺区,1R,rc,65500,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=36)
 JP,osaka,大阪市天王寺区,1R,all,64900,NIFTY,https://myhome.nifty.com/rent/osaka/osakashitennojiku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市天王寺区,1R,wood,48600,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.742)
+JP,osaka,大阪市天王寺区,1R,light_steel,55000,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.840)
+JP,osaka,大阪市天王寺区,1R,steel,50100,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.765)
+JP,osaka,大阪市天王寺区,1R,src,56800,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.868)
 JP,osaka,大阪市平野区,1DK,all,63000,CHINTAI,https://www.chintai.net/osaka/area/27126/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市平野区,1DK,rc,47500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=24)
 JP,osaka,大阪市平野区,1DK,steel,42000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=62)
 JP,osaka,大阪市平野区,1DK,wood,63000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=57)
+JP,osaka,大阪市平野区,1DK,light_steel,39900,estimated_from_rc,,2026-02-20,2026-02-20,RC(47500) x ratio(0.840)
+JP,osaka,大阪市平野区,1DK,src,47500,estimated_from_rc,,2026-02-20,2026-02-20,RC(47500) x ratio(1.000)
 JP,osaka,大阪市平野区,1K,all,56700,CHINTAI,https://www.chintai.net/osaka/area/27126/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athome5.67万円参考。
 JP,osaka,大阪市平野区,1K,rc,61500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=47)
 JP,osaka,大阪市平野区,1K,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=52)
 JP,osaka,大阪市平野区,1K,wood,53500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=58)
+JP,osaka,大阪市平野区,1K,light_steel,50800,estimated_from_rc,,2026-02-20,2026-02-20,RC(61500) x ratio(0.827)
+JP,osaka,大阪市平野区,1K,src,50100,estimated_from_rc,,2026-02-20,2026-02-20,RC(61500) x ratio(0.815)
 JP,osaka,大阪市平野区,1LDK,all,76100,CHINTAI,https://www.chintai.net/osaka/area/27126/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate7.61万円参考。
 JP,osaka,大阪市平野区,1LDK,light_steel,87000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=46)
 JP,osaka,大阪市平野区,1LDK,steel,65000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20)
 JP,osaka,大阪市平野区,1LDK,wood,67000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=100)
 JP,osaka,大阪市平野区,1LDK,rc,67000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page9/?m=3,2026-02-20,2026-02-20,List Median (N=29) retry
+JP,osaka,大阪市平野区,1LDK,src,67200,estimated_from_rc,,2026-02-20,2026-02-20,RC(67000) x ratio(1.003)
 JP,osaka,大阪市平野区,1R,all,51000,CHINTAI,https://www.chintai.net/osaka/area/27126/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athome5.1万円参考。
 JP,osaka,大阪市平野区,1R,steel,37500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=94)
 JP,osaka,大阪市旭区,1DK,all,69000,CHINTAI,https://www.chintai.net/osaka/area/27117/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分7.1万円参考。
 JP,osaka,大阪市旭区,1DK,rc,64000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=29)
 JP,osaka,大阪市旭区,1DK,steel,48000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=45)
 JP,osaka,大阪市旭区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=22)
+JP,osaka,大阪市旭区,1DK,light_steel,53800,estimated_from_rc,,2026-02-20,2026-02-20,RC(64000) x ratio(0.840)
+JP,osaka,大阪市旭区,1DK,src,64000,estimated_from_rc,,2026-02-20,2026-02-20,RC(64000) x ratio(1.000)
 JP,osaka,大阪市旭区,1K,all,62000,CHINTAI,https://www.chintai.net/osaka/area/27117/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市旭区,1K,rc,62699,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=75)
 JP,osaka,大阪市旭区,1K,steel,51500,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=51)
 JP,osaka,大阪市旭区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=82)
+JP,osaka,大阪市旭区,1K,light_steel,51800,estimated_from_rc,,2026-02-20,2026-02-20,RC(62699) x ratio(0.827)
+JP,osaka,大阪市旭区,1K,src,51100,estimated_from_rc,,2026-02-20,2026-02-20,RC(62699) x ratio(0.815)
 JP,osaka,大阪市旭区,1LDK,all,100800,CHINTAI,https://www.chintai.net/osaka/area/27117/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate10.08万円参考。
 JP,osaka,大阪市旭区,1LDK,rc,93000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49)
 JP,osaka,大阪市旭区,1LDK,light_steel,102000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39)
 JP,osaka,大阪市旭区,1LDK,steel,81000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=34)
 JP,osaka,大阪市旭区,1LDK,wood,70000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49)
+JP,osaka,大阪市旭区,1LDK,src,93300,estimated_from_rc,,2026-02-20,2026-02-20,RC(93000) x ratio(1.003)
 JP,osaka,大阪市旭区,1R,all,56000,CHINTAI,https://www.chintai.net/osaka/area/27117/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分6.1万円参考。
 JP,osaka,大阪市旭区,1R,rc,38500,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市旭区,1R,steel,35000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=77)
+JP,osaka,大阪市旭区,1R,wood,28600,estimated_from_rc,,2026-02-20,2026-02-20,RC(38500) x ratio(0.742)
+JP,osaka,大阪市旭区,1R,light_steel,32300,estimated_from_rc,,2026-02-20,2026-02-20,RC(38500) x ratio(0.840)
+JP,osaka,大阪市旭区,1R,src,33400,estimated_from_rc,,2026-02-20,2026-02-20,RC(38500) x ratio(0.868)
 JP,osaka,大阪市東住吉区,1DK,all,65000,CHINTAI,https://www.chintai.net/osaka/area/27121/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東住吉区,1DK,rc,62000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=46)
 JP,osaka,大阪市東住吉区,1DK,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=41)
 JP,osaka,大阪市東住吉区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36)
+JP,osaka,大阪市東住吉区,1DK,light_steel,52100,estimated_from_rc,,2026-02-20,2026-02-20,RC(62000) x ratio(0.840)
+JP,osaka,大阪市東住吉区,1DK,src,62000,estimated_from_rc,,2026-02-20,2026-02-20,RC(62000) x ratio(1.000)
 JP,osaka,大阪市東住吉区,1K,all,56000,CHINTAI,https://www.chintai.net/osaka/area/27121/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東住吉区,1K,rc,60400,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=72)
 JP,osaka,大阪市東住吉区,1K,steel,49000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=45)
 JP,osaka,大阪市東住吉区,1K,wood,58000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=67)
+JP,osaka,大阪市東住吉区,1K,light_steel,49900,estimated_from_rc,,2026-02-20,2026-02-20,RC(60400) x ratio(0.827)
+JP,osaka,大阪市東住吉区,1K,src,49200,estimated_from_rc,,2026-02-20,2026-02-20,RC(60400) x ratio(0.815)
 JP,osaka,大阪市東住吉区,1LDK,all,76000,CHINTAI,https://www.chintai.net/osaka/area/27121/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東住吉区,1LDK,rc,97000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39)
 JP,osaka,大阪市東住吉区,1LDK,light_steel,86000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=31)
 JP,osaka,大阪市東住吉区,1LDK,steel,68000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25)
 JP,osaka,大阪市東住吉区,1LDK,wood,67500,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=106)
+JP,osaka,大阪市東住吉区,1LDK,src,97300,estimated_from_rc,,2026-02-20,2026-02-20,RC(97000) x ratio(1.003)
 JP,osaka,大阪市東住吉区,1R,all,48000,CHINTAI,https://www.chintai.net/osaka/area/27121/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東住吉区,1R,rc,57000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22)
 JP,osaka,大阪市東住吉区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=106)
 JP,osaka,大阪市東住吉区,1R,wood,43000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22)
+JP,osaka,大阪市東住吉区,1R,light_steel,47900,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.840)
+JP,osaka,大阪市東住吉区,1R,src,49500,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.868)
 JP,osaka,大阪市東成区,1DK,all,72000,CHINTAI,https://www.chintai.net/osaka/area/27115/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東成区,1DK,rc,79400,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=63)
 JP,osaka,大阪市東成区,1DK,steel,56000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=56)
+JP,osaka,大阪市東成区,1DK,wood,69200,estimated_from_rc,,2026-02-20,2026-02-20,RC(79400) x ratio(0.871)
+JP,osaka,大阪市東成区,1DK,light_steel,66700,estimated_from_rc,,2026-02-20,2026-02-20,RC(79400) x ratio(0.840)
+JP,osaka,大阪市東成区,1DK,src,79400,estimated_from_rc,,2026-02-20,2026-02-20,RC(79400) x ratio(1.000)
 JP,osaka,大阪市東成区,1K,all,66700,CHINTAI,https://www.chintai.net/osaka/area/27115/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東成区,1K,rc,65500,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=187)
 JP,osaka,大阪市東成区,1K,steel,58000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市東成区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28)
+JP,osaka,大阪市東成区,1K,light_steel,54100,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.827)
+JP,osaka,大阪市東成区,1K,src,53400,estimated_from_rc,,2026-02-20,2026-02-20,RC(65500) x ratio(0.815)
 JP,osaka,大阪市東成区,1LDK,all,85000,CHINTAI,https://www.chintai.net/osaka/area/27115/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東成区,1LDK,rc,100450,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=115)
 JP,osaka,大阪市東成区,1LDK,wood,70500,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=36)
+JP,osaka,大阪市東成区,1LDK,light_steel,86800,estimated_from_rc,,2026-02-20,2026-02-20,RC(100450) x ratio(0.864)
+JP,osaka,大阪市東成区,1LDK,steel,86200,estimated_from_rc,,2026-02-20,2026-02-20,RC(100450) x ratio(0.858)
+JP,osaka,大阪市東成区,1LDK,src,100800,estimated_from_rc,,2026-02-20,2026-02-20,RC(100450) x ratio(1.003)
 JP,osaka,大阪市東成区,1R,all,52000,CHINTAI,https://www.chintai.net/osaka/area/27115/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東成区,1R,rc,61750,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=44)
 JP,osaka,大阪市東成区,1R,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=43)
+JP,osaka,大阪市東成区,1R,wood,45800,estimated_from_rc,,2026-02-20,2026-02-20,RC(61750) x ratio(0.742)
+JP,osaka,大阪市東成区,1R,light_steel,51900,estimated_from_rc,,2026-02-20,2026-02-20,RC(61750) x ratio(0.840)
+JP,osaka,大阪市東成区,1R,src,53600,estimated_from_rc,,2026-02-20,2026-02-20,RC(61750) x ratio(0.868)
 JP,osaka,大阪市東淀川区,1DK,all,72000,CHINTAI,https://www.chintai.net/osaka/area/27114/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東淀川区,1DK,rc,81000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=128)
 JP,osaka,大阪市東淀川区,1DK,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=70)
+JP,osaka,大阪市東淀川区,1DK,wood,70600,estimated_from_rc,,2026-02-20,2026-02-20,RC(81000) x ratio(0.871)
+JP,osaka,大阪市東淀川区,1DK,light_steel,68000,estimated_from_rc,,2026-02-20,2026-02-20,RC(81000) x ratio(0.840)
+JP,osaka,大阪市東淀川区,1DK,src,81000,estimated_from_rc,,2026-02-20,2026-02-20,RC(81000) x ratio(1.000)
 JP,osaka,大阪市東淀川区,1K,all,70000,CHINTAI,https://www.chintai.net/osaka/area/27114/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東淀川区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=118)
 JP,osaka,大阪市東淀川区,1K,steel,52000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40)
 JP,osaka,大阪市東淀川区,1K,wood,59000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=73)
+JP,osaka,大阪市東淀川区,1K,light_steel,54600,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.827)
+JP,osaka,大阪市東淀川区,1K,src,53800,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.815)
 JP,osaka,大阪市東淀川区,1LDK,all,87000,CHINTAI,https://www.chintai.net/osaka/area/27114/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東淀川区,1LDK,light_steel,81000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=23) retry
 JP,osaka,大阪市東淀川区,1LDK,rc,105000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=114)
 JP,osaka,大阪市東淀川区,1LDK,steel,66000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23)
 JP,osaka,大阪市東淀川区,1LDK,wood,67000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=57)
+JP,osaka,大阪市東淀川区,1LDK,src,105300,estimated_from_rc,,2026-02-20,2026-02-20,RC(105000) x ratio(1.003)
 JP,osaka,大阪市東淀川区,1R,all,50000,CHINTAI,https://www.chintai.net/osaka/area/27114/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市東淀川区,1R,rc,48000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=60)
 JP,osaka,大阪市東淀川区,1R,steel,33000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=73)
 JP,osaka,大阪市東淀川区,1R,wood,60500,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20)
+JP,osaka,大阪市東淀川区,1R,light_steel,40300,estimated_from_rc,,2026-02-20,2026-02-20,RC(48000) x ratio(0.840)
+JP,osaka,大阪市東淀川区,1R,src,41700,estimated_from_rc,,2026-02-20,2026-02-20,RC(48000) x ratio(0.868)
 JP,osaka,大阪市此花区,1DK,all,69000,CHINTAI,https://www.chintai.net/osaka/area/27104/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市此花区,1K,all,61000,CHINTAI,https://www.chintai.net/osaka/area/27104/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市此花区,1K,steel,53000,CHINTAI,https://www.chintai.net/osaka/area/27104/list/page3/?m=1,2026-02-20,2026-02-20,List Median (N=26)
@@ -342,150 +447,267 @@ JP,osaka,大阪市浪速区,1DK,all,86000,CHINTAI,https://www.chintai.net/osaka/
 JP,osaka,大阪市浪速区,1DK,rc,98750,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=130)
 JP,osaka,大阪市浪速区,1DK,all,93200,NIFTY,https://myhome.nifty.com/rent/osaka/osakashinaniwaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
 JP,osaka,大阪市浪速区,1DK,all,95000,SUUMO,https://suumo.jp/chintai/soba/osaka/sc_osakashinaniwa/,2026-02-18,2026-02-18,平均賃料。新築。徒歩1-5分以内。面積未指定。管理費未指定。
+JP,osaka,大阪市浪速区,1DK,wood,86000,estimated_from_rc,,2026-02-20,2026-02-20,RC(98750) x ratio(0.871)
+JP,osaka,大阪市浪速区,1DK,light_steel,83000,estimated_from_rc,,2026-02-20,2026-02-20,RC(98750) x ratio(0.840)
+JP,osaka,大阪市浪速区,1DK,steel,74100,estimated_from_rc,,2026-02-20,2026-02-20,RC(98750) x ratio(0.750)
+JP,osaka,大阪市浪速区,1DK,src,98800,estimated_from_rc,,2026-02-20,2026-02-20,RC(98750) x ratio(1.000)
 JP,osaka,大阪市浪速区,1K,all,70900,CHINTAI,https://www.chintai.net/osaka/area/27111/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市浪速区,1K,rc,69975,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=208)
 JP,osaka,大阪市浪速区,1K,all,68100,NIFTY,https://myhome.nifty.com/rent/osaka/osakashinaniwaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
 JP,osaka,大阪市浪速区,1K,all,66000,SUUMO,https://suumo.jp/chintai/soba/osaka/sc_osakashinaniwa/,2026-02-18,2026-02-18,平均賃料。新築。徒歩1-5分以内。面積未指定。管理費未指定。
+JP,osaka,大阪市浪速区,1K,wood,56600,estimated_from_rc,,2026-02-20,2026-02-20,RC(69975) x ratio(0.809)
+JP,osaka,大阪市浪速区,1K,light_steel,57800,estimated_from_rc,,2026-02-20,2026-02-20,RC(69975) x ratio(0.827)
+JP,osaka,大阪市浪速区,1K,steel,57900,estimated_from_rc,,2026-02-20,2026-02-20,RC(69975) x ratio(0.827)
+JP,osaka,大阪市浪速区,1K,src,57000,estimated_from_rc,,2026-02-20,2026-02-20,RC(69975) x ratio(0.815)
 JP,osaka,大阪市浪速区,1LDK,all,111000,CHINTAI,https://www.chintai.net/osaka/area/27111/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。SUUMO新築駅徒歩1-5分11.1万円参考。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市浪速区,1LDK,rc,118000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=193)
 JP,osaka,大阪市浪速区,1LDK,all,120100,NIFTY,https://myhome.nifty.com/rent/osaka/osakashinaniwaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
 JP,osaka,大阪市浪速区,1LDK,all,111000,SUUMO,https://suumo.jp/chintai/soba/osaka/sc_osakashinaniwa/,2026-02-18,2026-02-18,平均賃料。新築。徒歩1-5分以内。面積未指定。管理費未指定。
+JP,osaka,大阪市浪速区,1LDK,wood,91800,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(0.778)
+JP,osaka,大阪市浪速区,1LDK,light_steel,101900,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(0.864)
+JP,osaka,大阪市浪速区,1LDK,steel,101300,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(0.858)
+JP,osaka,大阪市浪速区,1LDK,src,118400,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(1.003)
 JP,osaka,大阪市浪速区,1R,all,65000,CHINTAI,https://www.chintai.net/osaka/area/27111/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate7.13万円、athomeシングル向き74736円参考。
 JP,osaka,大阪市浪速区,1R,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=70)
 JP,osaka,大阪市浪速区,1R,steel,54000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=33)
 JP,osaka,大阪市浪速区,1R,all,65300,NIFTY,https://myhome.nifty.com/rent/osaka/osakashinaniwaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
 JP,osaka,大阪市浪速区,1R,all,65000,SUUMO,https://suumo.jp/chintai/soba/osaka/sc_osakashinaniwa/,2026-02-18,2026-02-18,平均賃料。新築。徒歩1-5分以内。面積未指定。管理費未指定。
+JP,osaka,大阪市浪速区,1R,wood,51200,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.742)
+JP,osaka,大阪市浪速区,1R,light_steel,58000,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.840)
+JP,osaka,大阪市浪速区,1R,src,59900,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.868)
 JP,osaka,大阪市淀川区,1DK,all,72900,CHINTAI,https://www.chintai.net/osaka/area/27123/rent/1dk/,2026-02-19,2026-02-19,平均賃料。homemate7.29万円参考。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市淀川区,1DK,rc,81300,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=157)
 JP,osaka,大阪市淀川区,1DK,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page9/?m=2,2026-02-20,2026-02-20,List Median (N=29) retry
 JP,osaka,大阪市淀川区,1DK,src,55000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page9/?m=2,2026-02-20,2026-02-20,List Median (N=26) retry
+JP,osaka,大阪市淀川区,1DK,wood,70800,estimated_from_rc,,2026-02-20,2026-02-20,RC(81300) x ratio(0.871)
+JP,osaka,大阪市淀川区,1DK,light_steel,68300,estimated_from_rc,,2026-02-20,2026-02-20,RC(81300) x ratio(0.840)
 JP,osaka,大阪市淀川区,1K,all,71500,CHINTAI,https://www.chintai.net/osaka/area/27123/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市淀川区,1K,steel,59000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=27) retry
 JP,osaka,大阪市淀川区,1K,src,52750,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=20) retry
 JP,osaka,大阪市淀川区,1K,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=223)
+JP,osaka,大阪市淀川区,1K,wood,55800,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.809)
+JP,osaka,大阪市淀川区,1K,light_steel,57000,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.827)
 JP,osaka,大阪市淀川区,1LDK,all,97000,CHINTAI,https://www.chintai.net/osaka/area/27123/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市淀川区,1LDK,rc,115000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=197)
+JP,osaka,大阪市淀川区,1LDK,wood,89400,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(0.778)
+JP,osaka,大阪市淀川区,1LDK,light_steel,99300,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(0.864)
+JP,osaka,大阪市淀川区,1LDK,steel,98700,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(0.858)
+JP,osaka,大阪市淀川区,1LDK,src,115400,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(1.003)
 JP,osaka,大阪市淀川区,1R,all,58000,CHINTAI,https://www.chintai.net/osaka/area/27123/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市淀川区,1R,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=80)
 JP,osaka,大阪市淀川区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=53)
 JP,osaka,大阪市淀川区,1R,src,54000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29)
+JP,osaka,大阪市淀川区,1R,wood,49000,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.742)
+JP,osaka,大阪市淀川区,1R,light_steel,55400,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.840)
 JP,osaka,大阪市港区,1DK,all,78000,CHINTAI,https://www.chintai.net/osaka/area/27107/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市港区,1DK,rc,102000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=25)
 JP,osaka,大阪市港区,1DK,steel,53000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=38)
+JP,osaka,大阪市港区,1DK,wood,88900,estimated_from_rc,,2026-02-20,2026-02-20,RC(102000) x ratio(0.871)
+JP,osaka,大阪市港区,1DK,light_steel,85700,estimated_from_rc,,2026-02-20,2026-02-20,RC(102000) x ratio(0.840)
+JP,osaka,大阪市港区,1DK,src,102000,estimated_from_rc,,2026-02-20,2026-02-20,RC(102000) x ratio(1.000)
 JP,osaka,大阪市港区,1K,all,70000,CHINTAI,https://www.chintai.net/osaka/area/27107/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市港区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=113)
 JP,osaka,大阪市港区,1K,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=30)
+JP,osaka,大阪市港区,1K,wood,53400,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.809)
+JP,osaka,大阪市港区,1K,light_steel,54600,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.827)
+JP,osaka,大阪市港区,1K,src,53800,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.815)
 JP,osaka,大阪市港区,1LDK,all,95000,CHINTAI,https://www.chintai.net/osaka/area/27107/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市港区,1LDK,rc,119000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=3,2026-02-20,2026-02-20,List Median (N=72)
+JP,osaka,大阪市港区,1LDK,wood,92600,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(0.778)
+JP,osaka,大阪市港区,1LDK,light_steel,102800,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(0.864)
+JP,osaka,大阪市港区,1LDK,steel,102100,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(0.858)
+JP,osaka,大阪市港区,1LDK,src,119400,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(1.003)
 JP,osaka,大阪市港区,1R,all,55000,CHINTAI,https://www.chintai.net/osaka/area/27107/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athomシングル向き65700円参考。
 JP,osaka,大阪市港区,1R,rc,56000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市港区,1R,steel,44000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=51)
+JP,osaka,大阪市港区,1R,wood,41600,estimated_from_rc,,2026-02-20,2026-02-20,RC(56000) x ratio(0.742)
+JP,osaka,大阪市港区,1R,light_steel,47000,estimated_from_rc,,2026-02-20,2026-02-20,RC(56000) x ratio(0.840)
+JP,osaka,大阪市港区,1R,src,48600,estimated_from_rc,,2026-02-20,2026-02-20,RC(56000) x ratio(0.868)
 JP,osaka,大阪市生野区,1DK,all,68000,CHINTAI,https://www.chintai.net/osaka/area/27116/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市生野区,1DK,rc,68300,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=37)
 JP,osaka,大阪市生野区,1DK,steel,53500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=22)
 JP,osaka,大阪市生野区,1DK,wood,59500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=64)
+JP,osaka,大阪市生野区,1DK,light_steel,57400,estimated_from_rc,,2026-02-20,2026-02-20,RC(68300) x ratio(0.840)
+JP,osaka,大阪市生野区,1DK,src,68300,estimated_from_rc,,2026-02-20,2026-02-20,RC(68300) x ratio(1.000)
 JP,osaka,大阪市生野区,1K,all,61300,CHINTAI,https://www.chintai.net/osaka/area/27116/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市生野区,1K,rc,59600,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=62)
 JP,osaka,大阪市生野区,1K,steel,52000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=62)
 JP,osaka,大阪市生野区,1K,wood,54000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=78)
+JP,osaka,大阪市生野区,1K,light_steel,49300,estimated_from_rc,,2026-02-20,2026-02-20,RC(59600) x ratio(0.827)
+JP,osaka,大阪市生野区,1K,src,48600,estimated_from_rc,,2026-02-20,2026-02-20,RC(59600) x ratio(0.815)
 JP,osaka,大阪市生野区,1LDK,all,78000,CHINTAI,https://www.chintai.net/osaka/area/27116/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市生野区,1LDK,rc,79500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=58)
 JP,osaka,大阪市生野区,1LDK,steel,80000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23)
 JP,osaka,大阪市生野区,1LDK,wood,68000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=93)
+JP,osaka,大阪市生野区,1LDK,light_steel,68700,estimated_from_rc,,2026-02-20,2026-02-20,RC(79500) x ratio(0.864)
+JP,osaka,大阪市生野区,1LDK,src,79700,estimated_from_rc,,2026-02-20,2026-02-20,RC(79500) x ratio(1.003)
 JP,osaka,大阪市生野区,1R,all,45000,CHINTAI,https://www.chintai.net/osaka/area/27116/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市生野区,1R,rc,53000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=23)
 JP,osaka,大阪市生野区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=38)
+JP,osaka,大阪市生野区,1R,wood,39300,estimated_from_rc,,2026-02-20,2026-02-20,RC(53000) x ratio(0.742)
+JP,osaka,大阪市生野区,1R,light_steel,44500,estimated_from_rc,,2026-02-20,2026-02-20,RC(53000) x ratio(0.840)
+JP,osaka,大阪市生野区,1R,src,46000,estimated_from_rc,,2026-02-20,2026-02-20,RC(53000) x ratio(0.868)
 JP,osaka,大阪市福島区,1DK,all,88000,CHINTAI,https://www.chintai.net/osaka/area/27103/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市福島区,1DK,rc,92000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=65)
 JP,osaka,大阪市福島区,1DK,all,89900,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_fukushima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市福島区,1DK,all,85300,NIFTY,https://myhome.nifty.com/rent/osaka/osakashifukushimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市福島区,1DK,wood,80100,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.871)
+JP,osaka,大阪市福島区,1DK,light_steel,77300,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.840)
+JP,osaka,大阪市福島区,1DK,steel,69000,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.750)
+JP,osaka,大阪市福島区,1DK,src,92000,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(1.000)
 JP,osaka,大阪市福島区,1K,all,72400,CHINTAI,https://www.chintai.net/osaka/area/27103/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市福島区,1K,steel,65500,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=25) retry
 JP,osaka,大阪市福島区,1K,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=189)
 JP,osaka,大阪市福島区,1K,all,72100,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_fukushima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市福島区,1K,all,69900,NIFTY,https://myhome.nifty.com/rent/osaka/osakashifukushimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市福島区,1K,wood,55800,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.809)
+JP,osaka,大阪市福島区,1K,light_steel,57000,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.827)
+JP,osaka,大阪市福島区,1K,src,56200,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.815)
 JP,osaka,大阪市福島区,1LDK,all,110000,CHINTAI,https://www.chintai.net/osaka/area/27103/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市福島区,1LDK,rc,129000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=170)
 JP,osaka,大阪市福島区,1LDK,all,134200,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_fukushima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市福島区,1LDK,all,133800,NIFTY,https://myhome.nifty.com/rent/osaka/osakashifukushimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市福島区,1LDK,wood,100300,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.778)
+JP,osaka,大阪市福島区,1LDK,light_steel,111400,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.864)
+JP,osaka,大阪市福島区,1LDK,steel,110700,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(0.858)
+JP,osaka,大阪市福島区,1LDK,src,129400,estimated_from_rc,,2026-02-20,2026-02-20,RC(129000) x ratio(1.003)
 JP,osaka,大阪市福島区,1R,all,65000,CHINTAI,https://www.chintai.net/osaka/area/27103/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athomeシングル向き平均73669円参考。
 JP,osaka,大阪市福島区,1R,rc,75000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=49)
 JP,osaka,大阪市福島区,1R,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=31)
 JP,osaka,大阪市福島区,1R,all,85100,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_fukushima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市福島区,1R,all,66300,NIFTY,https://myhome.nifty.com/rent/osaka/osakashifukushimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市福島区,1R,wood,55700,estimated_from_rc,,2026-02-20,2026-02-20,RC(75000) x ratio(0.742)
+JP,osaka,大阪市福島区,1R,light_steel,63000,estimated_from_rc,,2026-02-20,2026-02-20,RC(75000) x ratio(0.840)
+JP,osaka,大阪市福島区,1R,src,65100,estimated_from_rc,,2026-02-20,2026-02-20,RC(75000) x ratio(0.868)
 JP,osaka,大阪市西区,1DK,all,88500,CHINTAI,https://www.chintai.net/osaka/area/27106/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athome8.85万円参考。
 JP,osaka,大阪市西区,1DK,rc,100000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162)
+JP,osaka,大阪市西区,1DK,wood,87100,estimated_from_rc,,2026-02-20,2026-02-20,RC(100000) x ratio(0.871)
+JP,osaka,大阪市西区,1DK,light_steel,84000,estimated_from_rc,,2026-02-20,2026-02-20,RC(100000) x ratio(0.840)
+JP,osaka,大阪市西区,1DK,steel,75000,estimated_from_rc,,2026-02-20,2026-02-20,RC(100000) x ratio(0.750)
+JP,osaka,大阪市西区,1DK,src,100000,estimated_from_rc,,2026-02-20,2026-02-20,RC(100000) x ratio(1.000)
 JP,osaka,大阪市西区,1K,all,69000,CHINTAI,https://www.chintai.net/osaka/area/27106/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。athome7.14万円参考。
 JP,osaka,大阪市西区,1K,rc,70700,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=196)
+JP,osaka,大阪市西区,1K,wood,57200,estimated_from_rc,,2026-02-20,2026-02-20,RC(70700) x ratio(0.809)
+JP,osaka,大阪市西区,1K,light_steel,58400,estimated_from_rc,,2026-02-20,2026-02-20,RC(70700) x ratio(0.827)
+JP,osaka,大阪市西区,1K,steel,58500,estimated_from_rc,,2026-02-20,2026-02-20,RC(70700) x ratio(0.827)
+JP,osaka,大阪市西区,1K,src,57600,estimated_from_rc,,2026-02-20,2026-02-20,RC(70700) x ratio(0.815)
 JP,osaka,大阪市西区,1LDK,all,112000,CHINTAI,https://www.chintai.net/osaka/area/27106/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分12.4万円、athome11.31万円参考。
 JP,osaka,大阪市西区,1LDK,src,123000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=27) retry
 JP,osaka,大阪市西区,1LDK,rc,130000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=194)
+JP,osaka,大阪市西区,1LDK,wood,101100,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.778)
+JP,osaka,大阪市西区,1LDK,light_steel,112300,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.864)
+JP,osaka,大阪市西区,1LDK,steel,111600,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.858)
 JP,osaka,大阪市西区,1R,all,68000,CHINTAI,https://www.chintai.net/osaka/area/27106/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分6.8万円参考。
 JP,osaka,大阪市西区,1R,rc,89000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=136)
 JP,osaka,大阪市西区,1R,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=40)
 JP,osaka,大阪市西区,1R,src,72250,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=24) retry
+JP,osaka,大阪市西区,1R,wood,66100,estimated_from_rc,,2026-02-20,2026-02-20,RC(89000) x ratio(0.742)
+JP,osaka,大阪市西区,1R,light_steel,74800,estimated_from_rc,,2026-02-20,2026-02-20,RC(89000) x ratio(0.840)
 JP,osaka,大阪市西成区,1DK,all,63000,CHINTAI,https://www.chintai.net/osaka/area/27122/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西成区,1DK,steel,62000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=29)
 JP,osaka,大阪市西成区,1K,all,58000,CHINTAI,https://www.chintai.net/osaka/area/27122/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西成区,1K,rc,58000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=32)
 JP,osaka,大阪市西成区,1K,steel,54000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40)
+JP,osaka,大阪市西成区,1K,wood,46900,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.809)
+JP,osaka,大阪市西成区,1K,light_steel,47900,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.827)
+JP,osaka,大阪市西成区,1K,src,47300,estimated_from_rc,,2026-02-20,2026-02-20,RC(58000) x ratio(0.815)
 JP,osaka,大阪市西成区,1LDK,all,72000,CHINTAI,https://www.chintai.net/osaka/area/27122/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西成区,1LDK,rc,90000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=3,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市西成区,1LDK,wood,69000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=3,2026-02-20,2026-02-20,List Median (N=26)
+JP,osaka,大阪市西成区,1LDK,light_steel,77700,estimated_from_rc,,2026-02-20,2026-02-20,RC(90000) x ratio(0.864)
+JP,osaka,大阪市西成区,1LDK,steel,77200,estimated_from_rc,,2026-02-20,2026-02-20,RC(90000) x ratio(0.858)
+JP,osaka,大阪市西成区,1LDK,src,90300,estimated_from_rc,,2026-02-20,2026-02-20,RC(90000) x ratio(1.003)
 JP,osaka,大阪市西成区,1R,all,42000,CHINTAI,https://www.chintai.net/osaka/area/27122/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西成区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=28)
 JP,osaka,大阪市西淀川区,1DK,all,70000,CHINTAI,https://www.chintai.net/osaka/area/27113/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西淀川区,1DK,rc,94000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=32)
+JP,osaka,大阪市西淀川区,1DK,wood,81900,estimated_from_rc,,2026-02-20,2026-02-20,RC(94000) x ratio(0.871)
+JP,osaka,大阪市西淀川区,1DK,light_steel,79000,estimated_from_rc,,2026-02-20,2026-02-20,RC(94000) x ratio(0.840)
+JP,osaka,大阪市西淀川区,1DK,steel,70500,estimated_from_rc,,2026-02-20,2026-02-20,RC(94000) x ratio(0.750)
+JP,osaka,大阪市西淀川区,1DK,src,94000,estimated_from_rc,,2026-02-20,2026-02-20,RC(94000) x ratio(1.000)
 JP,osaka,大阪市西淀川区,1K,all,63000,CHINTAI,https://www.chintai.net/osaka/area/27113/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西淀川区,1K,rc,63250,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=116)
 JP,osaka,大阪市西淀川区,1K,steel,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43)
 JP,osaka,大阪市西淀川区,1K,wood,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=39)
+JP,osaka,大阪市西淀川区,1K,light_steel,52300,estimated_from_rc,,2026-02-20,2026-02-20,RC(63250) x ratio(0.827)
+JP,osaka,大阪市西淀川区,1K,src,51600,estimated_from_rc,,2026-02-20,2026-02-20,RC(63250) x ratio(0.815)
 JP,osaka,大阪市西淀川区,1LDK,all,82000,CHINTAI,https://www.chintai.net/osaka/area/27113/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西淀川区,1LDK,rc,107000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=79)
 JP,osaka,大阪市西淀川区,1LDK,wood,73000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=87)
+JP,osaka,大阪市西淀川区,1LDK,light_steel,92400,estimated_from_rc,,2026-02-20,2026-02-20,RC(107000) x ratio(0.864)
+JP,osaka,大阪市西淀川区,1LDK,steel,91800,estimated_from_rc,,2026-02-20,2026-02-20,RC(107000) x ratio(0.858)
+JP,osaka,大阪市西淀川区,1LDK,src,107300,estimated_from_rc,,2026-02-20,2026-02-20,RC(107000) x ratio(1.003)
 JP,osaka,大阪市西淀川区,1R,all,48000,CHINTAI,https://www.chintai.net/osaka/area/27113/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市西淀川区,1R,rc,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=29)
+JP,osaka,大阪市西淀川区,1R,wood,42300,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.742)
+JP,osaka,大阪市西淀川区,1R,light_steel,47900,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.840)
+JP,osaka,大阪市西淀川区,1R,steel,43600,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.765)
+JP,osaka,大阪市西淀川区,1R,src,49500,estimated_from_rc,,2026-02-20,2026-02-20,RC(57000) x ratio(0.868)
 JP,osaka,大阪市都島区,1DK,all,75000,CHINTAI,https://www.chintai.net/osaka/area/27102/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市都島区,1DK,rc,80000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=41)
 JP,osaka,大阪市都島区,1DK,steel,58000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=32)
 JP,osaka,大阪市都島区,1DK,all,88000,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_miyakojima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市都島区,1DK,all,72800,NIFTY,https://myhome.nifty.com/rent/osaka/osakashimiyakojimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市都島区,1DK,wood,69700,estimated_from_rc,,2026-02-20,2026-02-20,RC(80000) x ratio(0.871)
+JP,osaka,大阪市都島区,1DK,light_steel,67200,estimated_from_rc,,2026-02-20,2026-02-20,RC(80000) x ratio(0.840)
+JP,osaka,大阪市都島区,1DK,src,80000,estimated_from_rc,,2026-02-20,2026-02-20,RC(80000) x ratio(1.000)
 JP,osaka,大阪市都島区,1K,all,69500,CHINTAI,https://www.chintai.net/osaka/area/27102/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市都島区,1K,rc,68000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=168)
 JP,osaka,大阪市都島区,1K,steel,56500,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38)
 JP,osaka,大阪市都島区,1K,all,69700,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_miyakojima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市都島区,1K,all,64800,NIFTY,https://myhome.nifty.com/rent/osaka/osakashimiyakojimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市都島区,1K,wood,55000,estimated_from_rc,,2026-02-20,2026-02-20,RC(68000) x ratio(0.809)
+JP,osaka,大阪市都島区,1K,light_steel,56200,estimated_from_rc,,2026-02-20,2026-02-20,RC(68000) x ratio(0.827)
+JP,osaka,大阪市都島区,1K,src,55400,estimated_from_rc,,2026-02-20,2026-02-20,RC(68000) x ratio(0.815)
 JP,osaka,大阪市都島区,1LDK,all,95000,CHINTAI,https://www.chintai.net/osaka/area/27102/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市都島区,1LDK,rc,108000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=179)
 JP,osaka,大阪市都島区,1LDK,steel,86000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市都島区,1LDK,all,117300,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_miyakojima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市都島区,1LDK,all,108700,NIFTY,https://myhome.nifty.com/rent/osaka/osakashimiyakojimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市都島区,1LDK,wood,84000,estimated_from_rc,,2026-02-20,2026-02-20,RC(108000) x ratio(0.778)
+JP,osaka,大阪市都島区,1LDK,light_steel,93300,estimated_from_rc,,2026-02-20,2026-02-20,RC(108000) x ratio(0.864)
+JP,osaka,大阪市都島区,1LDK,src,108300,estimated_from_rc,,2026-02-20,2026-02-20,RC(108000) x ratio(1.003)
 JP,osaka,大阪市都島区,1R,all,53000,CHINTAI,https://www.chintai.net/osaka/area/27102/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市都島区,1R,rc,63000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=58)
 JP,osaka,大阪市都島区,1R,steel,38000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=36)
 JP,osaka,大阪市都島区,1R,all,68300,LIFULL,https://www.homes.co.jp/chintai/osaka/osaka_miyakojima-city/price/,2026-02-18,2026-02-18,平均賃料。徒歩10分以内。築年未指定。面積未指定。管理費除く。
 JP,osaka,大阪市都島区,1R,all,53400,NIFTY,https://myhome.nifty.com/rent/osaka/osakashimiyakojimaku_ct/,2026-02-18,2026-02-18,平均賃料。徒歩未指定。築年未指定。面積未指定。管理費未指定。
+JP,osaka,大阪市都島区,1R,wood,46800,estimated_from_rc,,2026-02-20,2026-02-20,RC(63000) x ratio(0.742)
+JP,osaka,大阪市都島区,1R,light_steel,52900,estimated_from_rc,,2026-02-20,2026-02-20,RC(63000) x ratio(0.840)
+JP,osaka,大阪市都島区,1R,src,54700,estimated_from_rc,,2026-02-20,2026-02-20,RC(63000) x ratio(0.868)
 JP,osaka,大阪市阿倍野区,1DK,all,76000,CHINTAI,https://www.chintai.net/osaka/area/27119/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市阿倍野区,1K,all,66100,CHINTAI,https://www.chintai.net/osaka/area/27119/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市阿倍野区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=141)
 JP,osaka,大阪市阿倍野区,1K,steel,55000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43)
 JP,osaka,大阪市阿倍野区,1K,wood,64500,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page7/?m=1,2026-02-20,2026-02-20,List Median (N=22) retry
+JP,osaka,大阪市阿倍野区,1K,light_steel,54600,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.827)
+JP,osaka,大阪市阿倍野区,1K,src,53800,estimated_from_rc,,2026-02-20,2026-02-20,RC(66000) x ratio(0.815)
 JP,osaka,大阪市阿倍野区,1LDK,all,97000,CHINTAI,https://www.chintai.net/osaka/area/27119/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市阿倍野区,1LDK,rc,105000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=85)
 JP,osaka,大阪市阿倍野区,1LDK,steel,90000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25)
+JP,osaka,大阪市阿倍野区,1LDK,wood,81700,estimated_from_rc,,2026-02-20,2026-02-20,RC(105000) x ratio(0.778)
+JP,osaka,大阪市阿倍野区,1LDK,light_steel,90700,estimated_from_rc,,2026-02-20,2026-02-20,RC(105000) x ratio(0.864)
+JP,osaka,大阪市阿倍野区,1LDK,src,105300,estimated_from_rc,,2026-02-20,2026-02-20,RC(105000) x ratio(1.003)
 JP,osaka,大阪市阿倍野区,1R,all,57000,CHINTAI,https://www.chintai.net/osaka/area/27119/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市阿倍野区,1R,rc,65000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市阿倍野区,1R,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=23)
+JP,osaka,大阪市阿倍野区,1R,wood,48200,estimated_from_rc,,2026-02-20,2026-02-20,RC(65000) x ratio(0.742)
+JP,osaka,大阪市阿倍野区,1R,light_steel,54600,estimated_from_rc,,2026-02-20,2026-02-20,RC(65000) x ratio(0.840)
+JP,osaka,大阪市阿倍野区,1R,src,56400,estimated_from_rc,,2026-02-20,2026-02-20,RC(65000) x ratio(0.868)
 JP,osaka,大阪市鶴見区,1DK,all,70000,CHINTAI,https://www.chintai.net/osaka/area/27124/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分7.1万円参考。
 JP,osaka,大阪市鶴見区,1DK,steel,60000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=36)
 JP,osaka,大阪市鶴見区,1K,all,61000,CHINTAI,https://www.chintai.net/osaka/area/27124/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,大阪市鶴見区,1K,rc,61000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=27)
 JP,osaka,大阪市鶴見区,1K,steel,55500,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=76)
 JP,osaka,大阪市鶴見区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=54)
+JP,osaka,大阪市鶴見区,1K,light_steel,50400,estimated_from_rc,,2026-02-20,2026-02-20,RC(61000) x ratio(0.827)
+JP,osaka,大阪市鶴見区,1K,src,49700,estimated_from_rc,,2026-02-20,2026-02-20,RC(61000) x ratio(0.815)
 JP,osaka,大阪市鶴見区,1LDK,all,82700,CHINTAI,https://www.chintai.net/osaka/area/27124/rent/1ldk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate8.27万円参考。
 JP,osaka,大阪市鶴見区,1LDK,rc,96500,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30)
 JP,osaka,大阪市鶴見区,1LDK,steel,83750,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=26)
 JP,osaka,大阪市鶴見区,1LDK,wood,73000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=53)
+JP,osaka,大阪市鶴見区,1LDK,light_steel,83300,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(0.864)
+JP,osaka,大阪市鶴見区,1LDK,src,96800,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(1.003)
 JP,osaka,大阪市鶴見区,1R,all,56000,CHINTAI,https://www.chintai.net/osaka/area/27124/rent/1r/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。SUUMO新築駅徒歩1-5分6.4万円参考。
 JP,osaka,寝屋川市,1DK,all,52000,CHINTAI,https://www.chintai.net/osaka/area/27215/rent/1dk/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。
 JP,osaka,寝屋川市,1K,all,44000,CHINTAI,https://www.chintai.net/osaka/area/27215/rent/1k/,2026-02-19,2026-02-19,平均賃料。築20年以内。管理費除く。徒歩未指定。面積未指定。homemate3.76-4.6万円参考。
@@ -575,255 +797,433 @@ JP,tokyo,世田谷区,1DK,wood,78000,CHINTAI,https://www.chintai.net/tokyo/area/
 JP,tokyo,世田谷区,1DK,rc,139000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=161)
 JP,tokyo,世田谷区,1DK,steel,91500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36)
 JP,tokyo,世田谷区,1DK,all,139600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/setagaya-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,世田谷区,1DK,light_steel,116800,estimated_from_rc,,2026-02-20,2026-02-20,RC(139000) x ratio(0.840)
+JP,tokyo,世田谷区,1DK,src,139000,estimated_from_rc,,2026-02-20,2026-02-20,RC(139000) x ratio(1.000)
 JP,tokyo,世田谷区,1K,all,109000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,世田谷区,1K,rc,113500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=152)
 JP,tokyo,世田谷区,1K,light_steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=29)
 JP,tokyo,世田谷区,1K,wood,87000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=33)
 JP,tokyo,世田谷区,1K,all,113500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/setagaya-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,世田谷区,1K,steel,93900,estimated_from_rc,,2026-02-20,2026-02-20,RC(113500) x ratio(0.827)
+JP,tokyo,世田谷区,1K,src,92500,estimated_from_rc,,2026-02-20,2026-02-20,RC(113500) x ratio(0.815)
 JP,tokyo,世田谷区,1LDK,rc,176000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=164)
 JP,tokyo,世田谷区,1LDK,light_steel,137000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30)
 JP,tokyo,世田谷区,1LDK,steel,150000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,世田谷区,1LDK,wood,145000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=45)
 JP,tokyo,世田谷区,1LDK,all,183400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/setagaya-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,世田谷区,1LDK,src,176500,estimated_from_rc,,2026-02-20,2026-02-20,RC(176000) x ratio(1.003)
 JP,tokyo,世田谷区,1R,all,87000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,世田谷区,1R,rc,92500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=120)
 JP,tokyo,世田谷区,1R,steel,79000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,世田谷区,1R,wood,73000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=78)
+JP,tokyo,世田谷区,1R,light_steel,77700,estimated_from_rc,,2026-02-20,2026-02-20,RC(92500) x ratio(0.840)
+JP,tokyo,世田谷区,1R,src,80300,estimated_from_rc,,2026-02-20,2026-02-20,RC(92500) x ratio(0.868)
 JP,tokyo,中央区,1DK,rc,161000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=200)
 JP,tokyo,中央区,1DK,all,167600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chuo-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,中央区,1DK,wood,140300,estimated_from_rc,,2026-02-20,2026-02-20,RC(161000) x ratio(0.871)
+JP,tokyo,中央区,1DK,light_steel,135200,estimated_from_rc,,2026-02-20,2026-02-20,RC(161000) x ratio(0.840)
+JP,tokyo,中央区,1DK,steel,120800,estimated_from_rc,,2026-02-20,2026-02-20,RC(161000) x ratio(0.750)
+JP,tokyo,中央区,1DK,src,161000,estimated_from_rc,,2026-02-20,2026-02-20,RC(161000) x ratio(1.000)
 JP,tokyo,中央区,1K,all,135000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,中央区,1K,rc,138000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=181)
 JP,tokyo,中央区,1K,src,130000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=74)
 JP,tokyo,中央区,1K,all,132100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chuo-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,中央区,1K,wood,111600,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.809)
+JP,tokyo,中央区,1K,light_steel,114100,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.827)
+JP,tokyo,中央区,1K,steel,114100,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.827)
 JP,tokyo,中央区,1LDK,rc,218000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=218)
 JP,tokyo,中央区,1LDK,src,215000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=42)
 JP,tokyo,中央区,1LDK,all,234400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chuo-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,中央区,1LDK,wood,169600,estimated_from_rc,,2026-02-20,2026-02-20,RC(218000) x ratio(0.778)
+JP,tokyo,中央区,1LDK,light_steel,188300,estimated_from_rc,,2026-02-20,2026-02-20,RC(218000) x ratio(0.864)
+JP,tokyo,中央区,1LDK,steel,187100,estimated_from_rc,,2026-02-20,2026-02-20,RC(218000) x ratio(0.858)
 JP,tokyo,中央区,1R,all,145000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,中央区,1R,rc,138000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=159)
 JP,tokyo,中央区,1R,src,150000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=79)
+JP,tokyo,中央区,1R,wood,102400,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.742)
+JP,tokyo,中央区,1R,light_steel,115900,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.840)
+JP,tokyo,中央区,1R,steel,105600,estimated_from_rc,,2026-02-20,2026-02-20,RC(138000) x ratio(0.765)
 JP,tokyo,中野区,1DK,rc,136000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=169)
 JP,tokyo,中野区,1DK,all,141300,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nakano-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,中野区,1DK,wood,118500,estimated_from_rc,,2026-02-20,2026-02-20,RC(136000) x ratio(0.871)
+JP,tokyo,中野区,1DK,light_steel,114200,estimated_from_rc,,2026-02-20,2026-02-20,RC(136000) x ratio(0.840)
+JP,tokyo,中野区,1DK,steel,102000,estimated_from_rc,,2026-02-20,2026-02-20,RC(136000) x ratio(0.750)
+JP,tokyo,中野区,1DK,src,136000,estimated_from_rc,,2026-02-20,2026-02-20,RC(136000) x ratio(1.000)
 JP,tokyo,中野区,1K,all,117000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,中野区,1K,rc,119000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=160)
 JP,tokyo,中野区,1K,steel,92000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=34)
 JP,tokyo,中野区,1K,wood,74500,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38)
 JP,tokyo,中野区,1K,all,110700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nakano-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,中野区,1K,light_steel,98400,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(0.827)
+JP,tokyo,中野区,1K,src,97000,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(0.815)
 JP,tokyo,中野区,1LDK,rc,180000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=149)
 JP,tokyo,中野区,1LDK,light_steel,155000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=27)
 JP,tokyo,中野区,1LDK,steel,150000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,中野区,1LDK,wood,140000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23)
 JP,tokyo,中野区,1LDK,all,182400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nakano-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,中野区,1LDK,src,180600,estimated_from_rc,,2026-02-20,2026-02-20,RC(180000) x ratio(1.003)
 JP,tokyo,中野区,1R,all,113500,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,中野区,1R,steel,77000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=26) retry
 JP,tokyo,中野区,1R,rc,119500,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=136)
 JP,tokyo,中野区,1R,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=49)
+JP,tokyo,中野区,1R,light_steel,100400,estimated_from_rc,,2026-02-20,2026-02-20,RC(119500) x ratio(0.840)
+JP,tokyo,中野区,1R,src,103700,estimated_from_rc,,2026-02-20,2026-02-20,RC(119500) x ratio(0.868)
 JP,tokyo,北区,1DK,rc,134500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162)
 JP,tokyo,北区,1DK,wood,90500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page7/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry
 JP,tokyo,北区,1DK,all,129400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/kita-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,北区,1DK,light_steel,113000,estimated_from_rc,,2026-02-20,2026-02-20,RC(134500) x ratio(0.840)
+JP,tokyo,北区,1DK,steel,100900,estimated_from_rc,,2026-02-20,2026-02-20,RC(134500) x ratio(0.750)
+JP,tokyo,北区,1DK,src,134500,estimated_from_rc,,2026-02-20,2026-02-20,RC(134500) x ratio(1.000)
 JP,tokyo,北区,1K,all,111000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,北区,1K,steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=20) retry
 JP,tokyo,北区,1K,rc,111000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=130)
 JP,tokyo,北区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28)
 JP,tokyo,北区,1K,all,105400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/kita-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,北区,1K,light_steel,91700,estimated_from_rc,,2026-02-20,2026-02-20,RC(111000) x ratio(0.827)
+JP,tokyo,北区,1K,src,90500,estimated_from_rc,,2026-02-20,2026-02-20,RC(111000) x ratio(0.815)
 JP,tokyo,北区,1LDK,rc,168500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=156)
 JP,tokyo,北区,1LDK,steel,145000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=33)
 JP,tokyo,北区,1LDK,wood,135500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,北区,1LDK,all,166400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/kita-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,北区,1LDK,light_steel,145500,estimated_from_rc,,2026-02-20,2026-02-20,RC(168500) x ratio(0.864)
+JP,tokyo,北区,1LDK,src,169000,estimated_from_rc,,2026-02-20,2026-02-20,RC(168500) x ratio(1.003)
 JP,tokyo,北区,1R,all,103000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,北区,1R,rc,94500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=78)
 JP,tokyo,北区,1R,steel,74000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=27)
 JP,tokyo,北区,1R,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=59)
+JP,tokyo,北区,1R,light_steel,79400,estimated_from_rc,,2026-02-20,2026-02-20,RC(94500) x ratio(0.840)
+JP,tokyo,北区,1R,src,82000,estimated_from_rc,,2026-02-20,2026-02-20,RC(94500) x ratio(0.868)
 JP,tokyo,千代田区,1DK,rc,171000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=68)
 JP,tokyo,千代田区,1DK,all,171100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chiyoda-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,千代田区,1DK,wood,149000,estimated_from_rc,,2026-02-20,2026-02-20,RC(171000) x ratio(0.871)
+JP,tokyo,千代田区,1DK,light_steel,143600,estimated_from_rc,,2026-02-20,2026-02-20,RC(171000) x ratio(0.840)
+JP,tokyo,千代田区,1DK,steel,128200,estimated_from_rc,,2026-02-20,2026-02-20,RC(171000) x ratio(0.750)
+JP,tokyo,千代田区,1DK,src,171000,estimated_from_rc,,2026-02-20,2026-02-20,RC(171000) x ratio(1.000)
 JP,tokyo,千代田区,1K,all,143000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,千代田区,1K,rc,140000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=173)
 JP,tokyo,千代田区,1K,src,119000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48)
 JP,tokyo,千代田区,1K,all,138900,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chiyoda-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,千代田区,1K,wood,113300,estimated_from_rc,,2026-02-20,2026-02-20,RC(140000) x ratio(0.809)
+JP,tokyo,千代田区,1K,light_steel,115700,estimated_from_rc,,2026-02-20,2026-02-20,RC(140000) x ratio(0.827)
+JP,tokyo,千代田区,1K,steel,115800,estimated_from_rc,,2026-02-20,2026-02-20,RC(140000) x ratio(0.827)
 JP,tokyo,千代田区,1LDK,rc,229500,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=214)
 JP,tokyo,千代田区,1LDK,src,221000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20)
 JP,tokyo,千代田区,1LDK,all,243500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/chiyoda-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,千代田区,1LDK,wood,178500,estimated_from_rc,,2026-02-20,2026-02-20,RC(229500) x ratio(0.778)
+JP,tokyo,千代田区,1LDK,light_steel,198200,estimated_from_rc,,2026-02-20,2026-02-20,RC(229500) x ratio(0.864)
+JP,tokyo,千代田区,1LDK,steel,196900,estimated_from_rc,,2026-02-20,2026-02-20,RC(229500) x ratio(0.858)
 JP,tokyo,千代田区,1R,all,159000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,千代田区,1R,rc,155000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=91)
 JP,tokyo,千代田区,1R,src,134500,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=38)
+JP,tokyo,千代田区,1R,wood,115100,estimated_from_rc,,2026-02-20,2026-02-20,RC(155000) x ratio(0.742)
+JP,tokyo,千代田区,1R,light_steel,130200,estimated_from_rc,,2026-02-20,2026-02-20,RC(155000) x ratio(0.840)
+JP,tokyo,千代田区,1R,steel,118600,estimated_from_rc,,2026-02-20,2026-02-20,RC(155000) x ratio(0.765)
 JP,tokyo,台東区,1DK,steel,109000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=2,2026-02-20,2026-02-20,List Median (N=23) retry
 JP,tokyo,台東区,1DK,rc,142000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=232)
 JP,tokyo,台東区,1DK,all,146900,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/taito-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,台東区,1DK,wood,123700,estimated_from_rc,,2026-02-20,2026-02-20,RC(142000) x ratio(0.871)
+JP,tokyo,台東区,1DK,light_steel,119300,estimated_from_rc,,2026-02-20,2026-02-20,RC(142000) x ratio(0.840)
+JP,tokyo,台東区,1DK,src,142000,estimated_from_rc,,2026-02-20,2026-02-20,RC(142000) x ratio(1.000)
 JP,tokyo,台東区,1K,all,124000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,台東区,1K,steel,94500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=26) retry
 JP,tokyo,台東区,1K,src,120000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=25) retry
 JP,tokyo,台東区,1K,rc,120500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=224)
 JP,tokyo,台東区,1K,all,122400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/taito-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,台東区,1K,wood,97500,estimated_from_rc,,2026-02-20,2026-02-20,RC(120500) x ratio(0.809)
+JP,tokyo,台東区,1K,light_steel,99600,estimated_from_rc,,2026-02-20,2026-02-20,RC(120500) x ratio(0.827)
 JP,tokyo,台東区,1LDK,rc,185000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=223)
 JP,tokyo,台東区,1LDK,all,191700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/taito-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,台東区,1LDK,wood,143900,estimated_from_rc,,2026-02-20,2026-02-20,RC(185000) x ratio(0.778)
+JP,tokyo,台東区,1LDK,light_steel,159800,estimated_from_rc,,2026-02-20,2026-02-20,RC(185000) x ratio(0.864)
+JP,tokyo,台東区,1LDK,steel,158800,estimated_from_rc,,2026-02-20,2026-02-20,RC(185000) x ratio(0.858)
+JP,tokyo,台東区,1LDK,src,185600,estimated_from_rc,,2026-02-20,2026-02-20,RC(185000) x ratio(1.003)
 JP,tokyo,台東区,1R,all,126000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,台東区,1R,rc,120000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=163)
 JP,tokyo,台東区,1R,wood,73500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,台東区,1R,src,97000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29)
+JP,tokyo,台東区,1R,light_steel,100800,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(0.840)
+JP,tokyo,台東区,1R,steel,91800,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(0.765)
 JP,tokyo,品川区,1DK,rc,148000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=201)
 JP,tokyo,品川区,1DK,wood,115000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry
 JP,tokyo,品川区,1DK,all,151200,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinagawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,品川区,1DK,light_steel,124300,estimated_from_rc,,2026-02-20,2026-02-20,RC(148000) x ratio(0.840)
+JP,tokyo,品川区,1DK,steel,111000,estimated_from_rc,,2026-02-20,2026-02-20,RC(148000) x ratio(0.750)
+JP,tokyo,品川区,1DK,src,148000,estimated_from_rc,,2026-02-20,2026-02-20,RC(148000) x ratio(1.000)
 JP,tokyo,品川区,1K,all,125000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,品川区,1K,wood,86000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry
 JP,tokyo,品川区,1K,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=200)
 JP,tokyo,品川区,1K,all,116100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinagawa-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,品川区,1K,light_steel,105000,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.827)
+JP,tokyo,品川区,1K,steel,105000,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.827)
+JP,tokyo,品川区,1K,src,103500,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.815)
 JP,tokyo,品川区,1LDK,steel,162000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=26) retry
 JP,tokyo,品川区,1LDK,wood,169000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=25) retry
 JP,tokyo,品川区,1LDK,rc,203000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=229)
 JP,tokyo,品川区,1LDK,all,205300,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinagawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,品川区,1LDK,light_steel,175300,estimated_from_rc,,2026-02-20,2026-02-20,RC(203000) x ratio(0.864)
+JP,tokyo,品川区,1LDK,src,203600,estimated_from_rc,,2026-02-20,2026-02-20,RC(203000) x ratio(1.003)
 JP,tokyo,品川区,1R,all,115000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,品川区,1R,rc,116500,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=138)
 JP,tokyo,品川区,1R,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20)
 JP,tokyo,品川区,1R,src,114000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=23)
+JP,tokyo,品川区,1R,light_steel,97900,estimated_from_rc,,2026-02-20,2026-02-20,RC(116500) x ratio(0.840)
+JP,tokyo,品川区,1R,steel,89100,estimated_from_rc,,2026-02-20,2026-02-20,RC(116500) x ratio(0.765)
 JP,tokyo,墨田区,1DK,rc,133000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=263)
 JP,tokyo,墨田区,1DK,all,137600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/sumida-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,墨田区,1DK,wood,115900,estimated_from_rc,,2026-02-20,2026-02-20,RC(133000) x ratio(0.871)
+JP,tokyo,墨田区,1DK,light_steel,111700,estimated_from_rc,,2026-02-20,2026-02-20,RC(133000) x ratio(0.840)
+JP,tokyo,墨田区,1DK,steel,99800,estimated_from_rc,,2026-02-20,2026-02-20,RC(133000) x ratio(0.750)
+JP,tokyo,墨田区,1DK,src,133000,estimated_from_rc,,2026-02-20,2026-02-20,RC(133000) x ratio(1.000)
 JP,tokyo,墨田区,1K,all,118800,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,墨田区,1K,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=220)
 JP,tokyo,墨田区,1K,steel,91000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page7/?m=1,2026-02-20,2026-02-20,List Median (N=22) retry
 JP,tokyo,墨田区,1K,all,110000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/sumida-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,墨田区,1K,wood,91400,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.809)
+JP,tokyo,墨田区,1K,light_steel,93400,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.827)
+JP,tokyo,墨田区,1K,src,92100,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.815)
 JP,tokyo,墨田区,1LDK,rc,180000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=242)
 JP,tokyo,墨田区,1LDK,all,181500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/sumida-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,墨田区,1LDK,wood,140000,estimated_from_rc,,2026-02-20,2026-02-20,RC(180000) x ratio(0.778)
+JP,tokyo,墨田区,1LDK,light_steel,155500,estimated_from_rc,,2026-02-20,2026-02-20,RC(180000) x ratio(0.864)
+JP,tokyo,墨田区,1LDK,steel,154500,estimated_from_rc,,2026-02-20,2026-02-20,RC(180000) x ratio(0.858)
+JP,tokyo,墨田区,1LDK,src,180600,estimated_from_rc,,2026-02-20,2026-02-20,RC(180000) x ratio(1.003)
 JP,tokyo,墨田区,1R,all,126000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,墨田区,1R,rc,118000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=193)
 JP,tokyo,墨田区,1R,steel,78000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=20) retry
 JP,tokyo,墨田区,1R,wood,66000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=21) retry
+JP,tokyo,墨田区,1R,light_steel,99100,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(0.840)
+JP,tokyo,墨田区,1R,src,102400,estimated_from_rc,,2026-02-20,2026-02-20,RC(118000) x ratio(0.868)
 JP,tokyo,大田区,1DK,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=194)
 JP,tokyo,大田区,1DK,wood,115000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=21) retry
 JP,tokyo,大田区,1DK,all,134500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/ota-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,大田区,1DK,light_steel,106700,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.840)
+JP,tokyo,大田区,1DK,steel,95200,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.750)
+JP,tokyo,大田区,1DK,src,127000,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(1.000)
 JP,tokyo,大田区,1K,all,113000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,大田区,1K,steel,90000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=28) retry
 JP,tokyo,大田区,1K,rc,108000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=164)
 JP,tokyo,大田区,1K,wood,82000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=27)
 JP,tokyo,大田区,1K,all,102200,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/ota-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,大田区,1K,light_steel,89300,estimated_from_rc,,2026-02-20,2026-02-20,RC(108000) x ratio(0.827)
+JP,tokyo,大田区,1K,src,88000,estimated_from_rc,,2026-02-20,2026-02-20,RC(108000) x ratio(0.815)
 JP,tokyo,大田区,1LDK,rc,170000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=179)
 JP,tokyo,大田区,1LDK,steel,128000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25)
 JP,tokyo,大田区,1LDK,wood,128000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,大田区,1LDK,all,171400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/ota-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,大田区,1LDK,light_steel,146800,estimated_from_rc,,2026-02-20,2026-02-20,RC(170000) x ratio(0.864)
+JP,tokyo,大田区,1LDK,src,170500,estimated_from_rc,,2026-02-20,2026-02-20,RC(170000) x ratio(1.003)
 JP,tokyo,大田区,1R,all,115000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,大田区,1R,steel,81000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=32) retry
 JP,tokyo,大田区,1R,rc,115000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=124)
 JP,tokyo,大田区,1R,wood,70000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=35)
+JP,tokyo,大田区,1R,light_steel,96600,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(0.840)
+JP,tokyo,大田区,1R,src,99800,estimated_from_rc,,2026-02-20,2026-02-20,RC(115000) x ratio(0.868)
 JP,tokyo,文京区,1DK,rc,152000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=136)
 JP,tokyo,文京区,1DK,all,157200,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/bunkyo-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,文京区,1DK,wood,132400,estimated_from_rc,,2026-02-20,2026-02-20,RC(152000) x ratio(0.871)
+JP,tokyo,文京区,1DK,light_steel,127700,estimated_from_rc,,2026-02-20,2026-02-20,RC(152000) x ratio(0.840)
+JP,tokyo,文京区,1DK,steel,114000,estimated_from_rc,,2026-02-20,2026-02-20,RC(152000) x ratio(0.750)
+JP,tokyo,文京区,1DK,src,152000,estimated_from_rc,,2026-02-20,2026-02-20,RC(152000) x ratio(1.000)
 JP,tokyo,文京区,1K,all,135000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,文京区,1K,rc,132000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=143)
 JP,tokyo,文京区,1K,src,103000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=41)
 JP,tokyo,文京区,1K,all,121200,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/bunkyo-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,文京区,1K,wood,106800,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(0.809)
+JP,tokyo,文京区,1K,light_steel,109100,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(0.827)
+JP,tokyo,文京区,1K,steel,109200,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(0.827)
 JP,tokyo,文京区,1LDK,rc,200000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=203)
 JP,tokyo,文京区,1LDK,src,204000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=29)
 JP,tokyo,文京区,1LDK,all,212000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/bunkyo-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,文京区,1LDK,wood,155600,estimated_from_rc,,2026-02-20,2026-02-20,RC(200000) x ratio(0.778)
+JP,tokyo,文京区,1LDK,light_steel,172700,estimated_from_rc,,2026-02-20,2026-02-20,RC(200000) x ratio(0.864)
+JP,tokyo,文京区,1LDK,steel,171600,estimated_from_rc,,2026-02-20,2026-02-20,RC(200000) x ratio(0.858)
 JP,tokyo,文京区,1R,all,132500,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,文京区,1R,rc,130000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=123)
 JP,tokyo,文京区,1R,src,102500,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=38)
+JP,tokyo,文京区,1R,wood,96500,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.742)
+JP,tokyo,文京区,1R,light_steel,109200,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.840)
+JP,tokyo,文京区,1R,steel,99500,estimated_from_rc,,2026-02-20,2026-02-20,RC(130000) x ratio(0.765)
 JP,tokyo,新宿区,1DK,rc,162000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=90)
 JP,tokyo,新宿区,1DK,all,162800,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinjuku-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,新宿区,1DK,wood,141100,estimated_from_rc,,2026-02-20,2026-02-20,RC(162000) x ratio(0.871)
+JP,tokyo,新宿区,1DK,light_steel,136100,estimated_from_rc,,2026-02-20,2026-02-20,RC(162000) x ratio(0.840)
+JP,tokyo,新宿区,1DK,steel,121500,estimated_from_rc,,2026-02-20,2026-02-20,RC(162000) x ratio(0.750)
+JP,tokyo,新宿区,1DK,src,162000,estimated_from_rc,,2026-02-20,2026-02-20,RC(162000) x ratio(1.000)
 JP,tokyo,新宿区,1K,all,139000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,新宿区,1K,steel,117500,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=32) retry
 JP,tokyo,新宿区,1K,rc,128000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=211)
 JP,tokyo,新宿区,1K,src,99000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=30)
 JP,tokyo,新宿区,1K,all,130000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinjuku-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,新宿区,1K,wood,103600,estimated_from_rc,,2026-02-20,2026-02-20,RC(128000) x ratio(0.809)
+JP,tokyo,新宿区,1K,light_steel,105800,estimated_from_rc,,2026-02-20,2026-02-20,RC(128000) x ratio(0.827)
 JP,tokyo,新宿区,1LDK,rc,199500,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=242)
 JP,tokyo,新宿区,1LDK,all,222500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shinjuku-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,新宿区,1LDK,wood,155200,estimated_from_rc,,2026-02-20,2026-02-20,RC(199500) x ratio(0.778)
+JP,tokyo,新宿区,1LDK,light_steel,172300,estimated_from_rc,,2026-02-20,2026-02-20,RC(199500) x ratio(0.864)
+JP,tokyo,新宿区,1LDK,steel,171200,estimated_from_rc,,2026-02-20,2026-02-20,RC(199500) x ratio(0.858)
+JP,tokyo,新宿区,1LDK,src,200100,estimated_from_rc,,2026-02-20,2026-02-20,RC(199500) x ratio(1.003)
 JP,tokyo,新宿区,1R,all,140000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,新宿区,1R,rc,122000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=153)
 JP,tokyo,新宿区,1R,wood,67000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=25)
 JP,tokyo,新宿区,1R,src,145000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=48)
+JP,tokyo,新宿区,1R,light_steel,102500,estimated_from_rc,,2026-02-20,2026-02-20,RC(122000) x ratio(0.840)
+JP,tokyo,新宿区,1R,steel,93400,estimated_from_rc,,2026-02-20,2026-02-20,RC(122000) x ratio(0.765)
 JP,tokyo,杉並区,1DK,rc,121500,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=126)
 JP,tokyo,杉並区,1DK,steel,131000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=25)
 JP,tokyo,杉並区,1DK,wood,110000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=30)
 JP,tokyo,杉並区,1DK,all,126600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/suginami-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,杉並区,1DK,light_steel,102100,estimated_from_rc,,2026-02-20,2026-02-20,RC(121500) x ratio(0.840)
+JP,tokyo,杉並区,1DK,src,121500,estimated_from_rc,,2026-02-20,2026-02-20,RC(121500) x ratio(1.000)
 JP,tokyo,杉並区,1K,all,98000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,杉並区,1K,light_steel,81000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=30) retry
 JP,tokyo,杉並区,1K,steel,86000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=31) retry
 JP,tokyo,杉並区,1K,rc,98000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=158)
 JP,tokyo,杉並区,1K,wood,92000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42)
 JP,tokyo,杉並区,1K,all,100600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/suginami-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,杉並区,1K,src,79900,estimated_from_rc,,2026-02-20,2026-02-20,RC(98000) x ratio(0.815)
 JP,tokyo,杉並区,1LDK,rc,169500,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=170)
 JP,tokyo,杉並区,1LDK,light_steel,142000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,杉並区,1LDK,wood,145000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=28)
 JP,tokyo,杉並区,1LDK,all,172800,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/suginami-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,杉並区,1LDK,steel,145500,estimated_from_rc,,2026-02-20,2026-02-20,RC(169500) x ratio(0.858)
+JP,tokyo,杉並区,1LDK,src,170000,estimated_from_rc,,2026-02-20,2026-02-20,RC(169500) x ratio(1.003)
 JP,tokyo,杉並区,1R,all,83000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,杉並区,1R,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=33) retry
 JP,tokyo,杉並区,1R,rc,87000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=121)
 JP,tokyo,杉並区,1R,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=73)
+JP,tokyo,杉並区,1R,light_steel,73100,estimated_from_rc,,2026-02-20,2026-02-20,RC(87000) x ratio(0.840)
+JP,tokyo,杉並区,1R,src,75500,estimated_from_rc,,2026-02-20,2026-02-20,RC(87000) x ratio(0.868)
 JP,tokyo,板橋区,1DK,rc,120000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=184)
 JP,tokyo,板橋区,1DK,all,123000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/itabashi-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,板橋区,1DK,wood,104500,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(0.871)
+JP,tokyo,板橋区,1DK,light_steel,100800,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(0.840)
+JP,tokyo,板橋区,1DK,steel,90000,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(0.750)
+JP,tokyo,板橋区,1DK,src,120000,estimated_from_rc,,2026-02-20,2026-02-20,RC(120000) x ratio(1.000)
 JP,tokyo,板橋区,1K,all,107000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,板橋区,1K,rc,99000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=192)
 JP,tokyo,板橋区,1K,steel,81500,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28)
 JP,tokyo,板橋区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=37)
 JP,tokyo,板橋区,1K,all,96400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/itabashi-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,板橋区,1K,light_steel,81800,estimated_from_rc,,2026-02-20,2026-02-20,RC(99000) x ratio(0.827)
+JP,tokyo,板橋区,1K,src,80700,estimated_from_rc,,2026-02-20,2026-02-20,RC(99000) x ratio(0.815)
 JP,tokyo,板橋区,1LDK,rc,151000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=165)
 JP,tokyo,板橋区,1LDK,light_steel,127000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=48)
 JP,tokyo,板橋区,1LDK,wood,121000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=40)
 JP,tokyo,板橋区,1LDK,all,149000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/itabashi-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,板橋区,1LDK,steel,129600,estimated_from_rc,,2026-02-20,2026-02-20,RC(151000) x ratio(0.858)
+JP,tokyo,板橋区,1LDK,src,151500,estimated_from_rc,,2026-02-20,2026-02-20,RC(151000) x ratio(1.003)
 JP,tokyo,板橋区,1R,all,79000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,板橋区,1R,steel,64000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=40) retry
 JP,tokyo,板橋区,1R,rc,82000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=90)
 JP,tokyo,板橋区,1R,wood,52000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=44)
 JP,tokyo,板橋区,1R,src,63000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20)
+JP,tokyo,板橋区,1R,light_steel,68900,estimated_from_rc,,2026-02-20,2026-02-20,RC(82000) x ratio(0.840)
 JP,tokyo,江戸川区,1DK,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=28)
 JP,tokyo,江戸川区,1DK,wood,91000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=20)
 JP,tokyo,江戸川区,1DK,all,106700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/edogawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,江戸川区,1DK,light_steel,94900,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.840)
+JP,tokyo,江戸川区,1DK,steel,84800,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.750)
+JP,tokyo,江戸川区,1DK,src,113000,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(1.000)
 JP,tokyo,江戸川区,1K,all,79000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,江戸川区,1K,rc,95000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48)
 JP,tokyo,江戸川区,1K,light_steel,75500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38)
 JP,tokyo,江戸川区,1K,steel,76750,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=44)
 JP,tokyo,江戸川区,1K,wood,71500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=82)
 JP,tokyo,江戸川区,1K,all,86400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/edogawa-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,江戸川区,1K,src,77400,estimated_from_rc,,2026-02-20,2026-02-20,RC(95000) x ratio(0.815)
 JP,tokyo,江戸川区,1LDK,rc,146000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=99)
 JP,tokyo,江戸川区,1LDK,light_steel,129000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=59)
 JP,tokyo,江戸川区,1LDK,steel,121000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=55)
 JP,tokyo,江戸川区,1LDK,all,163600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/edogawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,江戸川区,1LDK,wood,113600,estimated_from_rc,,2026-02-20,2026-02-20,RC(146000) x ratio(0.778)
+JP,tokyo,江戸川区,1LDK,src,146500,estimated_from_rc,,2026-02-20,2026-02-20,RC(146000) x ratio(1.003)
 JP,tokyo,江戸川区,1R,all,62000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,江戸川区,1R,rc,69000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=23)
 JP,tokyo,江戸川区,1R,steel,58500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=34)
 JP,tokyo,江戸川区,1R,wood,63000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=86)
+JP,tokyo,江戸川区,1R,light_steel,58000,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.840)
+JP,tokyo,江戸川区,1R,src,59900,estimated_from_rc,,2026-02-20,2026-02-20,RC(69000) x ratio(0.868)
 JP,tokyo,江東区,1DK,steel,103000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry
 JP,tokyo,江東区,1DK,rc,137000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=263)
 JP,tokyo,江東区,1DK,all,140100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/koto-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,江東区,1DK,wood,119300,estimated_from_rc,,2026-02-20,2026-02-20,RC(137000) x ratio(0.871)
+JP,tokyo,江東区,1DK,light_steel,115100,estimated_from_rc,,2026-02-20,2026-02-20,RC(137000) x ratio(0.840)
+JP,tokyo,江東区,1DK,src,137000,estimated_from_rc,,2026-02-20,2026-02-20,RC(137000) x ratio(1.000)
 JP,tokyo,江東区,1K,all,120000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,江東区,1K,rc,117000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=260)
 JP,tokyo,江東区,1K,all,119000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/koto-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,江東区,1K,wood,94700,estimated_from_rc,,2026-02-20,2026-02-20,RC(117000) x ratio(0.809)
+JP,tokyo,江東区,1K,light_steel,96700,estimated_from_rc,,2026-02-20,2026-02-20,RC(117000) x ratio(0.827)
+JP,tokyo,江東区,1K,steel,96800,estimated_from_rc,,2026-02-20,2026-02-20,RC(117000) x ratio(0.827)
+JP,tokyo,江東区,1K,src,95400,estimated_from_rc,,2026-02-20,2026-02-20,RC(117000) x ratio(0.815)
 JP,tokyo,江東区,1LDK,light_steel,147000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=25) retry
 JP,tokyo,江東区,1LDK,steel,162000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=31) retry
 JP,tokyo,江東区,1LDK,rc,175000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=240)
 JP,tokyo,江東区,1LDK,all,182500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/koto-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,江東区,1LDK,wood,136100,estimated_from_rc,,2026-02-20,2026-02-20,RC(175000) x ratio(0.778)
+JP,tokyo,江東区,1LDK,src,175500,estimated_from_rc,,2026-02-20,2026-02-20,RC(175000) x ratio(1.003)
 JP,tokyo,江東区,1R,all,124000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,江東区,1R,steel,97000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=41) retry
 JP,tokyo,江東区,1R,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=31) retry
 JP,tokyo,江東区,1R,src,115000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=23) retry
 JP,tokyo,江東区,1R,rc,122000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=187)
+JP,tokyo,江東区,1R,light_steel,102500,estimated_from_rc,,2026-02-20,2026-02-20,RC(122000) x ratio(0.840)
 JP,tokyo,渋谷区,1DK,rc,170500,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162)
 JP,tokyo,渋谷区,1DK,src,246000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=23)
 JP,tokyo,渋谷区,1DK,all,180700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shibuya-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,渋谷区,1DK,wood,148500,estimated_from_rc,,2026-02-20,2026-02-20,RC(170500) x ratio(0.871)
+JP,tokyo,渋谷区,1DK,light_steel,143200,estimated_from_rc,,2026-02-20,2026-02-20,RC(170500) x ratio(0.840)
+JP,tokyo,渋谷区,1DK,steel,127900,estimated_from_rc,,2026-02-20,2026-02-20,RC(170500) x ratio(0.750)
 JP,tokyo,渋谷区,1K,all,145000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,渋谷区,1K,rc,129500,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=176)
 JP,tokyo,渋谷区,1K,steel,115000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,渋谷区,1K,src,142000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=31)
 JP,tokyo,渋谷区,1K,all,140700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shibuya-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,渋谷区,1K,wood,104800,estimated_from_rc,,2026-02-20,2026-02-20,RC(129500) x ratio(0.809)
+JP,tokyo,渋谷区,1K,light_steel,107000,estimated_from_rc,,2026-02-20,2026-02-20,RC(129500) x ratio(0.827)
 JP,tokyo,渋谷区,1LDK,steel,160000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=24) retry
 JP,tokyo,渋谷区,1LDK,src,290000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=32) retry
 JP,tokyo,渋谷区,1LDK,rc,221000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=229)
 JP,tokyo,渋谷区,1LDK,all,250600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/shibuya-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,渋谷区,1LDK,wood,171900,estimated_from_rc,,2026-02-20,2026-02-20,RC(221000) x ratio(0.778)
+JP,tokyo,渋谷区,1LDK,light_steel,190900,estimated_from_rc,,2026-02-20,2026-02-20,RC(221000) x ratio(0.864)
 JP,tokyo,渋谷区,1R,all,153000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,渋谷区,1R,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=153)
 JP,tokyo,渋谷区,1R,steel,134000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20)
 JP,tokyo,渋谷区,1R,src,139000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=39)
+JP,tokyo,渋谷区,1R,wood,111300,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.742)
+JP,tokyo,渋谷区,1R,light_steel,126000,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.840)
 JP,tokyo,港区,1DK,rc,172000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=129)
 JP,tokyo,港区,1DK,src,172000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=35)
 JP,tokyo,港区,1DK,all,171000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/minato-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,港区,1DK,wood,149800,estimated_from_rc,,2026-02-20,2026-02-20,RC(172000) x ratio(0.871)
+JP,tokyo,港区,1DK,light_steel,144500,estimated_from_rc,,2026-02-20,2026-02-20,RC(172000) x ratio(0.840)
+JP,tokyo,港区,1DK,steel,129000,estimated_from_rc,,2026-02-20,2026-02-20,RC(172000) x ratio(0.750)
 JP,tokyo,港区,1K,all,145000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,港区,1K,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=196)
 JP,tokyo,港区,1K,src,157000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42)
 JP,tokyo,港区,1K,all,147600,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/minato-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,港区,1K,wood,121300,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.809)
+JP,tokyo,港区,1K,light_steel,124000,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.827)
+JP,tokyo,港区,1K,steel,124100,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.827)
 JP,tokyo,港区,1LDK,rc,259000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=235)
 JP,tokyo,港区,1LDK,all,305300,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/minato-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,港区,1LDK,wood,201400,estimated_from_rc,,2026-02-20,2026-02-20,RC(259000) x ratio(0.778)
+JP,tokyo,港区,1LDK,light_steel,223700,estimated_from_rc,,2026-02-20,2026-02-20,RC(259000) x ratio(0.864)
+JP,tokyo,港区,1LDK,steel,222300,estimated_from_rc,,2026-02-20,2026-02-20,RC(259000) x ratio(0.858)
+JP,tokyo,港区,1LDK,src,259800,estimated_from_rc,,2026-02-20,2026-02-20,RC(259000) x ratio(1.003)
 JP,tokyo,港区,1R,all,156000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,港区,1R,rc,160000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=186)
 JP,tokyo,港区,1R,src,138000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=53)
+JP,tokyo,港区,1R,wood,118800,estimated_from_rc,,2026-02-20,2026-02-20,RC(160000) x ratio(0.742)
+JP,tokyo,港区,1R,light_steel,134400,estimated_from_rc,,2026-02-20,2026-02-20,RC(160000) x ratio(0.840)
+JP,tokyo,港区,1R,steel,122400,estimated_from_rc,,2026-02-20,2026-02-20,RC(160000) x ratio(0.765)
 JP,tokyo,目黒区,1DK,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=142)
 JP,tokyo,目黒区,1DK,steel,140000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,目黒区,1DK,all,159700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/meguro-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,目黒区,1DK,wood,130700,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.871)
+JP,tokyo,目黒区,1DK,light_steel,126000,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(0.840)
+JP,tokyo,目黒区,1DK,src,150000,estimated_from_rc,,2026-02-20,2026-02-20,RC(150000) x ratio(1.000)
 JP,tokyo,目黒区,1K,all,143000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,目黒区,1K,rc,143000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=144)
 JP,tokyo,目黒区,1K,light_steel,98000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry
@@ -834,97 +1234,137 @@ JP,tokyo,目黒区,1K,all,131200,LIFULL HOME'S,https://www.homes.co.jp/chintai/t
 JP,tokyo,目黒区,1LDK,rc,199000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=195)
 JP,tokyo,目黒区,1LDK,steel,161500,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,目黒区,1LDK,all,227500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/meguro-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,目黒区,1LDK,wood,154800,estimated_from_rc,,2026-02-20,2026-02-20,RC(199000) x ratio(0.778)
+JP,tokyo,目黒区,1LDK,light_steel,171900,estimated_from_rc,,2026-02-20,2026-02-20,RC(199000) x ratio(0.864)
+JP,tokyo,目黒区,1LDK,src,199600,estimated_from_rc,,2026-02-20,2026-02-20,RC(199000) x ratio(1.003)
 JP,tokyo,目黒区,1R,all,136000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,目黒区,1R,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=132)
 JP,tokyo,目黒区,1R,steel,89000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,目黒区,1R,wood,97000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24)
 JP,tokyo,目黒区,1R,src,119000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page9/?m=0,2026-02-20,2026-02-20,List Median (N=29) retry
+JP,tokyo,目黒区,1R,light_steel,106700,estimated_from_rc,,2026-02-20,2026-02-20,RC(127000) x ratio(0.840)
 JP,tokyo,練馬区,1DK,rc,112000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=89)
 JP,tokyo,練馬区,1DK,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=21) retry
 JP,tokyo,練馬区,1DK,all,120100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nerima-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,練馬区,1DK,light_steel,94100,estimated_from_rc,,2026-02-20,2026-02-20,RC(112000) x ratio(0.840)
+JP,tokyo,練馬区,1DK,steel,84000,estimated_from_rc,,2026-02-20,2026-02-20,RC(112000) x ratio(0.750)
+JP,tokyo,練馬区,1DK,src,112000,estimated_from_rc,,2026-02-20,2026-02-20,RC(112000) x ratio(1.000)
 JP,tokyo,練馬区,1K,all,85000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,練馬区,1K,light_steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=36) retry
 JP,tokyo,練馬区,1K,rc,89000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=136)
 JP,tokyo,練馬区,1K,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43)
 JP,tokyo,練馬区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48)
 JP,tokyo,練馬区,1K,all,91500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nerima-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,練馬区,1K,src,72500,estimated_from_rc,,2026-02-20,2026-02-20,RC(89000) x ratio(0.815)
 JP,tokyo,練馬区,1LDK,rc,142000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=131)
 JP,tokyo,練馬区,1LDK,light_steel,123000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=61)
 JP,tokyo,練馬区,1LDK,steel,126000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=24)
 JP,tokyo,練馬区,1LDK,wood,122000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=57)
 JP,tokyo,練馬区,1LDK,all,150800,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/nerima-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,練馬区,1LDK,src,142400,estimated_from_rc,,2026-02-20,2026-02-20,RC(142000) x ratio(1.003)
 JP,tokyo,練馬区,1R,all,72000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,練馬区,1R,rc,74000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=98)
 JP,tokyo,練馬区,1R,steel,66000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29)
 JP,tokyo,練馬区,1R,wood,62500,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=72)
+JP,tokyo,練馬区,1R,light_steel,62200,estimated_from_rc,,2026-02-20,2026-02-20,RC(74000) x ratio(0.840)
+JP,tokyo,練馬区,1R,src,64200,estimated_from_rc,,2026-02-20,2026-02-20,RC(74000) x ratio(0.868)
 JP,tokyo,荒川区,1DK,rc,132000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=100)
 JP,tokyo,荒川区,1DK,steel,116000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=22)
 JP,tokyo,荒川区,1DK,all,128100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/arakawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,荒川区,1DK,wood,115000,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(0.871)
+JP,tokyo,荒川区,1DK,light_steel,110900,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(0.840)
+JP,tokyo,荒川区,1DK,src,132000,estimated_from_rc,,2026-02-20,2026-02-20,RC(132000) x ratio(1.000)
 JP,tokyo,荒川区,1K,all,105000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,荒川区,1K,rc,106000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=126)
 JP,tokyo,荒川区,1K,steel,80500,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=24)
 JP,tokyo,荒川区,1K,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=23)
 JP,tokyo,荒川区,1K,all,100900,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/arakawa-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,荒川区,1K,light_steel,87600,estimated_from_rc,,2026-02-20,2026-02-20,RC(106000) x ratio(0.827)
+JP,tokyo,荒川区,1K,src,86400,estimated_from_rc,,2026-02-20,2026-02-20,RC(106000) x ratio(0.815)
 JP,tokyo,荒川区,1LDK,rc,163500,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=192)
 JP,tokyo,荒川区,1LDK,steel,145000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page8/?m=3,2026-02-20,2026-02-20,List Median (N=23) retry
 JP,tokyo,荒川区,1LDK,wood,128000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page8/?m=3,2026-02-20,2026-02-20,List Median (N=24) retry
 JP,tokyo,荒川区,1LDK,all,174500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/arakawa-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,荒川区,1LDK,light_steel,141200,estimated_from_rc,,2026-02-20,2026-02-20,RC(163500) x ratio(0.864)
+JP,tokyo,荒川区,1LDK,src,164000,estimated_from_rc,,2026-02-20,2026-02-20,RC(163500) x ratio(1.003)
 JP,tokyo,荒川区,1R,all,98000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,荒川区,1R,rc,111000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=58)
 JP,tokyo,荒川区,1R,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=33)
 JP,tokyo,荒川区,1R,wood,70000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29)
+JP,tokyo,荒川区,1R,light_steel,93200,estimated_from_rc,,2026-02-20,2026-02-20,RC(111000) x ratio(0.840)
+JP,tokyo,荒川区,1R,src,96300,estimated_from_rc,,2026-02-20,2026-02-20,RC(111000) x ratio(0.868)
 JP,tokyo,葛飾区,1DK,rc,96500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=44)
 JP,tokyo,葛飾区,1DK,steel,70500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=28)
 JP,tokyo,葛飾区,1DK,wood,81000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=27)
 JP,tokyo,葛飾区,1DK,all,102000,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/katsushika-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,葛飾区,1DK,light_steel,81100,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(0.840)
+JP,tokyo,葛飾区,1DK,src,96500,estimated_from_rc,,2026-02-20,2026-02-20,RC(96500) x ratio(1.000)
 JP,tokyo,葛飾区,1K,all,83000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,葛飾区,1K,rc,92000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=105)
 JP,tokyo,葛飾区,1K,light_steel,77000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=21)
 JP,tokyo,葛飾区,1K,steel,81500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38)
 JP,tokyo,葛飾区,1K,wood,71000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=75)
 JP,tokyo,葛飾区,1K,all,84400,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/katsushika-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,葛飾区,1K,src,75000,estimated_from_rc,,2026-02-20,2026-02-20,RC(92000) x ratio(0.815)
 JP,tokyo,葛飾区,1LDK,rc,119000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=38)
 JP,tokyo,葛飾区,1LDK,light_steel,116000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=58)
 JP,tokyo,葛飾区,1LDK,steel,114000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=50)
 JP,tokyo,葛飾区,1LDK,wood,117000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=80)
 JP,tokyo,葛飾区,1LDK,all,127500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/katsushika-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,葛飾区,1LDK,src,119400,estimated_from_rc,,2026-02-20,2026-02-20,RC(119000) x ratio(1.003)
 JP,tokyo,葛飾区,1R,all,71000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,葛飾区,1R,rc,64500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=66)
 JP,tokyo,葛飾区,1R,steel,67500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=36)
 JP,tokyo,葛飾区,1R,wood,64000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=91)
+JP,tokyo,葛飾区,1R,light_steel,54200,estimated_from_rc,,2026-02-20,2026-02-20,RC(64500) x ratio(0.840)
+JP,tokyo,葛飾区,1R,src,56000,estimated_from_rc,,2026-02-20,2026-02-20,RC(64500) x ratio(0.868)
 JP,tokyo,豊島区,1DK,rc,145000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=168)
 JP,tokyo,豊島区,1DK,all,145100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/toshima-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,豊島区,1DK,wood,126300,estimated_from_rc,,2026-02-20,2026-02-20,RC(145000) x ratio(0.871)
+JP,tokyo,豊島区,1DK,light_steel,121800,estimated_from_rc,,2026-02-20,2026-02-20,RC(145000) x ratio(0.840)
+JP,tokyo,豊島区,1DK,steel,108800,estimated_from_rc,,2026-02-20,2026-02-20,RC(145000) x ratio(0.750)
+JP,tokyo,豊島区,1DK,src,145000,estimated_from_rc,,2026-02-20,2026-02-20,RC(145000) x ratio(1.000)
 JP,tokyo,豊島区,1K,all,120000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,豊島区,1K,steel,82000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=27) retry
 JP,tokyo,豊島区,1K,wood,71500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=24) retry
 JP,tokyo,豊島区,1K,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=168)
 JP,tokyo,豊島区,1K,all,114900,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/toshima-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,豊島区,1K,light_steel,93400,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.827)
+JP,tokyo,豊島区,1K,src,92100,estimated_from_rc,,2026-02-20,2026-02-20,RC(113000) x ratio(0.815)
 JP,tokyo,豊島区,1LDK,steel,163000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=44) retry
 JP,tokyo,豊島区,1LDK,wood,133000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=41) retry
 JP,tokyo,豊島区,1LDK,src,193000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=20) retry
 JP,tokyo,豊島区,1LDK,rc,172500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=188)
 JP,tokyo,豊島区,1LDK,all,189700,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/toshima-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,豊島区,1LDK,light_steel,149000,estimated_from_rc,,2026-02-20,2026-02-20,RC(172500) x ratio(0.864)
 JP,tokyo,豊島区,1R,all,98000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,豊島区,1R,rc,97000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=98)
 JP,tokyo,豊島区,1R,wood,78000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=50)
 JP,tokyo,豊島区,1R,src,104500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24)
 JP,tokyo,豊島区,1R,steel,93000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page9/?m=0,2026-02-20,2026-02-20,List Median (N=24) retry
+JP,tokyo,豊島区,1R,light_steel,81500,estimated_from_rc,,2026-02-20,2026-02-20,RC(97000) x ratio(0.840)
 JP,tokyo,足立区,1DK,rc,98000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=83)
 JP,tokyo,足立区,1DK,steel,87750,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=38)
 JP,tokyo,足立区,1DK,wood,83000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=23)
 JP,tokyo,足立区,1DK,all,106500,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/adachi-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,足立区,1DK,light_steel,82300,estimated_from_rc,,2026-02-20,2026-02-20,RC(98000) x ratio(0.840)
+JP,tokyo,足立区,1DK,src,98000,estimated_from_rc,,2026-02-20,2026-02-20,RC(98000) x ratio(1.000)
 JP,tokyo,足立区,1K,all,79000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1k/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,足立区,1K,rc,91000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=61)
 JP,tokyo,足立区,1K,light_steel,76000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42)
 JP,tokyo,足立区,1K,steel,70000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=53)
 JP,tokyo,足立区,1K,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=97)
 JP,tokyo,足立区,1K,all,83900,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/adachi-city/price/,2026-02-18,2026-02-18,LIFULL HOME’Sによるデータ。駅徒歩10分以内の賃貸物件の平均賃料（管理費等を除く）を、過去データを基に独自ロジックで算出。毎週金曜日更新。
+JP,tokyo,足立区,1K,src,74200,estimated_from_rc,,2026-02-20,2026-02-20,RC(91000) x ratio(0.815)
 JP,tokyo,足立区,1LDK,rc,145500,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=90)
 JP,tokyo,足立区,1LDK,light_steel,118000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=71)
 JP,tokyo,足立区,1LDK,steel,125000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=31)
 JP,tokyo,足立区,1LDK,wood,109000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=65)
 JP,tokyo,足立区,1LDK,all,134100,LIFULL HOME'S,https://www.homes.co.jp/chintai/tokyo/adachi-city/price/,2026-02-18,2026-02-18,平均賃料。駅徒歩10分以内。管理費除く。
+JP,tokyo,足立区,1LDK,src,146000,estimated_from_rc,,2026-02-20,2026-02-20,RC(145500) x ratio(1.003)
 JP,tokyo,足立区,1R,all,69000,CHINTAI,https://www.chintai.net/tokyo/area/13100/rent/1r/,2026-02-18,2026-02-18,CHINTAI掲載物件の平均賃料、築20年以内、管理費・駐車場代等を除く
 JP,tokyo,足立区,1R,rc,79000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=45)
 JP,tokyo,足立区,1R,steel,66500,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=32)
 JP,tokyo,足立区,1R,wood,60000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=103)
+JP,tokyo,足立区,1R,light_steel,66400,estimated_from_rc,,2026-02-20,2026-02-20,RC(79000) x ratio(0.840)
+JP,tokyo,足立区,1R,src,68600,estimated_from_rc,,2026-02-20,2026-02-20,RC(79000) x ratio(0.868)
