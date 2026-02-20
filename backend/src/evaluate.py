@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Final
 
 from backend.src.benchmark_loader import load_or_build_benchmark_index
-from backend.src.benchmark_matcher import match_benchmark_rent
+from backend.src.benchmark_matcher import BenchmarkMatch, match_benchmark_rent
 from backend.src.rules.jsonlogic import apply as jsonlogic_apply
 from backend.src.scoring import (
     SpecError,
@@ -18,6 +18,11 @@ from backend.src.scoring import (
     _round,
     _select_first_rule_by_priority,
 )
+try:
+    from backend.src.suumo_scraper import search_comparable_listings
+    _SUUMO_AVAILABLE = True
+except Exception:
+    _SUUMO_AVAILABLE = False
 
 
 ROOT_DIR: Final[Path] = Path(__file__).resolve().parents[2]
@@ -262,20 +267,52 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     building_age_years = max(0, current_year - int(payload["building_built_year"]))
     initial_multiple = float(payload["initial_cost_total_yen"]) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
 
+    # ── Live benchmark: SUUMO real-time comparable search ────────────────────
+    _live_result = None
+    _live_used = False
+    use_live = (os.getenv("SUUMO_LIVE", "1") not in ("0", "false", "no")) and _SUUMO_AVAILABLE
+    if use_live:
+        try:
+            _live_result = search_comparable_listings(
+                prefecture=str(payload["prefecture"]),
+                municipality=str(payload.get("municipality")) if payload.get("municipality") else None,
+                layout_type=str(payload["layout_type"]),
+                rent_yen=monthly_fixed_cost_yen,
+                area_sqm=float(payload["area_sqm"]) if payload.get("area_sqm") is not None else None,
+                walk_min=int(payload["station_walk_min"]) if payload.get("station_walk_min") is not None else None,
+                building_age_years=building_age_years,
+            )
+            if _live_result and _live_result.benchmark_confidence != "none":
+                _live_used = True
+        except Exception:
+            _live_result = None
+
+    # ── CSV fallback benchmark ────────────────────────────────────────────────
     benchmark_index = benchmark_index_override if benchmark_index_override is not None else rt.benchmark_index
-    bm = match_benchmark_rent(
-        prefecture=str(payload["prefecture"]),
-        municipality=str(payload.get("municipality")) if payload.get("municipality") is not None else None,
-        layout_type=str(payload["layout_type"]),
-        building_structure=str(payload.get("building_structure", "other")),
-        index=benchmark_index,
-        area_sqm=float(payload.get("area_sqm")) if payload.get("area_sqm") is not None else None,
-        building_age_years=building_age_years,
-        station_walk_min=int(payload.get("station_walk_min")) if payload.get("station_walk_min") is not None else None,
-        orientation=str(payload.get("orientation", "UNKNOWN")),
-        bathroom_toilet_separate=bool(payload["bathroom_toilet_separate"]) if "bathroom_toilet_separate" in payload else None,
-        benchmark_spec=rt.spec.get("D1"),
-    )
+    if _live_used and _live_result is not None:
+        # Convert ComparisonResult → BenchmarkMatch-compatible object
+        bm = BenchmarkMatch(
+            benchmark_rent_yen=_live_result.benchmark_rent_yen,
+            benchmark_rent_yen_raw=_live_result.benchmark_rent_yen_raw,
+            benchmark_n_sources=_live_result.benchmark_n_sources,
+            benchmark_confidence=_live_result.benchmark_confidence,
+            matched_level=_live_result.matched_level,
+            adjustments_applied=None,
+        )
+    else:
+        bm = match_benchmark_rent(
+            prefecture=str(payload["prefecture"]),
+            municipality=str(payload.get("municipality")) if payload.get("municipality") is not None else None,
+            layout_type=str(payload["layout_type"]),
+            building_structure=str(payload.get("building_structure", "other")),
+            index=benchmark_index,
+            area_sqm=float(payload.get("area_sqm")) if payload.get("area_sqm") is not None else None,
+            building_age_years=building_age_years,
+            station_walk_min=int(payload.get("station_walk_min")) if payload.get("station_walk_min") is not None else None,
+            orientation=str(payload.get("orientation", "UNKNOWN")),
+            bathroom_toilet_separate=bool(payload["bathroom_toilet_separate"]) if "bathroom_toilet_separate" in payload else None,
+            benchmark_spec=rt.spec.get("D1"),
+        )
 
     benchmark_monthly_fixed_cost_yen = bm.benchmark_rent_yen  # Spec prompt allows rent-only benchmark.
     benchmark_monthly_fixed_cost_yen_raw = bm.benchmark_rent_yen_raw

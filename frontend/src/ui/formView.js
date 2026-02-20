@@ -500,12 +500,90 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
       ]),
       h("div", { class: "panel__body" }, [
         h("div", { class: "row" }, [
+          h("div", { class: "card card--url-import" }, [
+            h("h3", { text: "🔗 SUUMO URL로 자동 채우기 (선택)" }),
+            h("div", {
+              class: "hint",
+              text: "SUUMOの物件詳細URL(suumo.jp/chintai/jnc_...)を貼り付けると、家賃・面積・間取りなどを自動で入力します。",
+            }),
+            h("div", { class: "row url-import__row" }, [
+              (() => {
+                const urlInput = h("input", {
+                  type: "url",
+                  id: "suumo-url-input",
+                  class: "input url-import__input",
+                  placeholder: "https://suumo.jp/chintai/jnc_... または 검색결과 URL",
+                });
+                const urlStatus = h("span", { class: "url-import__status" });
+                const parseBtn = h("button", {
+                  type: "button",
+                  class: "btn btn--ghost btn--sm",
+                  text: "자동 채우기",
+                  onClick: async () => {
+                    const rawUrl = urlInput.value.trim();
+                    if (!rawUrl) return;
+                    parseBtn.disabled = true;
+                    urlStatus.textContent = "⏳ 파싱 중…";
+                    urlStatus.className = "url-import__status url-import__status--loading";
+                    try {
+                      const resp = await fetch("/api/parse-url", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ url: rawUrl }),
+                      });
+                      const data = await resp.json();
+                      if (!resp.ok || data.error) {
+                        urlStatus.textContent = `❌ ${data.message || "파싱 실패"}`;
+                        urlStatus.className = "url-import__status url-import__status--error";
+                        return;
+                      }
+                      const fields = data.fields || {};
+                      const FIELD_MAP = {
+                        rent_yen: "rent_yen",
+                        management_fee_yen: "mgmt_fee_yen",
+                        area_sqm: "area_sqm",
+                        layout_type: "layout_type",
+                        station_walk_min: "station_walk_min",
+                        building_age_years: "_building_age_years_hint",
+                        building_structure: "building_structure",
+                      };
+                      let filled = 0;
+                      Object.entries(FIELD_MAP).forEach(([src, dst]) => {
+                        if (fields[src] === undefined) return;
+                        // building_age_years needs building_built_year conversion
+                        if (src === "building_age_years") {
+                          const yr = new Date().getFullYear() - Number(fields[src]);
+                          const el = document.getElementById("field-building_built_year");
+                          if (el) { el.value = yr; el.dispatchEvent(new Event("input")); filled++; }
+                          return;
+                        }
+                        const el = document.getElementById(`field-${dst}`);
+                        if (el) { el.value = fields[src]; el.dispatchEvent(new Event("input")); filled++; }
+                      });
+                      const filledCount = filled;
+                      urlStatus.textContent = filledCount > 0
+                        ? `✅ ${filledCount}개 항목 자동 입력 완료`
+                        : "⚠️ 파싱됐지만 매칭 필드 없음";
+                      urlStatus.className = "url-import__status url-import__status--ok";
+                    } catch (err) {
+                      urlStatus.textContent = `❌ 오류: ${err.message}`;
+                      urlStatus.className = "url-import__status url-import__status--error";
+                    } finally {
+                      parseBtn.disabled = false;
+                    }
+                  },
+                });
+                return h("div", { class: "url-import__inner" }, [urlInput, parseBtn, urlStatus]);
+              })(),
+            ]),
+          ]),
+          h("div", { class: "divider" }),
           h("div", { class: "card" }, [
             h("h3", { text: "예시" }),
             h("div", { class: "row" }, [fixtureSelect]),
             h("div", { class: "hint", text: "예시 입력을 불러올 수 있어요." }),
           ]),
-          h("div", { class: "divider" }),
+
 
           renderGroup("location", (f) => basicFilter(f) && !(f.ui || {}).advanced),
           renderGroup("condition", (f) => basicFilter(f) && !(f.ui || {}).advanced),

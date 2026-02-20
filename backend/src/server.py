@@ -12,14 +12,17 @@ from pathlib import Path
 from typing import Any, Final
 
 from backend.src.evaluate import InputValidationError, ROOT_DIR, evaluate
+try:
+    from backend.src.suumo_url_parser import parse_suumo_url
+    _SUUMO_PARSER_AVAILABLE = True
+except Exception:
+    _SUUMO_PARSER_AVAILABLE = False
 
 
 class _ApiHandler(SimpleHTTPRequestHandler):
     server_version = "wh-eval/0.1"
 
     def __init__(self, *args, **kwargs):  # noqa: ANN002,ANN003
-        # Serve static files from repo root so frontend can fetch specs/benchmark data
-        # via same-origin paths (e.g. /spec_bundle_v0.1.2/...).
         super().__init__(*args, directory=str(ROOT_DIR), **kwargs)
 
     def do_GET(self) -> None:  # noqa: N802
@@ -38,21 +41,46 @@ class _ApiHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(data)
 
-    def do_POST(self) -> None:  # noqa: N802
-        if self.path != "/api/evaluate":
-            self._send_json(404, {"error": "not_found"})
-            return
+    def _read_json_body(self) -> Any:
+        length = int(self.headers.get("Content-Length", "0"))
+        raw = self.rfile.read(length)
+        return json.loads(raw.decode("utf-8"))
 
+    def do_POST(self) -> None:  # noqa: N802
+        if self.path == "/api/evaluate":
+            self._handle_evaluate()
+        elif self.path == "/api/parse-url":
+            self._handle_parse_url()
+        else:
+            self._send_json(404, {"error": "not_found"})
+
+    def _handle_evaluate(self) -> None:
         try:
-            length = int(self.headers.get("Content-Length", "0"))
-            raw = self.rfile.read(length)
-            payload = json.loads(raw.decode("utf-8"))
+            payload = self._read_json_body()
             if not isinstance(payload, dict):
                 raise InputValidationError("Request body must be a JSON object")
             result = evaluate(payload)
             self._send_json(200, result)
         except InputValidationError as e:
             self._send_json(400, {"error": "bad_request", "message": str(e)})
+        except Exception as e:  # noqa: BLE001
+            self._send_json(500, {"error": "internal_error", "message": str(e)})
+
+    def _handle_parse_url(self) -> None:
+        if not _SUUMO_PARSER_AVAILABLE:
+            self._send_json(503, {"error": "unavailable", "message": "URL parser module not loaded"})
+            return
+        try:
+            body = self._read_json_body()
+            url = body.get("url", "") if isinstance(body, dict) else ""
+            if not url or not isinstance(url, str):
+                self._send_json(400, {"error": "bad_request", "message": "Missing 'url' field"})
+                return
+            parsed = parse_suumo_url(url)
+            if "_error" in parsed:
+                self._send_json(422, {"error": "parse_failed", "message": parsed["_error"]})
+            else:
+                self._send_json(200, {"fields": parsed, "source_url": url})
         except Exception as e:  # noqa: BLE001
             self._send_json(500, {"error": "internal_error", "message": str(e)})
 

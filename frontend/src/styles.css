@@ -921,3 +921,55 @@ pre.card {
   color: var(--muted);
   font-size: 12px;
 }
+
+/* ===== URL Import (SUUMO auto-fill) ===== */
+.card--url-import {
+  border-color: rgba(0, 113, 227, 0.25);
+  background: var(--accent-bg);
+}
+
+.card--url-import h3 {
+  color: var(--accent);
+}
+
+.url-import__row {
+  margin-top: 10px;
+}
+
+.url-import__inner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.url-import__input {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-xs);
+  background: var(--bg);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.url-import__input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.btn--sm {
+  padding: 6px 12px;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.url-import__status {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.url-import__status--ok { color: #248a3d; }
+.url-import__status--error { color: #c0392b; }
+.url-import__status--loading { color: var(--muted); }
