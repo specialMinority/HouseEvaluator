@@ -34,13 +34,24 @@ Google Cloud Run (Python / FastAPI-style HTTP)
 
 ---
 
-## 🔄 CI/CD パイプライン (CI/CD Pipeline)
+## ☁️ デプロイ方法 (Deployment)
 
-GitHub → **Cloud Shell** → `gcloud builds submit` → **Cloud Run** 자동 배포
+Cloud Shell から手動でビルド・デプロイします。
 
-- `main` 브랜치 push → Cloud Shell에서 빌드·배포
-- Docker 단일 컨테이너 (Python + 정적 파일 서빙)
-- 다운타임 없는 롤링 업데이트 (Cloud Run 관리형)
+```bash
+# Cloud Shell 에서 실행
+git clone https://github.com/specialMinority/HouseEvaluator.git ~/wh-app
+cd ~/wh-app
+PROJECT_ID=$(gcloud config get-value project)
+gcloud builds submit --tag gcr.io/$PROJECT_ID/wh-eval .
+gcloud run deploy wh-eval \
+  --image gcr.io/$PROJECT_ID/wh-eval \
+  --region asia-northeast3 \
+  --platform managed \
+  --allow-unauthenticated \
+  --port 8000 \
+  --memory 512Mi
+```
 
 ---
 
