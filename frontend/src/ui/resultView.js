@@ -158,6 +158,13 @@ export function renderResultView({
   }
 
   // What-if UI (calls /api/evaluate with modified inputs)
+  function deriveBreakdownMode(inp) {
+    const keys = ["reikin_yen", "brokerage_fee_yen", "key_change_yen", "cleaning_fee_yen"];
+    for (const k of keys) {
+      if (Number(inp[k]) > 0) return "breakdown";
+    }
+    return "total";
+  }
   const mode = deriveBreakdownMode(input || {});
   const whatIfState = { reductionPct: 10, reikin_yen: "no_change", brokerage_fee_yen: "no_change", key_change_yen: "no_change", cleaning_fee_yen: "no_change" };
 
