@@ -1,0 +1,15 @@
+{
+  "hub_station": "tokyo_station",
+  "prefecture": "chiba",
+  "nearest_station_name": "柏",
+  "station_walk_min": 6,
+  "layout_type": "1K",
+  "building_structure": "other",
+  "area_sqm": 20,
+  "building_built_year": 2018,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 75000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 800000
+}

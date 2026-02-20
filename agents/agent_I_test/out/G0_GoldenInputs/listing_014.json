@@ -1,0 +1,15 @@
+{
+  "hub_station": "ueno",
+  "prefecture": "saitama",
+  "nearest_station_name": "架空駅テスト",
+  "station_walk_min": 8,
+  "layout_type": "1R",
+  "area_sqm": 22,
+  "building_built_year": 2010,
+  "orientation": "SE",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 65000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 210000
+}
+

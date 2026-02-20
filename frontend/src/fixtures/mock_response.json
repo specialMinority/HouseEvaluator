@@ -1,0 +1,47 @@
+{
+  "version": "0.1.1",
+  "generated_at": "2026-02-17",
+  "input": {},
+  "derived": {
+    "monthly_fixed_cost_yen": 126000,
+    "building_age_years": 8,
+    "initial_multiple": 3.3333,
+    "rent_delta_ratio": -0.03,
+    "area_access_score_0_100": 88,
+    "benchmark_monthly_fixed_cost_yen": 130000,
+    "benchmark_confidence": "mid"
+  },
+  "scoring": {
+    "location_score": 82.5,
+    "condition_score": 76.2,
+    "cost_score": 68.1,
+    "overall_score": 74.6
+  },
+  "grades": {
+    "location_grade": "B",
+    "condition_grade": "B",
+    "cost_grade": "C",
+    "overall_grade": "B"
+  },
+  "report": {
+    "summary_ko": "종합 B(74.6)로, 입지/컨디션/비용이 큰 편차 없이 균형적입니다. 다만 초기비용(IM)과 월고정비의 트레이드오프를 본인 우선순위에 맞춰 확인하세요.",
+    "evidence_bullets_ko": [
+      "월고정비: 126000 JPY",
+      "초기비용(IM): 3.33",
+      "역 도보: 7분 / 면적: 24.5㎡ / 연식: 8년",
+      "벤치마크 대비 rent_delta_ratio=-0.03 (confidence=mid)"
+    ],
+    "risk_flags": ["FAR_FROM_STATION"],
+    "negotiation_suggestions": {
+      "ko": ["초기비용 항목(礼金/중개수수료/열쇠/청소)을 항목별로 확인하고 조정 가능 여부를 문의하세요."],
+      "ja": ["礼金や仲介手数料、鍵交換費、クリーニング費用について、減額の余地があるか確認できますか？"]
+    },
+    "alternative_search_queries_ja": ["渋谷 1K 駅徒歩10分以内", "中目黒 1K 礼金なし", "渋谷 1K 初期費用 安い"],
+    "what_if_results": []
+  },
+  "benchmark": {
+    "source_name": "CHINTAI",
+    "source_updated_at": "2026-02-18",
+    "method_notes": "benchmark_rent_raw 기반(지자체×평면 평균 월세) 요약값입니다."
+  }
+}

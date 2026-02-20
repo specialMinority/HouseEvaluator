@@ -1,0 +1,292 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "K0_OutputContracts/S2_ScoringSpec.schema.json",
+    "title": "S2 Scoring Spec Contract",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "version",
+        "weights",
+        "foreigner_adjustment",
+        "grade_thresholds",
+        "features",
+        "risk_flag_rules",
+        "tradeoff_rules"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "minLength": 1
+        },
+        "generated_at": {
+            "type": "string"
+        },
+        "weights": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "location",
+                "condition",
+                "cost"
+            ],
+            "properties": {
+                "location": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "condition": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "cost": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                }
+            }
+        },
+        "foreigner_adjustment": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "foreign_im_shift_months",
+                "foreign_reikin_allowance_months"
+            ],
+            "properties": {
+                "foreign_im_shift_months": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 3
+                },
+                "foreign_reikin_allowance_months": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 3
+                },
+                "notes": {
+                    "type": "string"
+                }
+            }
+        },
+        "grade_thresholds": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "overall",
+                "location",
+                "condition",
+                "cost"
+            ],
+            "properties": {
+                "overall": {
+                    "$ref": "#/$defs/gradeBands"
+                },
+                "location": {
+                    "$ref": "#/$defs/gradeBands"
+                },
+                "condition": {
+                    "$ref": "#/$defs/gradeBands"
+                },
+                "cost": {
+                    "$ref": "#/$defs/gradeBands"
+                }
+            }
+        },
+        "features": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/featureSpec"
+            }
+        },
+        "risk_flag_rules": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/ruleSpec"
+            }
+        },
+        "tradeoff_rules": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/$defs/ruleSpec"
+            }
+        },
+        "what_if_rules": {
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/whatIfSpec"
+            }
+        }
+    },
+    "$defs": {
+        "gradeBands": {
+            "type": "array",
+            "minItems": 4,
+            "maxItems": 4,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "grade",
+                    "min_score"
+                ],
+                "properties": {
+                    "grade": {
+                        "type": "string",
+                        "enum": [
+                            "A",
+                            "B",
+                            "C",
+                            "D"
+                        ]
+                    },
+                    "min_score": {
+                        "type": "number",
+                        "minimum": 0,
+                        "maximum": 100
+                    }
+                }
+            }
+        },
+        "featureSpec": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "feature_id",
+                "component",
+                "input_key",
+                "method",
+                "params",
+                "weight"
+            ],
+            "properties": {
+                "feature_id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "component": {
+                    "type": "string",
+                    "enum": [
+                        "location",
+                        "condition",
+                        "cost"
+                    ]
+                },
+                "input_key": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_\\.]+$"
+                },
+                "method": {
+                    "type": "string",
+                    "enum": [
+                        "bucket",
+                        "linear",
+                        "boolean",
+                        "lookup",
+                        "custom_formula"
+                    ]
+                },
+                "params": {
+                    "type": "object"
+                },
+                "weight": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                },
+                "notes": {
+                    "type": "string"
+                }
+            }
+        },
+        "ruleSpec": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "priority",
+                "when"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "priority": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1000
+                },
+                "when": {
+                    "type": "object",
+                    "description": "JSONLogic-compatible condition object",
+                    "additionalProperties": true
+                },
+                "outputs": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "description": "Free-form payload consumed by report generator (e.g., tags, message keys, severity, etc.)"
+                }
+            }
+        },
+        "whatIfSpec": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "id",
+                "enabled_if",
+                "actions"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "enabled_if": {
+                    "type": "object",
+                    "description": "JSONLogic condition for enabling this what-if scenario",
+                    "additionalProperties": true
+                },
+                "actions": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "required": [
+                            "type",
+                            "target_key"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "delta_yen",
+                                    "set_zero",
+                                    "scale"
+                                ]
+                            },
+                            "target_key": {
+                                "type": "string",
+                                "pattern": "^[a-z0-9_]+$"
+                            },
+                            "value": {
+                                "type": "number"
+                            },
+                            "label_ko": {
+                                "type": "string"
+                            },
+                            "label_ja": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

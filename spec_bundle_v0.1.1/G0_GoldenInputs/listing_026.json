@@ -1,0 +1,26 @@
+{
+  "hub_station": "shinjuku",
+  "prefecture": "saitama",
+  "nearest_station_name": "所沢",
+  "station_walk_min": 6,
+  "layout_type": "1R",
+  "area_sqm": 20,
+  "building_built_year": 2000,
+  "orientation": "W",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 50000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 275000,
+  "shikikin_yen": 50000,
+  "reikin_yen": 50000,
+  "brokerage_fee_yen": 50000,
+  "guarantor_fee_yen": 25000,
+  "fire_insurance_yen": 15000,
+  "key_change_yen": 10000,
+  "cleaning_fee_yen": 25000,
+  "other_initial_fees_yen": 50000,
+  "contract_term_months": 36,
+  "renewal_fee_months": 1.5,
+  "early_termination_penalty_yen": 0
+}
+

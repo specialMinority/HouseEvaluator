@@ -1,0 +1,15 @@
+{
+  "hub_station": "shinagawa",
+  "prefecture": "chiba",
+  "nearest_station_name": "船橋",
+  "station_walk_min": 5,
+  "layout_type": "1R",
+  "area_sqm": 8,
+  "building_built_year": 2020,
+  "orientation": "E",
+  "bathroom_toilet_separate": false,
+  "rent_yen": 50000,
+  "mgmt_fee_yen": 2000,
+  "initial_cost_total_yen": 156000
+}
+

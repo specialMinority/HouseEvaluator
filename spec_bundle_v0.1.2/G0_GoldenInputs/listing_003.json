@@ -1,0 +1,15 @@
+{
+  "hub_station": "ikebukuro",
+  "prefecture": "tokyo",
+  "nearest_station_name": "池袋",
+  "station_walk_min": 8,
+  "layout_type": "1R",
+  "building_structure": "other",
+  "area_sqm": 14.5,
+  "building_built_year": 2015,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 80000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 255000
+}

@@ -1,0 +1,16 @@
+{
+  "hub_station": "namba",
+  "prefecture": "osaka",
+  "municipality": "大阪市中央区",
+  "nearest_station_name": "難波",
+  "station_walk_min": 3,
+  "layout_type": "1R",
+  "building_structure": "other",
+  "area_sqm": 18,
+  "building_built_year": 2015,
+  "orientation": "E",
+  "bathroom_toilet_separate": false,
+  "rent_yen": 68000,
+  "mgmt_fee_yen": 3000,
+  "initial_cost_total_yen": 250000
+}

@@ -1,0 +1,192 @@
+{
+  "version": "0.1.0",
+  "generated_at": "2026-02-17",
+  "coverage": {
+    "prefectures": ["saitama", "tokyo", "chiba", "kanagawa", "osaka"],
+    "layout_types": ["1R", "1K", "1DK", "1LDK"],
+    "hub_stations": [
+      "tokyo_station",
+      "shinjuku",
+      "shibuya",
+      "ikebukuro",
+      "ueno",
+      "shinagawa",
+      "osaka_station",
+      "umeda",
+      "namba",
+      "tennoji",
+      "other"
+    ]
+  },
+  "segmentation": {
+    "dimensions": [
+      "prefecture",
+      "municipality",
+      "nearest_station_name",
+      "layout_type",
+      "building_structure",
+      "area_bucket",
+      "building_age_bucket",
+      "station_walk_bucket",
+      "hub_station"
+    ],
+    "bucket_rules": {
+      "municipality_yokohama_wards": {
+        "notes": "If prefecture == 'kanagawa' and municipality starts with '横浜市', treat municipality (e.g., '横浜市港北区') as a ward-level segmentation key. This enables Yokohama-ku granularity; when municipality is missing, fall back to nearest_station_name normalization."
+      },
+      "building_structure": {
+        "notes": "건축 구조별 세분화. 값: wood, light_steel, steel, rc, src, other, all. 'all'은 구조 미구분 레거시 데이터로 폴백 용도."
+      },
+      "area_bucket": {
+        "unit": "sqm",
+        "method": "left_closed_right_open",
+        "buckets": [
+          { "key": "lt15", "min_inclusive": null, "max_exclusive": 15 },
+          { "key": "15_19", "min_inclusive": 15, "max_exclusive": 20 },
+          { "key": "20_24", "min_inclusive": 20, "max_exclusive": 25 },
+          { "key": "25_29", "min_inclusive": 25, "max_exclusive": 30 },
+          { "key": "ge30", "min_inclusive": 30, "max_exclusive": null }
+        ],
+        "notes": "Uses raw area_sqm (no rounding). These cutoffs are aligned with MVP examples in R0_Requirements.md."
+      },
+      "building_age_bucket": {
+        "unit": "years",
+        "age_years_definition": "max(0, as_of_year - building_built_year)",
+        "as_of_year_strategy": "benchmark: extraction_year; evaluation: current_year",
+        "buckets": [
+          { "key": "0_5", "min_inclusive": 0, "max_inclusive": 5 },
+          { "key": "6_10", "min_inclusive": 6, "max_inclusive": 10 },
+          { "key": "11_20", "min_inclusive": 11, "max_inclusive": 20 },
+          { "key": "ge21", "min_inclusive": 21, "max_inclusive": null }
+        ],
+        "notes": "If building_built_year is missing/invalid in a source row, exclude the row from age-segmented station-level benchmarks and allow only prefecture-level aggregation if available."
+      },
+      "station_walk_bucket": {
+        "unit": "minutes",
+        "buckets": [
+          { "key": "le5", "min_inclusive": null, "max_inclusive": 5 },
+          { "key": "6_10", "min_inclusive": 6, "max_inclusive": 10 },
+          { "key": "11_15", "min_inclusive": 11, "max_inclusive": 15 },
+          { "key": "ge16", "min_inclusive": 16, "max_inclusive": null }
+        ],
+        "notes": "station_walk_min is assumed to be the portal-stated walking minutes. Do not infer from distance unless an explicit, licensed rule is adopted."
+      },
+      "hedonic_adjustments": {
+        "notes": "Heuristic post-match adjustment for known benchmark source biases (e.g., station<=10min or newer buildings). Used to improve comparability when segmentation by area/building_age/station_walk is not yet implemented in the index.",
+        "building_age_bucket_multipliers": {
+          "0_5": 1.05,
+          "6_10": 1.0,
+          "11_20": 0.92,
+          "ge21": 0.82
+        },
+        "station_walk_bucket_multipliers": {
+          "le5": 1.03,
+          "6_10": 1.0,
+          "11_15": 0.93,
+          "ge16": 0.87
+        },
+        "layout_avg_area_sqm": {
+          "1R": 20,
+          "1K": 22,
+          "1DK": 28,
+          "1LDK": 38
+        },
+        "area_elasticity": 0.6
+      },
+      "hub_station_compat": {
+        "notes": "Include hub_station as a segmentation dimension to support user hub selection. Cost benchmarks may ignore hub_station (dimension present but not used), while area_access_score_0_100 is expected to vary by hub_station."
+      },
+      "nearest_station_name_normalization": {
+        "notes": "Segment by a normalized station name key (e.g., trim, unicode normalize, remove suffixes like '駅', apply provider-specific alias map). Normalization must be deterministic and documented; do not use fuzzy matching without auditability."
+      }
+    }
+  },
+  "metrics": [
+    {
+      "metric_key": "benchmark_monthly_fixed_cost_yen_median",
+      "unit": "yen",
+      "aggregation": "median",
+      "min_samples": 30
+    },
+    {
+      "metric_key": "benchmark_monthly_fixed_cost_yen_p25",
+      "unit": "yen",
+      "aggregation": "p25",
+      "min_samples": 30
+    },
+    {
+      "metric_key": "benchmark_monthly_fixed_cost_yen_p75",
+      "unit": "yen",
+      "aggregation": "p75",
+      "min_samples": 30
+    },
+    {
+      "metric_key": "area_access_score_0_100",
+      "unit": "score",
+      "aggregation": "mean",
+      "min_samples": 0
+    }
+  ],
+  "sources": [
+    {
+      "name": "SUUMO (Recruit) rental listings (1R/1K)",
+      "type": "portal",
+      "notes": "High coverage and rich listing fields, but Terms of Service may restrict scraping/automated collection. Use only permitted access methods (official APIs/feeds/partnership, or manual export where allowed). Preserve attribution and comply with robots.txt and contractual constraints."
+    },
+    {
+      "name": "LIFULL HOME'S rental listings (1R/1K)",
+      "type": "portal",
+      "notes": "Good coverage and filters; policies may prohibit non-approved crawling. Prefer official data provision programs; avoid account-based or paywalled content extraction without permission."
+    },
+    {
+      "name": "at home rental listings (1R/1K)",
+      "type": "portal",
+      "notes": "Strong agency network coverage; ToS compliance required. Benchmark pipeline should be designed to accept licensed exports rather than brittle page scraping."
+    },
+    {
+      "name": "CHINTAI rental listings (1R/1K)",
+      "type": "portal",
+      "notes": "Useful as an additional portal cross-check; treat automated retrieval as high policy-risk unless explicit permission exists."
+    },
+    {
+      "name": "e-Stat / Housing and Land Survey (住宅・土地統計調査) rent statistics",
+      "type": "public",
+      "notes": "Legally safe public statistics; useful for prefecture-level sanity checks and drift detection. Typically not station-level and not directly comparable to portal 'asking rent' due to survey definitions and sampling."
+    },
+    {
+      "name": "MLIT National Land Numerical Information (国土数値情報) railway/station geodata",
+      "type": "public",
+      "notes": "Public geospatial dataset for station coordinates/lines. Helps normalize nearest_station_name and enables optional access scoring, but does not provide rent/fees."
+    },
+    {
+      "name": "ODPT (Public Transportation Open Data) / Tokyo Metro and participating operators",
+      "type": "public",
+      "notes": "Potential inputs for time-to-hub calculations where licensed and available (API keys/terms apply). Coverage may be partial outside Tokyo; cache and rate-limit per policy; do not republish restricted fields."
+    }
+  ],
+  "update_policy": {
+    "cadence_days": 30,
+    "freshness_target_days": 60,
+    "quality_gate": {
+      "min_samples_station_level": 30,
+      "min_samples_prefecture_level": 200
+    }
+  },
+  "fallback_policy": [
+    {
+      "level": "station_level",
+      "benchmark_confidence": "high",
+      "notes": "Use (prefecture + nearest_station_name + layout_type + area/building_age/station_walk buckets) if sample count >= min_samples_station_level; otherwise drop to prefecture_level. Within station_level, optionally downgrade to mid/low confidence if sample count is below gate but still nonzero (must be labeled explicitly)."
+    },
+    {
+      "level": "prefecture_level",
+      "benchmark_confidence": "mid",
+      "notes": "Use (prefecture + layout_type + area/building_age/station_walk buckets) if sample count >= min_samples_prefecture_level; otherwise set benchmark unavailable. Prefecture-level is expected to be broader and less comparable; always label confidence and show wider uncertainty (p25/p75)."
+    },
+    {
+      "level": "none",
+      "benchmark_confidence": "none",
+      "notes": "No benchmark available (insufficient sample or missing required dimensions). Downstream scoring must not silently impute; it must surface 'benchmark_confidence: none' and rely on rule-based heuristics only."
+    }
+  ]
+}

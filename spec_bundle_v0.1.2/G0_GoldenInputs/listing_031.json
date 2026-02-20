@@ -1,0 +1,16 @@
+{
+  "hub_station": "umeda",
+  "prefecture": "osaka",
+  "municipality": "大阪市北区",
+  "nearest_station_name": "梅田",
+  "station_walk_min": 5,
+  "layout_type": "1K",
+  "building_structure": "other",
+  "area_sqm": 22,
+  "building_built_year": 2019,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 75000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 300000
+}

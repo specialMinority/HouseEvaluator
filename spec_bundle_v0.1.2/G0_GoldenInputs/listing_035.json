@@ -1,0 +1,16 @@
+{
+  "hub_station": "shinjuku",
+  "prefecture": "tokyo",
+  "municipality": "新宿区",
+  "nearest_station_name": "新宿",
+  "station_walk_min": 8,
+  "layout_type": "1DK",
+  "building_structure": "other",
+  "area_sqm": 28,
+  "building_built_year": 2012,
+  "orientation": "SW",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 130000,
+  "mgmt_fee_yen": 8000,
+  "initial_cost_total_yen": 420000
+}

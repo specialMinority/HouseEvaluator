@@ -1,0 +1,16 @@
+{
+  "hub_station": "shibuya",
+  "prefecture": "tokyo",
+  "municipality": "渋谷区",
+  "nearest_station_name": "渋谷",
+  "station_walk_min": 6,
+  "layout_type": "1LDK",
+  "building_structure": "other",
+  "area_sqm": 42,
+  "building_built_year": 2017,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 200000,
+  "mgmt_fee_yen": 10000,
+  "initial_cost_total_yen": 840000
+}

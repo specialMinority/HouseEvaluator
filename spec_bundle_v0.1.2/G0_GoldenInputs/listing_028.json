@@ -1,0 +1,23 @@
+{
+  "hub_station": "ueno",
+  "prefecture": "chiba",
+  "nearest_station_name": "銚子",
+  "station_walk_min": 18,
+  "layout_type": "1R",
+  "building_structure": "other",
+  "area_sqm": 10,
+  "building_built_year": 1980,
+  "orientation": "N",
+  "bathroom_toilet_separate": false,
+  "rent_yen": 45000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 200000,
+  "shikikin_yen": 0,
+  "reikin_yen": 0,
+  "brokerage_fee_yen": 50000,
+  "guarantor_fee_yen": 30000,
+  "fire_insurance_yen": 15000,
+  "key_change_yen": 10000,
+  "cleaning_fee_yen": 25000,
+  "other_initial_fees_yen": 70000
+}

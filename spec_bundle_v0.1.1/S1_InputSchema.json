@@ -1,0 +1,555 @@
+{
+  "version": "0.1.0",
+  "generated_at": "2026-02-17",
+  "locale_default": "ko",
+  "mvp_required_fields": [
+    "hub_station",
+    "prefecture",
+    "nearest_station_name",
+    "station_walk_min",
+    "layout_type",
+    "area_sqm",
+    "building_built_year",
+    "orientation",
+    "bathroom_toilet_separate",
+    "rent_yen",
+    "mgmt_fee_yen",
+    "initial_cost_total_yen"
+  ],
+  "fields": [
+    {
+      "key": "hub_station",
+      "type": "enum",
+      "required": true,
+      "label_ko": "주요 허브역",
+      "label_ja": "主要ハブ駅",
+      "unit": "none",
+      "constraints": {
+        "enum_values": [
+          "tokyo_station",
+          "shinjuku",
+          "shibuya",
+          "ikebukuro",
+          "ueno",
+          "shinagawa",
+          "other"
+        ]
+      },
+      "ui": {
+        "group": "location",
+        "control": "select",
+        "placeholder_ko": "예: shinjuku",
+        "help_text_ko": "출퇴근/생활권 기준이 되는 대표 역을 선택하세요.",
+        "help_text_ja": "通勤や生活圏の基準となる駅を選択してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "hub_station_other_name",
+      "type": "string",
+      "required": false,
+      "label_ko": "기타 허브역명",
+      "label_ja": "その他のハブ駅名",
+      "unit": "none",
+      "depends_on": {
+        "key": "hub_station",
+        "equals": "other"
+      },
+      "ui": {
+        "group": "location",
+        "control": "text",
+        "placeholder_ko": "예: yokohama",
+        "help_text_ko": "허브역을 'other'로 선택한 경우에만 입력하세요.",
+        "help_text_ja": "ハブ駅で「other」を選択した場合のみ入力してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "prefecture",
+      "type": "enum",
+      "required": true,
+      "label_ko": "도도부현",
+      "label_ja": "都道府県",
+      "unit": "none",
+        "constraints": {
+          "enum_values": [
+            "saitama",
+            "tokyo",
+            "chiba",
+            "kanagawa"
+          ]
+        },
+      "ui": {
+        "group": "location",
+        "control": "select",
+        "placeholder_ko": "예: tokyo",
+        "help_text_ko": "MVP는 사이타마/도쿄/치바/가나가와(요코하마)까지 지원합니다.",
+        "help_text_ja": "MVPは埼玉/東京/千葉/神奈川（横浜）まで対応です。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "nearest_station_name",
+      "type": "string",
+      "required": true,
+      "label_ko": "가까운 역(역명)",
+      "label_ja": "最寄り駅名",
+      "unit": "none",
+      "ui": {
+        "group": "location",
+        "control": "text",
+        "placeholder_ko": "예: 新宿",
+        "help_text_ko": "포털 표기와 최대한 동일하게 입력하세요(역명만).",
+        "help_text_ja": "ポータル表記に合わせて入力してください（駅名のみ）。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "station_walk_min",
+      "type": "integer",
+      "required": true,
+      "label_ko": "도보 시간(분)",
+      "label_ja": "徒歩(分)",
+      "unit": "min",
+      "constraints": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "ui": {
+        "group": "location",
+        "control": "slider",
+        "placeholder_ko": "예: 8",
+        "help_text_ko": "0~60분 범위에서 선택하세요.",
+        "help_text_ja": "0〜60分の範囲で選択してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "layout_type",
+      "type": "enum",
+      "required": true,
+      "label_ko": "평면(1R/1K)",
+      "label_ja": "間取り(1R/1K)",
+      "unit": "none",
+      "constraints": {
+        "enum_values": [
+          "1R",
+          "1K"
+        ]
+      },
+      "ui": {
+        "group": "condition",
+        "control": "select",
+        "placeholder_ko": "예: 1K",
+        "help_text_ko": "MVP는 1R/1K만 평가합니다.",
+        "help_text_ja": "MVPは1R/1Kのみ評価します。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "area_sqm",
+      "type": "number",
+      "required": true,
+      "label_ko": "전용면적(m²)",
+      "label_ja": "専有面積(m²)",
+      "unit": "sqm",
+      "constraints": {
+        "min": 5,
+        "max": 80,
+        "step": 0.5
+      },
+      "ui": {
+        "group": "condition",
+        "control": "number",
+        "placeholder_ko": "예: 22.5",
+        "help_text_ko": "전용면적(㎡) 기준으로 입력하세요.",
+        "help_text_ja": "専有面積(㎡)で入力してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "building_built_year",
+      "type": "integer",
+      "required": true,
+      "label_ko": "준공연도",
+      "label_ja": "築年",
+      "unit": "year",
+      "constraints": {
+        "min": 1950,
+        "max": 2035,
+        "step": 1
+      },
+      "ui": {
+        "group": "condition",
+        "control": "number",
+        "placeholder_ko": "예: 2018",
+        "help_text_ko": "알 수 없으면 부동산/포털 정보를 확인하세요.",
+        "help_text_ja": "不明な場合は不動産/ポータル情報を確認してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "orientation",
+      "type": "enum",
+      "required": true,
+      "label_ko": "방향",
+      "label_ja": "方角",
+      "unit": "none",
+      "constraints": {
+        "enum_values": [
+          "N",
+          "NE",
+          "E",
+          "SE",
+          "S",
+          "SW",
+          "W",
+          "NW",
+          "UNKNOWN"
+        ]
+      },
+      "ui": {
+        "group": "condition",
+        "control": "select",
+        "placeholder_ko": "예: S",
+        "help_text_ko": "모르면 UNKNOWN을 선택하세요.",
+        "help_text_ja": "不明な場合はUNKNOWNを選択してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "bathroom_toilet_separate",
+      "type": "boolean",
+      "required": true,
+      "label_ko": "욕실/화장실 분리",
+      "label_ja": "バス・トイレ別",
+      "unit": "none",
+      "ui": {
+        "group": "condition",
+        "control": "toggle",
+        "help_text_ko": "분리형이면 켬(true), 일체형이면 끔(false).",
+        "help_text_ja": "別ならtrue、同室ならfalse。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "rent_yen",
+      "type": "integer",
+      "required": true,
+      "label_ko": "월세(엔)",
+      "label_ja": "家賃(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 500000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "placeholder_ko": "예: 98000",
+        "help_text_ko": "계약서/모집공고에 적힌 월세만 입력하세요.",
+        "help_text_ja": "契約書/募集情報の家賃のみ入力してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "mgmt_fee_yen",
+      "type": "integer",
+      "required": true,
+      "label_ko": "관리비/공익비(엔)",
+      "label_ja": "管理費・共益費(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 100000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "placeholder_ko": "예: 8000",
+        "help_text_ko": "0이면 0으로 입력하세요.",
+        "help_text_ja": "0の場合は0を入力してください。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "initial_cost_total_yen",
+      "type": "integer",
+      "required": true,
+      "label_ko": "초기비용 합계(엔)",
+      "label_ja": "初期費用合計(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "placeholder_ko": "예: 350000",
+        "help_text_ko": "계약서에 찍히는 초기비용 합계만 입력(이사비/가구가전/생활비 제외).",
+        "help_text_ja": "契約書に記載の初期費用合計のみ（引越し/家具家電/生活費は除外）。",
+        "advanced": false
+      }
+    },
+    {
+      "key": "municipality",
+      "type": "string",
+      "required": false,
+      "label_ko": "시/구/정/촌(선택)",
+      "label_ja": "市区町村(任意)",
+      "unit": "none",
+      "ui": {
+        "group": "location",
+        "control": "text",
+        "placeholder_ko": "예: 新宿区",
+        "help_text_ko": "정밀 비교용(선택).",
+        "help_text_ja": "精密比較用（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "line_name",
+      "type": "string",
+      "required": false,
+      "label_ko": "노선명(선택)",
+      "label_ja": "路線名(任意)",
+      "unit": "none",
+      "ui": {
+        "group": "location",
+        "control": "text",
+        "placeholder_ko": "예: JR山手線",
+        "help_text_ko": "정밀 비교용(선택).",
+        "help_text_ja": "精密比較用（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "shikikin_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "시키킨/보증금(엔)",
+      "label_ja": "敷金(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "reikin_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "레이킨/사례금(엔)",
+      "label_ja": "礼金(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "brokerage_fee_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "중개수수료(엔)",
+      "label_ja": "仲介手数料(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "guarantor_fee_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "보증회사/보증료(엔)",
+      "label_ja": "保証会社費用(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "fire_insurance_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "화재보험(엔)",
+      "label_ja": "火災保険(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 300000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "key_change_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "열쇠교체비(엔)",
+      "label_ja": "鍵交換費(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 200000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "cleaning_fee_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "청소비(엔)",
+      "label_ja": "クリーニング費(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 300000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "초기비용 상세(선택).",
+        "help_text_ja": "初期費用の内訳（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "other_initial_fees_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "기타 초기비용(엔)",
+      "label_ja": "その他初期費用(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 500000,
+        "step": 1000
+      },
+      "ui": {
+        "group": "cost",
+        "control": "number",
+        "help_text_ko": "명목이 불분명하면 계약서/내역을 확인하세요.",
+        "help_text_ja": "名目が不明な場合は契約書/内訳を確認してください。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "contract_term_months",
+      "type": "integer",
+      "required": false,
+      "label_ko": "계약기간(개월)",
+      "label_ja": "契約期間(月)",
+      "unit": "months",
+      "constraints": {
+        "min": 0,
+        "max": 60,
+        "step": 1
+      },
+      "ui": {
+        "group": "contract",
+        "control": "number",
+        "placeholder_ko": "예: 24",
+        "help_text_ko": "계약 리스크 판단용(선택).",
+        "help_text_ja": "契約リスク判断用（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "renewal_fee_months",
+      "type": "number",
+      "required": false,
+      "label_ko": "갱신료(개월수 기준)",
+      "label_ja": "更新料(ヶ月換算)",
+      "unit": "months",
+      "constraints": {
+        "min": 0,
+        "max": 2,
+        "step": 0.5
+      },
+      "ui": {
+        "group": "contract",
+        "control": "number",
+        "placeholder_ko": "예: 1.0",
+        "help_text_ko": "갱신료를 '월세의 몇 개월치'로 입력(선택).",
+        "help_text_ja": "更新料を「家賃の何ヶ月分」で入力（任意）。",
+        "advanced": true
+      }
+    },
+    {
+      "key": "early_termination_penalty_yen",
+      "type": "integer",
+      "required": false,
+      "label_ko": "중도해지 위약금(엔)",
+      "label_ja": "違約金(円)",
+      "unit": "yen",
+      "constraints": {
+        "min": 0,
+        "max": 2000000,
+        "step": 10000
+      },
+      "ui": {
+        "group": "contract",
+        "control": "number",
+        "placeholder_ko": "예: 100000",
+        "help_text_ko": "중도해지 조항이 있으면 입력(선택).",
+        "help_text_ja": "途中解約の条項があれば入力（任意）。",
+        "advanced": true
+      }
+    }
+  ]
+}

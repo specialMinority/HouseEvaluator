@@ -1,0 +1,1593 @@
+{
+  "listings": {
+    "listing_001": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "tokyo",
+        "nearest_station_name": "中野",
+        "station_walk_min": 5,
+        "layout_type": "1K",
+        "area_sqm": 25,
+        "building_built_year": 2018,
+        "orientation": "SE",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 110000,
+        "mgmt_fee_yen": 10000,
+        "initial_cost_total_yen": 360000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 120000,
+        "building_age_years": 8,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 115540,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 89.6,
+        "condition_score": 81.8695652173913,
+        "cost_score": 80.0,
+        "overall_score": 83.82739130434783
+      },
+      "grades": {
+        "location_grade": "A",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(83.83)로, 입지/컨디션/비용(A/B/B)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=0.0386와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_002": {
+      "input": {
+        "hub_station": "shibuya",
+        "prefecture": "tokyo",
+        "nearest_station_name": "恵比寿",
+        "station_walk_min": 15,
+        "layout_type": "1R",
+        "area_sqm": 20,
+        "building_built_year": 2010,
+        "orientation": "E",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 95000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 500000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 100000,
+        "building_age_years": 16,
+        "initial_multiple": 5.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 101080,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 71.19999999999999,
+        "condition_score": 70.55434782608695,
+        "cost_score": 73.0,
+        "overall_score": 71.75858695652174
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R99_FALLBACK_GENERAL",
+      "summary_ko": "종합 B(71.76)이며, 입지/컨디션/비용이 각각 B(71.2) / B(70.55) / B(73)로 평가됩니다. 결국 '15분 도보·생활권'과 '20㎡·연식 16년·방위 E·욕실분리 true' 그리고 '월고정비 100000 + 초기비용(IM 5)' 사이에서 무엇을 우선할지의 트레이드오프가 결론을 좌우합니다. 벤치마크 신뢰도(mid)가 낮을수록 rent_delta_ratio=-0.01068는 참고로 두고, 협상(礼金/중개/열쇠/클리닝/프리렌트)으로 조정 가능한 비용을 먼저 확인하세요."
+    },
+    "listing_003": {
+      "input": {
+        "hub_station": "ikebukuro",
+        "prefecture": "tokyo",
+        "nearest_station_name": "池袋",
+        "station_walk_min": 8,
+        "layout_type": "1R",
+        "area_sqm": 14.5,
+        "building_built_year": 2015,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 80000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 255000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 85000,
+        "building_age_years": 11,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 99530,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 79.84,
+        "condition_score": 67.78260869565217,
+        "cost_score": 95.0,
+        "overall_score": 82.88965217391305
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "A",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "VERY_SMALL_AREA",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(82.89)로, 입지/컨디션/비용(B/C/A)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.146와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_004": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "tokyo",
+        "nearest_station_name": "上野",
+        "station_walk_min": 7,
+        "layout_type": "1K",
+        "area_sqm": 18,
+        "building_built_year": 1996,
+        "orientation": "W",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 85000,
+        "mgmt_fee_yen": 8000,
+        "initial_cost_total_yen": 279000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 93000,
+        "building_age_years": 30,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 105800,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 78.16,
+        "condition_score": 63.47826086956522,
+        "cost_score": 95.0,
+        "overall_score": 81.2255652173913
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "A",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "OLD_BUILDING",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(81.23)로, 입지/컨디션/비용(B/C/A)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.121와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_005": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "tokyo",
+        "nearest_station_name": "北千住",
+        "station_walk_min": 6,
+        "layout_type": "1K",
+        "area_sqm": 22,
+        "building_built_year": 2012,
+        "orientation": "N",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 88000,
+        "mgmt_fee_yen": 7000,
+        "initial_cost_total_yen": 285000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 95000,
+        "building_age_years": 14,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 111720,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 86.68,
+        "condition_score": 68.63043478260869,
+        "cost_score": 95.0,
+        "overall_score": 85.49560869565218
+      },
+      "grades": {
+        "location_grade": "A",
+        "condition_grade": "C",
+        "cost_grade": "A",
+        "overall_grade": "A"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "NORTH_FACING",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 A(85.5)로, 입지/컨디션/비용(A/C/A)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.1497와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_006": {
+      "input": {
+        "hub_station": "shinagawa",
+        "prefecture": "tokyo",
+        "nearest_station_name": "品川",
+        "station_walk_min": 4,
+        "layout_type": "1R",
+        "area_sqm": 19,
+        "building_built_year": 2016,
+        "orientation": "SW",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 90000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 285000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 95000,
+        "building_age_years": 10,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 105300,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 86.72,
+        "condition_score": 72.64130434782608,
+        "cost_score": 89.0,
+        "overall_score": 84.11232608695653
+      },
+      "grades": {
+        "location_grade": "A",
+        "condition_grade": "B",
+        "cost_grade": "A",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(84.11)로, 입지/컨디션/비용(A/B/A)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.09782와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_007": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "tokyo",
+        "nearest_station_name": "新宿",
+        "station_walk_min": 9,
+        "layout_type": "1K",
+        "area_sqm": 21,
+        "building_built_year": 2019,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 90000,
+        "mgmt_fee_yen": 10000,
+        "initial_cost_total_yen": 600000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 100000,
+        "building_age_years": 7,
+        "initial_multiple": 6.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 110460,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 82.72,
+        "condition_score": 78.96739130434781,
+        "cost_score": 73.0,
+        "overall_score": 77.89384782608695
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "HIGH_INITIAL_MULTIPLE",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(77.89)로, 입지/컨디션/비용(B/B/B)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.09469와 IM 6를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_008": {
+      "input": {
+        "hub_station": "ikebukuro",
+        "prefecture": "saitama",
+        "nearest_station_name": "大宮",
+        "station_walk_min": 60,
+        "layout_type": "1R",
+        "area_sqm": 16,
+        "building_built_year": 1985,
+        "orientation": "NW",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 40000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 90000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 45000,
+        "building_age_years": 41,
+        "initial_multiple": 2.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 46480,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 48.0,
+        "condition_score": 45.15217391304348,
+        "cost_score": 80.0,
+        "overall_score": 60.088043478260865
+      },
+      "grades": {
+        "location_grade": "D",
+        "condition_grade": "D",
+        "cost_grade": "B",
+        "overall_grade": "C"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "OLD_BUILDING",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "location_low_cost_high",
+        "message_key": "TRADEOFF_LOCATION_WEAK_BUT_COST_GOOD"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 C(60.09)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.03184 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 45000 + 초기비용(IM 2)'의 현금흐름을 중심으로 60분 도보/연식 41년/면적 16㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_009": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "saitama",
+        "nearest_station_name": "浦和",
+        "station_walk_min": 12,
+        "layout_type": "1K",
+        "area_sqm": 35,
+        "building_built_year": 2005,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 60000,
+        "mgmt_fee_yen": 0,
+        "initial_cost_total_yen": 180000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 60000,
+        "building_age_years": 21,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 90180,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 70.0,
+        "condition_score": 81.25,
+        "cost_score": 80.0,
+        "overall_score": 76.8125
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(76.81)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.3347 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 60000 + 초기비용(IM 3)'의 현금흐름을 중심으로 12분 도보/연식 21년/면적 35㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_010": {
+      "input": {
+        "hub_station": "ikebukuro",
+        "prefecture": "saitama",
+        "nearest_station_name": "川越",
+        "station_walk_min": 5,
+        "layout_type": "1R",
+        "area_sqm": 15,
+        "building_built_year": 2014,
+        "orientation": "E",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 55000,
+        "mgmt_fee_yen": 3000,
+        "initial_cost_total_yen": 174000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 58000,
+        "building_age_years": 12,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 71060,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 80.0,
+        "condition_score": 65.98913043478261,
+        "cost_score": 80.0,
+        "overall_score": 76.49728260869566
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(76.5)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.1838 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 58000 + 초기비용(IM 3)'의 현금흐름을 중심으로 5분 도보/연식 12년/면적 15㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_011": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "saitama",
+        "nearest_station_name": "和光市",
+        "station_walk_min": 14,
+        "layout_type": "1K",
+        "area_sqm": 20,
+        "building_built_year": 1997,
+        "orientation": "UNKNOWN",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 70000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 225000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 75000,
+        "building_age_years": 29,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 74920,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 70.0,
+        "condition_score": 63.80434782608695,
+        "cost_score": 80.0,
+        "overall_score": 72.45108695652173
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(72.45)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=0.001068 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 75000 + 초기비용(IM 3)'의 현금흐름을 중심으로 14분 도보/연식 29년/면적 20㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_012": {
+      "input": {
+        "hub_station": "shibuya",
+        "prefecture": "saitama",
+        "nearest_station_name": "さいたま新都心",
+        "station_walk_min": 2,
+        "layout_type": "1R",
+        "area_sqm": 12,
+        "building_built_year": 2023,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 150000,
+        "mgmt_fee_yen": 10000,
+        "initial_cost_total_yen": 480000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 160000,
+        "building_age_years": 3,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 70640,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 80.0,
+        "condition_score": 74.25,
+        "cost_score": 80.0,
+        "overall_score": 78.5625
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "VERY_SMALL_AREA",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(78.56)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=1.265 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 160000 + 초기비용(IM 3)'의 현금흐름을 중심으로 2분 도보/연식 3년/면적 12㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_013": {
+      "input": {
+        "hub_station": "ikebukuro",
+        "prefecture": "saitama",
+        "nearest_station_name": "南浦和",
+        "station_walk_min": 10,
+        "layout_type": "1K",
+        "area_sqm": 18,
+        "building_built_year": 2000,
+        "orientation": "W",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 50000,
+        "mgmt_fee_yen": 20000,
+        "initial_cost_total_yen": 350000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 70000,
+        "building_age_years": 26,
+        "initial_multiple": 5.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 75080,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 63.47826086956522,
+        "cost_score": 70.0,
+        "overall_score": 70.4695652173913
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(70.47)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.06766 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 70000 + 초기비용(IM 5)'의 현금흐름을 중심으로 10분 도보/연식 26년/면적 18㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_014": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "saitama",
+        "nearest_station_name": "架空駅テスト",
+        "station_walk_min": 8,
+        "layout_type": "1R",
+        "area_sqm": 22,
+        "building_built_year": 2010,
+        "orientation": "SE",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 65000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 210000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 70000,
+        "building_age_years": 16,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": null,
+        "benchmark_confidence": "none"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 73.88043478260869,
+        "cost_score": 80.0,
+        "overall_score": 77.07010869565217
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R01_BENCHMARK_NONE",
+      "summary_ko": "이 매물은 종합 B(77.07)로 보이지만, 벤치마크 신뢰도(none)가 사실상 없어서 비용/입지/컨디션 비교의 불확실성이 큽니다. 현재 점수(B/B/B)를 기준으로 본인의 우선순위(출퇴근/주거쾌적/지출)를 먼저 정한 뒤, 동일 역·유사 조건 매물 3~5개와 월고정비·초기비용(IM)을 나란히 확인하는 접근이 안전합니다. 외국인 계약 관점에서는 초기비용(IM)을 1개월 정도 보수적으로 보고, 礼金은 1개월까지 허용범위로 가정한 뷰도 함께 확인해 리스크를 줄이세요."
+    },
+    "listing_015": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "千葉",
+        "station_walk_min": 16,
+        "layout_type": "1K",
+        "area_sqm": 25,
+        "building_built_year": 2013,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 55000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 180000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 60000,
+        "building_age_years": 13,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 85540,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 64.0,
+        "condition_score": 77.36956521739131,
+        "cost_score": 80.0,
+        "overall_score": 73.74239130434782
+      },
+      "grades": {
+        "location_grade": "C",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(73.74)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.2986 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 60000 + 초기비용(IM 3)'의 현금흐름을 중심으로 16분 도보/연식 13년/면적 25㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_016": {
+      "input": {
+        "hub_station": "shinagawa",
+        "prefecture": "chiba",
+        "nearest_station_name": "船橋",
+        "station_walk_min": 5,
+        "layout_type": "1R",
+        "area_sqm": 8,
+        "building_built_year": 2020,
+        "orientation": "E",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 50000,
+        "mgmt_fee_yen": 2000,
+        "initial_cost_total_yen": 156000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 52000,
+        "building_age_years": 6,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 70480,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 80.0,
+        "condition_score": 64.75,
+        "cost_score": 80.0,
+        "overall_score": 76.1875
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "VERY_SMALL_AREA",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(76.19)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.2622 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 52000 + 초기비용(IM 3)'의 현금흐름을 중심으로 5분 도보/연식 6년/면적 8㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_017": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "chiba",
+        "nearest_station_name": "松戸",
+        "station_walk_min": 10,
+        "layout_type": "1K",
+        "area_sqm": 18,
+        "building_built_year": 1950,
+        "orientation": "W",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 45000,
+        "mgmt_fee_yen": 3000,
+        "initial_cost_total_yen": 144000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 48000,
+        "building_age_years": 76,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 74080,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 52.97826086956522,
+        "cost_score": 80.0,
+        "overall_score": 71.8445652173913
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "D",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "OLD_BUILDING",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "location_high_condition_low",
+        "message_key": "TRADEOFF_LOCATION_GOOD_BUT_CONDITION_BAD"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(71.84)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.3521 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 48000 + 초기비용(IM 3)'의 현금흐름을 중심으로 10분 도보/연식 76년/면적 18㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_018": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "柏",
+        "station_walk_min": 6,
+        "layout_type": "1K",
+        "area_sqm": 20,
+        "building_built_year": 2018,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 75000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 800000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 80000,
+        "building_age_years": 8,
+        "initial_multiple": 10.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 85640,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 78.05434782608695,
+        "cost_score": 50.0,
+        "overall_score": 66.11358695652174
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "D",
+        "overall_grade": "C"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "HIGH_INITIAL_MULTIPLE",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "condition_high_cost_low",
+        "message_key": "TRADEOFF_CONDITION_GOOD_BUT_COST_BAD"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 C(66.11)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.06586 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 80000 + 초기비용(IM 10)'의 현금흐름을 중심으로 6분 도보/연식 8년/면적 20㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_019": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "chiba",
+        "nearest_station_name": "津田沼",
+        "station_walk_min": 12,
+        "layout_type": "1K",
+        "area_sqm": 30,
+        "building_built_year": 2008,
+        "orientation": "SE",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 60000,
+        "mgmt_fee_yen": 2000,
+        "initial_cost_total_yen": 124000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 62000,
+        "building_age_years": 18,
+        "initial_multiple": 2.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 91040,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 70.0,
+        "condition_score": 81.18478260869566,
+        "cost_score": 80.0,
+        "overall_score": 76.7961956521739
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(76.8)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.319 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 62000 + 초기비용(IM 2)'의 현금흐름을 중심으로 12분 도보/연식 18년/면적 30㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_020": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "本八幡",
+        "station_walk_min": 14,
+        "layout_type": "1R",
+        "area_sqm": 16,
+        "building_built_year": 2015,
+        "orientation": "N",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 58000,
+        "mgmt_fee_yen": 2000,
+        "initial_cost_total_yen": 180000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 60000,
+        "building_age_years": 11,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 73480,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 70.0,
+        "condition_score": 63.15217391304348,
+        "cost_score": 80.0,
+        "overall_score": 72.28804347826087
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "NORTH_FACING",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(72.29)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.1835 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 60000 + 초기비용(IM 3)'의 현금흐름을 중심으로 14분 도보/연식 11년/면적 16㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_021": {
+      "input": {
+        "hub_station": "shibuya",
+        "prefecture": "tokyo",
+        "nearest_station_name": "渋谷",
+        "station_walk_min": 5,
+        "layout_type": "1K",
+        "area_sqm": 25,
+        "building_built_year": 2018,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 95000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 950000,
+        "shikikin_yen": 300000,
+        "reikin_yen": 200000,
+        "brokerage_fee_yen": 150000,
+        "guarantor_fee_yen": 100000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 20000,
+        "cleaning_fee_yen": 60000,
+        "other_initial_fees_yen": 100000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 100000,
+        "building_age_years": 8,
+        "initial_multiple": 9.5
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 115540,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 88.4,
+        "condition_score": 82.6195652173913,
+        "cost_score": 65.0,
+        "overall_score": 77.59489130434783
+      },
+      "grades": {
+        "location_grade": "A",
+        "condition_grade": "B",
+        "cost_grade": "C",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "HIGH_INITIAL_MULTIPLE",
+          "severity": "high"
+        },
+        {
+          "risk_flag_id": "HIGH_OTHER_FEES",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(77.59)로, 입지/컨디션/비용(A/B/C)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.1345와 IM 9.5를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_022": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "tokyo",
+        "nearest_station_name": "新宿",
+        "station_walk_min": 8,
+        "layout_type": "1R",
+        "area_sqm": 18,
+        "building_built_year": 2005,
+        "orientation": "E",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 80000,
+        "mgmt_fee_yen": 10000,
+        "initial_cost_total_yen": 450000,
+        "shikikin_yen": 80000,
+        "reikin_yen": 80000,
+        "brokerage_fee_yen": 80000,
+        "guarantor_fee_yen": 40000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 20000,
+        "cleaning_fee_yen": 50000,
+        "other_initial_fees_yen": 80000,
+        "contract_term_months": 24,
+        "renewal_fee_months": 1.0,
+        "early_termination_penalty_yen": 100000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 90000,
+        "building_age_years": 21,
+        "initial_multiple": 5.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 101480,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 83.44,
+        "condition_score": 63.47826086956522,
+        "cost_score": 85.0,
+        "overall_score": 79.0735652173913
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "A",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "LONG_CONTRACT_TERM",
+          "severity": "high"
+        },
+        {
+          "risk_flag_id": "HIGH_EARLY_TERMINATION_PENALTY",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(79.07)로, 입지/컨디션/비용(B/C/A)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.1131와 IM 5를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_023": {
+      "input": {
+        "hub_station": "other",
+        "hub_station_other_name": "yokohama",
+        "prefecture": "tokyo",
+        "nearest_station_name": "秋葉原",
+        "station_walk_min": 3,
+        "layout_type": "1R",
+        "area_sqm": 17,
+        "building_built_year": 2021,
+        "orientation": "UNKNOWN",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 100000,
+        "mgmt_fee_yen": 0,
+        "initial_cost_total_yen": 300000,
+        "shikikin_yen": 100000,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 50000,
+        "guarantor_fee_yen": 50000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 0,
+        "cleaning_fee_yen": 30000,
+        "other_initial_fees_yen": 50000,
+        "contract_term_months": 12,
+        "renewal_fee_months": 0.5,
+        "early_termination_penalty_yen": 0
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 100000,
+        "building_age_years": 5,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 104500,
+        "benchmark_confidence": "mid"
+      },
+      "scores": {
+        "location_score": 80.84,
+        "condition_score": 71.31521739130434,
+        "cost_score": 83.0,
+        "overall_score": 79.3228043478261
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R06_BALANCED_STRONG",
+      "summary_ko": "종합 B(79.32)로, 입지/컨디션/비용(B/B/B)이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio=-0.04306와 IM 3를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다."
+    },
+    "listing_024": {
+      "input": {
+        "hub_station": "ikebukuro",
+        "prefecture": "saitama",
+        "nearest_station_name": "大宮",
+        "station_walk_min": 20,
+        "layout_type": "1K",
+        "area_sqm": 24,
+        "building_built_year": 2011,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 45000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 150000,
+        "shikikin_yen": 45000,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 45000,
+        "guarantor_fee_yen": 30000,
+        "fire_insurance_yen": 15000,
+        "key_change_yen": 0,
+        "cleaning_fee_yen": 15000,
+        "other_initial_fees_yen": 0
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 50000,
+        "building_age_years": 15,
+        "initial_multiple": 3.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 77800,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 64.0,
+        "condition_score": 76.45652173913044,
+        "cost_score": 80.0,
+        "overall_score": 73.5141304347826
+      },
+      "grades": {
+        "location_grade": "C",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(73.51)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.3573 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 50000 + 초기비용(IM 3)'의 현금흐름을 중심으로 20분 도보/연식 15년/면적 24㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_025": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "saitama",
+        "nearest_station_name": "川口",
+        "station_walk_min": 10,
+        "layout_type": "1K",
+        "area_sqm": 28,
+        "building_built_year": 2010,
+        "orientation": "SE",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 65000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 700000,
+        "shikikin_yen": 130000,
+        "reikin_yen": 65000,
+        "brokerage_fee_yen": 65000,
+        "guarantor_fee_yen": 70000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 20000,
+        "cleaning_fee_yen": 80000,
+        "other_initial_fees_yen": 250000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 70000,
+        "building_age_years": 16,
+        "initial_multiple": 10.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 85280,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 79.3586956521739,
+        "cost_score": 50.0,
+        "overall_score": 66.43967391304348
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "D",
+        "overall_grade": "C"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "HIGH_INITIAL_MULTIPLE",
+          "severity": "high"
+        },
+        {
+          "risk_flag_id": "HIGH_OTHER_FEES",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "condition_high_cost_low",
+        "message_key": "TRADEOFF_CONDITION_GOOD_BUT_COST_BAD"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 C(66.44)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.1792 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 70000 + 초기비용(IM 10)'의 현금흐름을 중심으로 10분 도보/연식 16년/면적 28㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_026": {
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "saitama",
+        "nearest_station_name": "所沢",
+        "station_walk_min": 6,
+        "layout_type": "1R",
+        "area_sqm": 20,
+        "building_built_year": 2000,
+        "orientation": "W",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 50000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 275000,
+        "shikikin_yen": 50000,
+        "reikin_yen": 50000,
+        "brokerage_fee_yen": 50000,
+        "guarantor_fee_yen": 25000,
+        "fire_insurance_yen": 15000,
+        "key_change_yen": 10000,
+        "cleaning_fee_yen": 25000,
+        "other_initial_fees_yen": 50000,
+        "contract_term_months": 36,
+        "renewal_fee_months": 1.5,
+        "early_termination_penalty_yen": 0
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 55000,
+        "building_age_years": 26,
+        "initial_multiple": 5.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 73480,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 65.30434782608695,
+        "cost_score": 70.0,
+        "overall_score": 70.92608695652174
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "C",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "LONG_CONTRACT_TERM",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(70.93)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.2515 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 55000 + 초기비용(IM 5)'의 현금흐름을 중심으로 6분 도보/연식 26년/면적 20㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_027": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "海浜幕張",
+        "station_walk_min": 9,
+        "layout_type": "1K",
+        "area_sqm": 22,
+        "building_built_year": 2012,
+        "orientation": "E",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 70000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 300000,
+        "shikikin_yen": 70000,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 70000,
+        "guarantor_fee_yen": 40000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 20000,
+        "cleaning_fee_yen": 30000,
+        "other_initial_fees_yen": 50000,
+        "contract_term_months": 12,
+        "renewal_fee_months": 1.0,
+        "early_termination_penalty_yen": 150000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 75000,
+        "building_age_years": 14,
+        "initial_multiple": 4.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 85520,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 76.0,
+        "condition_score": 72.38043478260869,
+        "cost_score": 76.0,
+        "overall_score": 75.09510869565217
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "B",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "HIGH_EARLY_TERMINATION_PENALTY",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(75.1)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.123 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 75000 + 초기비용(IM 4)'의 현금흐름을 중심으로 9분 도보/연식 14년/면적 22㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_028": {
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "chiba",
+        "nearest_station_name": "銚子",
+        "station_walk_min": 18,
+        "layout_type": "1R",
+        "area_sqm": 10,
+        "building_built_year": 1980,
+        "orientation": "N",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 45000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 200000,
+        "shikikin_yen": 0,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 50000,
+        "guarantor_fee_yen": 30000,
+        "fire_insurance_yen": 15000,
+        "key_change_yen": 10000,
+        "cleaning_fee_yen": 25000,
+        "other_initial_fees_yen": 70000
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 50000,
+        "building_age_years": 46,
+        "initial_multiple": 4.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 62280,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 64.0,
+        "condition_score": 40.0,
+        "cost_score": 76.0,
+        "overall_score": 62.8
+      },
+      "grades": {
+        "location_grade": "C",
+        "condition_grade": "D",
+        "cost_grade": "B",
+        "overall_grade": "C"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "VERY_SMALL_AREA",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "OLD_BUILDING",
+          "severity": "mid"
+        },
+        {
+          "risk_flag_id": "NORTH_FACING",
+          "severity": "low"
+        },
+        {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 C(62.8)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.1972 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 50000 + 초기비용(IM 4)'의 현금흐름을 중심으로 18분 도보/연식 46년/면적 10㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_029": {
+      "input": {
+        "hub_station": "shinagawa",
+        "prefecture": "chiba",
+        "nearest_station_name": "船橋",
+        "station_walk_min": 4,
+        "layout_type": "1K",
+        "area_sqm": 30,
+        "building_built_year": 2022,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 80000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 170000,
+        "shikikin_yen": 0,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 80000,
+        "guarantor_fee_yen": 40000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 0,
+        "cleaning_fee_yen": 30000,
+        "other_initial_fees_yen": 0
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 85000,
+        "building_age_years": 4,
+        "initial_multiple": 2.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 95920,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 80.0,
+        "condition_score": 90.68478260869566,
+        "cost_score": 80.0,
+        "overall_score": 82.6711956521739
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "A",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(82.67)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=-0.1138 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 85000 + 초기비용(IM 2)'의 현금흐름을 중심으로 4분 도보/연식 4년/면적 30㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    },
+    "listing_030": {
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "幕張本郷",
+        "municipality": "千葉市花見川区",
+        "line_name": "JR京葉線",
+        "station_walk_min": 1,
+        "layout_type": "1K",
+        "area_sqm": 80,
+        "building_built_year": 2025,
+        "orientation": "SW",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 200000,
+        "mgmt_fee_yen": 0,
+        "initial_cost_total_yen": 400000,
+        "shikikin_yen": 200000,
+        "reikin_yen": 0,
+        "brokerage_fee_yen": 100000,
+        "guarantor_fee_yen": 50000,
+        "fire_insurance_yen": 20000,
+        "key_change_yen": 10000,
+        "cleaning_fee_yen": 20000,
+        "other_initial_fees_yen": 0,
+        "contract_term_months": 24,
+        "renewal_fee_months": 2.0,
+        "early_termination_penalty_yen": 0
+      },
+      "derived": {
+        "monthly_fixed_cost_yen": 200000,
+        "building_age_years": 1,
+        "initial_multiple": 2.0
+      },
+      "benchmark": {
+        "benchmark_monthly_fixed_cost_yen": 142480,
+        "benchmark_confidence": "low"
+      },
+      "scores": {
+        "location_score": 80.0,
+        "condition_score": 94.5,
+        "cost_score": 80.0,
+        "overall_score": 83.625
+      },
+      "grades": {
+        "location_grade": "B",
+        "condition_grade": "A",
+        "cost_grade": "B",
+        "overall_grade": "B"
+      },
+      "risk_flags": [
+        {
+          "risk_flag_id": "LONG_CONTRACT_TERM",
+          "severity": "high"
+        }
+      ],
+      "tradeoff": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      },
+      "template_rule_id": "R02_BENCHMARK_LOW",
+      "summary_ko": "종합 B(83.62)로 평가되지만, 벤치마크 신뢰도(low)가 낮아 rent_delta_ratio=0.4037 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 200000 + 초기비용(IM 2)'의 현금흐름을 중심으로 1분 도보/연식 1년/면적 80㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요."
+    }
+  },
+  "summary": {
+    "inputs": 30,
+    "risk_flag_hits": {
+      "FAR_FROM_STATION": 5,
+      "VERY_SMALL_AREA": 4,
+      "OLD_BUILDING": 4,
+      "NORTH_FACING": 3,
+      "BATH_NOT_SEPARATE": 5,
+      "HIGH_INITIAL_MULTIPLE": 4,
+      "HIGH_OTHER_FEES": 2,
+      "LONG_CONTRACT_TERM": 3,
+      "HIGH_EARLY_TERMINATION_PENALTY": 2
+    },
+    "template_hits": {
+      "R06_BALANCED_STRONG": 9,
+      "R99_FALLBACK_GENERAL": 1,
+      "R02_BENCHMARK_LOW": 19,
+      "R01_BENCHMARK_NONE": 1
+    },
+    "findings": []
+  }
+}

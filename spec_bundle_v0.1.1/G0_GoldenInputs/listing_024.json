@@ -1,0 +1,23 @@
+{
+  "hub_station": "ikebukuro",
+  "prefecture": "saitama",
+  "nearest_station_name": "大宮",
+  "station_walk_min": 20,
+  "layout_type": "1K",
+  "area_sqm": 24,
+  "building_built_year": 2011,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 45000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 150000,
+  "shikikin_yen": 45000,
+  "reikin_yen": 0,
+  "brokerage_fee_yen": 45000,
+  "guarantor_fee_yen": 30000,
+  "fire_insurance_yen": 15000,
+  "key_change_yen": 0,
+  "cleaning_fee_yen": 15000,
+  "other_initial_fees_yen": 0
+}
+

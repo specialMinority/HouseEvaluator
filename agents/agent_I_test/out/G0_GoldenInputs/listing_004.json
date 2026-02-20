@@ -1,0 +1,15 @@
+{
+  "hub_station": "ueno",
+  "prefecture": "tokyo",
+  "nearest_station_name": "上野",
+  "station_walk_min": 7,
+  "layout_type": "1K",
+  "area_sqm": 18,
+  "building_built_year": 1996,
+  "orientation": "W",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 85000,
+  "mgmt_fee_yen": 8000,
+  "initial_cost_total_yen": 279000
+}
+

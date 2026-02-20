@@ -1,0 +1,16 @@
+{
+  "hub_station": "tokyo_station",
+  "prefecture": "tokyo",
+  "municipality": "江戸川区",
+  "nearest_station_name": "小岩",
+  "station_walk_min": 11,
+  "layout_type": "1LDK",
+  "building_structure": "other",
+  "area_sqm": 33,
+  "building_built_year": 2008,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 110000,
+  "mgmt_fee_yen": 0,
+  "initial_cost_total_yen": 500000
+}

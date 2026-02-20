@@ -1,0 +1,197 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "K0_OutputContracts/S1_InputSchema.schema.json",
+    "title": "S1 Input Schema Contract",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "version",
+        "mvp_required_fields",
+        "fields"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "minLength": 1
+        },
+        "generated_at": {
+            "type": "string",
+            "minLength": 1
+        },
+        "locale_default": {
+            "type": "string",
+            "enum": [
+                "ko",
+                "ja"
+            ]
+        },
+        "mvp_required_fields": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 20,
+            "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9_]+$"
+            }
+        },
+        "fields": {
+            "type": "array",
+            "minItems": 10,
+            "items": {
+                "$ref": "#/$defs/fieldSpec"
+            }
+        }
+    },
+    "$defs": {
+        "fieldSpec": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "key",
+                "type",
+                "required",
+                "label_ko",
+                "unit",
+                "ui"
+            ],
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9_]+$"
+                },
+                "label_ko": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "label_ja": {
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "integer",
+                        "number",
+                        "string",
+                        "boolean",
+                        "enum"
+                    ]
+                },
+                "required": {
+                    "type": "boolean"
+                },
+                "unit": {
+                    "type": "string",
+                    "enum": [
+                        "yen",
+                        "sqm",
+                        "min",
+                        "year",
+                        "months",
+                        "ratio",
+                        "score",
+                        "none"
+                    ]
+                },
+                "constraints": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "min": {
+                            "type": "number"
+                        },
+                        "max": {
+                            "type": "number"
+                        },
+                        "step": {
+                            "type": "number"
+                        },
+                        "enum_values": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "regex": {
+                            "type": "string"
+                        }
+                    }
+                },
+                "depends_on": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "key": {
+                            "type": "string",
+                            "pattern": "^[a-z0-9_]+$"
+                        },
+                        "equals": {},
+                        "not_equals": {}
+                    }
+                },
+                "ui": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "required": [
+                        "group",
+                        "control",
+                        "advanced"
+                    ],
+                    "properties": {
+                        "group": {
+                            "type": "string",
+                            "enum": [
+                                "location",
+                                "condition",
+                                "cost",
+                                "contract",
+                                "meta"
+                            ]
+                        },
+                        "control": {
+                            "type": "string",
+                            "enum": [
+                                "text",
+                                "number",
+                                "select",
+                                "toggle",
+                                "slider"
+                            ]
+                        },
+                        "placeholder_ko": {
+                            "type": "string"
+                        },
+                        "help_text_ko": {
+                            "type": "string"
+                        },
+                        "help_text_ja": {
+                            "type": "string"
+                        },
+                        "advanced": {
+                            "type": "boolean"
+                        }
+                    }
+                }
+            },
+            "allOf": [
+                {
+                    "if": {
+                        "properties": {
+                            "type": {
+                                "const": "enum"
+                            }
+                        }
+                    },
+                    "then": {
+                        "properties": {
+                            "constraints": {
+                                "required": [
+                                    "enum_values"
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}

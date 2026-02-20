@@ -1,0 +1,26 @@
+{
+  "hub_station": "shinjuku",
+  "prefecture": "tokyo",
+  "nearest_station_name": "新宿",
+  "station_walk_min": 8,
+  "layout_type": "1R",
+  "area_sqm": 18,
+  "building_built_year": 2005,
+  "orientation": "E",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 80000,
+  "mgmt_fee_yen": 10000,
+  "initial_cost_total_yen": 450000,
+  "shikikin_yen": 80000,
+  "reikin_yen": 80000,
+  "brokerage_fee_yen": 80000,
+  "guarantor_fee_yen": 40000,
+  "fire_insurance_yen": 20000,
+  "key_change_yen": 20000,
+  "cleaning_fee_yen": 50000,
+  "other_initial_fees_yen": 80000,
+  "contract_term_months": 24,
+  "renewal_fee_months": 1.0,
+  "early_termination_penalty_yen": 100000
+}
+

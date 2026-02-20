@@ -1,0 +1,15 @@
+{
+  "hub_station": "tokyo_station",
+  "prefecture": "tokyo",
+  "nearest_station_name": "北千住",
+  "station_walk_min": 6,
+  "layout_type": "1K",
+  "area_sqm": 22,
+  "building_built_year": 2012,
+  "orientation": "N",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 88000,
+  "mgmt_fee_yen": 7000,
+  "initial_cost_total_yen": 285000
+}
+

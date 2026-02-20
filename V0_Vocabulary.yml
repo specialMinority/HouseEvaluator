@@ -1,0 +1,229 @@
+version: "0.1.0"
+last_updated: "2026-02-17"
+
+currency:
+  code: "JPY"
+  symbol: "¥"
+
+units:
+  yen: "JPY"
+  sqm: "m2"
+  min: "minutes"
+  year: "year"
+  months: "months"
+  ratio: "ratio"
+  score: "0-100"
+
+# Canonical enums (use these exact tokens)
+enums:
+  prefecture: [saitama, tokyo, chiba, kanagawa]
+  layout_type: ["1R", "1K"]
+  building_structure: ["wood", "light_steel", "steel", "rc", "src", "other"]
+  hub_station:
+    - tokyo_station
+    - shinjuku
+    - shibuya
+    - ikebukuro
+    - ueno
+    - shinagawa
+    - other
+  orientation: [N, NE, E, SE, S, SW, W, NW, UNKNOWN]
+  grade: [A, B, C, D]
+  severity: [low, mid, high]
+  benchmark_confidence: [high, mid, low, none]
+
+# =========================
+# Canonical keys (MUST match across all agent outputs)
+# =========================
+keys:
+  input:
+    hub_station:
+      type: string
+      enum: hub_station
+      required: true
+    hub_station_other_name:
+      type: string
+      required_if: "hub_station == 'other'"
+
+    prefecture:
+      type: string
+      enum: prefecture
+      required: true
+    nearest_station_name:
+      type: string
+      required: true
+    municipality:
+      type: string
+      required: false
+      notes: "Examples may include ward-level strings such as 横浜市港北区 (Yokohama wards are allowed)."
+      examples: ["横浜市港北区", "横浜市西区"]
+    line_name:
+      type: string
+      required: false
+
+    station_walk_min:
+      type: integer
+      unit: min
+      required: true
+      min: 0
+      max: 60
+
+    layout_type:
+      type: string
+      enum: layout_type
+      required: true
+
+    building_structure:
+      type: string
+      enum: building_structure
+      required: true
+
+    area_sqm:
+      type: number
+      unit: sqm
+      required: true
+      min: 5
+      max: 80
+
+    building_built_year:
+      type: integer
+      unit: year
+      required: true
+      min: 1950
+      max: 2035
+
+    orientation:
+      type: string
+      enum: orientation
+      required: true
+
+    bathroom_toilet_separate:
+      type: boolean
+      required: true
+
+    rent_yen:
+      type: integer
+      unit: yen
+      required: true
+      min: 0
+      max: 500000
+
+    mgmt_fee_yen:
+      type: integer
+      unit: yen
+      required: true
+      min: 0
+      max: 100000
+
+    initial_cost_total_yen:
+      type: integer
+      unit: yen
+      required: true
+      min: 0
+      max: 2000000
+
+    # Optional breakdown (advanced)
+    shikikin_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
+    reikin_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
+    brokerage_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
+    guarantor_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
+    fire_insurance_yen: { type: integer, unit: yen, required: false, min: 0, max: 300000 }
+    key_change_yen: { type: integer, unit: yen, required: false, min: 0, max: 200000 }
+    cleaning_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 300000 }
+    other_initial_fees_yen: { type: integer, unit: yen, required: false, min: 0, max: 500000 }
+
+    # Optional contract risk (advanced)
+    contract_term_months: { type: integer, unit: months, required: false, min: 0, max: 60 }
+    renewal_fee_months: { type: number, unit: months, required: false, min: 0, max: 2 }
+    early_termination_penalty_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
+
+  derived:
+    monthly_fixed_cost_yen: { type: integer, unit: yen }
+    building_age_years: { type: integer, unit: year }
+    initial_multiple: { type: number, unit: ratio }
+    rent_delta_ratio: { type: number, unit: ratio }
+    area_access_score_0_100: { type: number, unit: score }
+    benchmark_monthly_fixed_cost_yen: { type: integer, unit: yen }
+    benchmark_confidence: { type: string, enum: benchmark_confidence }
+
+  scoring:
+    location_score: { type: number, unit: score }
+    condition_score: { type: number, unit: score }
+    cost_score: { type: number, unit: score }
+    overall_score: { type: number, unit: score }
+
+  grades:
+    location_grade: { type: string, enum: grade }
+    condition_grade: { type: string, enum: grade }
+    cost_grade: { type: string, enum: grade }
+    overall_grade: { type: string, enum: grade }
+
+  report:
+    summary_ko: { type: string }
+    evidence_bullets_ko: { type: array }
+    risk_flags: { type: array }
+    negotiation_suggestions:
+      ko: { type: array }
+      ja: { type: array }
+    alternative_search_queries_ja: { type: array }
+    what_if_results: { type: array }
+
+# Foreigner adjustment constants (tunable)
+foreigner_adjustment_defaults:
+  foreign_im_shift_months: 1.0
+  foreign_reikin_allowance_months: 1.0
+
+# Risk flags canonical list (IDs are stable)
+risk_flags:
+  - id: HIGH_INITIAL_MULTIPLE
+    severity: high
+    description_ko: "초기비용 배수(IM)가 매우 높아 현금흐름 부담이 큼"
+  - id: FAR_FROM_STATION
+    severity: mid
+    description_ko: "역 도보 시간이 긴 편"
+  - id: VERY_SMALL_AREA
+    severity: mid
+    description_ko: "면적이 작은 편(체감 불편 가능)"
+  - id: OLD_BUILDING
+    severity: mid
+    description_ko: "연식이 오래된 편(설비 노후 가능)"
+  - id: NORTH_FACING
+    severity: low
+    description_ko: "채광이 불리할 수 있는 향"
+  - id: BATH_NOT_SEPARATE
+    severity: low
+    description_ko: "욕실/화장실 분리 아님(선호도에 따라 감점)"
+  - id: HIGH_OTHER_FEES
+    severity: high
+    description_ko: "기타 비용 비중이 큼(항목 근거 확인 권장)"
+  - id: LONG_CONTRACT_TERM
+    severity: high
+    description_ko: "계약기간이 길거나(워홀) 유연성이 낮을 수 있음"
+  - id: HIGH_EARLY_TERMINATION_PENALTY
+    severity: high
+    description_ko: "중도해지 위약금이 큼(워홀 리스크)"
+
+# Placeholders allowed in report templates (use {token} syntax)
+report_placeholders:
+  - "{overall_grade}"
+  - "{overall_score}"
+  - "{location_grade}"
+  - "{location_score}"
+  - "{condition_grade}"
+  - "{condition_score}"
+  - "{cost_grade}"
+  - "{cost_score}"
+  - "{monthly_fixed_cost_yen}"
+  - "{initial_cost_total_yen}"
+  - "{initial_multiple}"
+  - "{rent_delta_ratio}"
+  - "{benchmark_confidence}"
+  - "{hub_station}"
+  - "{prefecture}"
+  - "{nearest_station_name}"
+  - "{station_walk_min}"
+  - "{layout_type}"
+  - "{area_sqm}"
+  - "{building_age_years}"
+  - "{orientation}"
+  - "{bathroom_toilet_separate}"

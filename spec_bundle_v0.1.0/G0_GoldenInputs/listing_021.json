@@ -1,0 +1,23 @@
+{
+  "hub_station": "shibuya",
+  "prefecture": "tokyo",
+  "nearest_station_name": "渋谷",
+  "station_walk_min": 5,
+  "layout_type": "1K",
+  "area_sqm": 25,
+  "building_built_year": 2018,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 95000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 950000,
+  "shikikin_yen": 300000,
+  "reikin_yen": 200000,
+  "brokerage_fee_yen": 150000,
+  "guarantor_fee_yen": 100000,
+  "fire_insurance_yen": 20000,
+  "key_change_yen": 20000,
+  "cleaning_fee_yen": 60000,
+  "other_initial_fees_yen": 100000
+}
+

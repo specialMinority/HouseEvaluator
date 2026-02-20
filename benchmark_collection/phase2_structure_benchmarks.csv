@@ -1,0 +1,436 @@
+region_country,prefecture,municipality,layout_type,building_structure,avg_rent_yen,source_name,source_url,source_updated_at,collected_at,method_notes,count
+JP,tokyo,千代田区,1R,rc,155000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=91),91
+JP,tokyo,千代田区,1R,src,134500,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,千代田区,1K,rc,140000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=173),173
+JP,tokyo,千代田区,1K,src,119000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48),48
+JP,tokyo,千代田区,1DK,rc,171000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=68),68
+JP,tokyo,千代田区,1LDK,rc,229500,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=214),214
+JP,tokyo,千代田区,1LDK,src,221000,CHINTAI,https://www.chintai.net/tokyo/area/13101/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20),20
+JP,tokyo,中央区,1R,rc,138000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=159),159
+JP,tokyo,中央区,1R,src,150000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=79),79
+JP,tokyo,中央区,1K,rc,138000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=181),181
+JP,tokyo,中央区,1K,src,130000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=74),74
+JP,tokyo,中央区,1DK,rc,161000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=200),200
+JP,tokyo,中央区,1LDK,rc,218000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=218),218
+JP,tokyo,中央区,1LDK,src,215000,CHINTAI,https://www.chintai.net/tokyo/area/13102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=42),42
+JP,tokyo,港区,1R,rc,160000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=186),186
+JP,tokyo,港区,1R,src,138000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=53),53
+JP,tokyo,港区,1K,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=196),196
+JP,tokyo,港区,1K,src,157000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42),42
+JP,tokyo,港区,1DK,rc,172000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=129),129
+JP,tokyo,港区,1DK,src,172000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=35),35
+JP,tokyo,港区,1LDK,rc,259000,CHINTAI,https://www.chintai.net/tokyo/area/13103/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=235),235
+JP,tokyo,新宿区,1R,rc,122000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=153),153
+JP,tokyo,新宿区,1R,wood,67000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=25),25
+JP,tokyo,新宿区,1R,src,145000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=48),48
+JP,tokyo,新宿区,1K,rc,128000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=211),211
+JP,tokyo,新宿区,1K,src,99000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=30),30
+JP,tokyo,新宿区,1DK,rc,162000,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=90),90
+JP,tokyo,新宿区,1LDK,rc,199500,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=242),242
+JP,tokyo,文京区,1R,rc,130000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=123),123
+JP,tokyo,文京区,1R,src,102500,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,文京区,1K,rc,132000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=143),143
+JP,tokyo,文京区,1K,src,103000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=41),41
+JP,tokyo,文京区,1DK,rc,152000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=136),136
+JP,tokyo,文京区,1LDK,rc,200000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=203),203
+JP,tokyo,文京区,1LDK,src,204000,CHINTAI,https://www.chintai.net/tokyo/area/13105/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=29),29
+JP,tokyo,台東区,1R,rc,120000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=163),163
+JP,tokyo,台東区,1R,wood,73500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,台東区,1R,src,97000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,tokyo,台東区,1K,rc,120500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=224),224
+JP,tokyo,台東区,1DK,rc,142000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=232),232
+JP,tokyo,台東区,1LDK,rc,185000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=223),223
+JP,tokyo,墨田区,1R,rc,118000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=193),193
+JP,tokyo,墨田区,1K,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=220),220
+JP,tokyo,墨田区,1DK,rc,133000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=263),263
+JP,tokyo,墨田区,1LDK,rc,180000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=242),242
+JP,tokyo,江東区,1R,rc,122000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=187),187
+JP,tokyo,江東区,1K,rc,117000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=260),260
+JP,tokyo,江東区,1DK,rc,137000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=263),263
+JP,tokyo,江東区,1LDK,rc,175000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=240),240
+JP,tokyo,品川区,1R,rc,116500,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=138),138
+JP,tokyo,品川区,1R,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20),20
+JP,tokyo,品川区,1R,src,114000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,品川区,1K,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=200),200
+JP,tokyo,品川区,1DK,rc,148000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=201),201
+JP,tokyo,品川区,1LDK,rc,203000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=229),229
+JP,tokyo,目黒区,1R,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=132),132
+JP,tokyo,目黒区,1R,steel,89000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,目黒区,1R,wood,97000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24),24
+JP,tokyo,目黒区,1K,rc,143000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=144),144
+JP,tokyo,目黒区,1DK,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=142),142
+JP,tokyo,目黒区,1DK,steel,140000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,目黒区,1LDK,rc,199000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=195),195
+JP,tokyo,目黒区,1LDK,steel,161500,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,大田区,1R,rc,115000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=124),124
+JP,tokyo,大田区,1R,wood,70000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=35),35
+JP,tokyo,大田区,1K,rc,108000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=164),164
+JP,tokyo,大田区,1K,wood,82000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=27),27
+JP,tokyo,大田区,1DK,rc,127000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=194),194
+JP,tokyo,大田区,1LDK,rc,170000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=179),179
+JP,tokyo,大田区,1LDK,steel,128000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25),25
+JP,tokyo,大田区,1LDK,wood,128000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,世田谷区,1R,rc,92500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=120),120
+JP,tokyo,世田谷区,1R,steel,79000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,世田谷区,1R,wood,73000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=78),78
+JP,tokyo,世田谷区,1K,rc,113500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=152),152
+JP,tokyo,世田谷区,1K,light_steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=29),29
+JP,tokyo,世田谷区,1K,wood,87000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=33),33
+JP,tokyo,世田谷区,1DK,rc,139000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=161),161
+JP,tokyo,世田谷区,1DK,steel,91500,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36),36
+JP,tokyo,世田谷区,1LDK,rc,176000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=164),164
+JP,tokyo,世田谷区,1LDK,light_steel,137000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30),30
+JP,tokyo,世田谷区,1LDK,steel,150000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,世田谷区,1LDK,wood,145000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=45),45
+JP,tokyo,渋谷区,1R,rc,150000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=153),153
+JP,tokyo,渋谷区,1R,steel,134000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20),20
+JP,tokyo,渋谷区,1R,src,139000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=39),39
+JP,tokyo,渋谷区,1K,rc,129500,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=176),176
+JP,tokyo,渋谷区,1K,steel,115000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,渋谷区,1K,src,142000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=31),31
+JP,tokyo,渋谷区,1DK,rc,170500,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162),162
+JP,tokyo,渋谷区,1DK,src,246000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,渋谷区,1LDK,rc,221000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=229),229
+JP,tokyo,中野区,1R,rc,119500,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=136),136
+JP,tokyo,中野区,1R,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=49),49
+JP,tokyo,中野区,1K,rc,119000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=160),160
+JP,tokyo,中野区,1K,steel,92000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=34),34
+JP,tokyo,中野区,1K,wood,74500,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,中野区,1DK,rc,136000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=169),169
+JP,tokyo,中野区,1LDK,rc,180000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=149),149
+JP,tokyo,中野区,1LDK,light_steel,155000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=27),27
+JP,tokyo,中野区,1LDK,steel,150000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,中野区,1LDK,wood,140000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,杉並区,1R,rc,87000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=121),121
+JP,tokyo,杉並区,1R,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=73),73
+JP,tokyo,杉並区,1K,rc,98000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=158),158
+JP,tokyo,杉並区,1K,wood,92000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42),42
+JP,tokyo,杉並区,1DK,rc,121500,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=126),126
+JP,tokyo,杉並区,1DK,steel,131000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=25),25
+JP,tokyo,杉並区,1DK,wood,110000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=30),30
+JP,tokyo,杉並区,1LDK,rc,169500,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=170),170
+JP,tokyo,杉並区,1LDK,light_steel,142000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,杉並区,1LDK,wood,145000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=28),28
+JP,tokyo,豊島区,1R,rc,97000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=98),98
+JP,tokyo,豊島区,1R,wood,78000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=50),50
+JP,tokyo,豊島区,1R,src,104500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24),24
+JP,tokyo,豊島区,1K,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=168),168
+JP,tokyo,豊島区,1DK,rc,145000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=168),168
+JP,tokyo,豊島区,1LDK,rc,172500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=188),188
+JP,tokyo,北区,1R,rc,94500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=78),78
+JP,tokyo,北区,1R,steel,74000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=27),27
+JP,tokyo,北区,1R,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=59),59
+JP,tokyo,北区,1K,rc,111000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=130),130
+JP,tokyo,北区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28),28
+JP,tokyo,北区,1DK,rc,134500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162),162
+JP,tokyo,北区,1LDK,rc,168500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=156),156
+JP,tokyo,北区,1LDK,steel,145000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=33),33
+JP,tokyo,北区,1LDK,wood,135500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,荒川区,1R,rc,111000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=58),58
+JP,tokyo,荒川区,1R,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=33),33
+JP,tokyo,荒川区,1R,wood,70000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,tokyo,荒川区,1K,rc,106000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=126),126
+JP,tokyo,荒川区,1K,steel,80500,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=24),24
+JP,tokyo,荒川区,1K,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,荒川区,1DK,rc,132000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=100),100
+JP,tokyo,荒川区,1DK,steel,116000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=22),22
+JP,tokyo,荒川区,1LDK,rc,163500,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=192),192
+JP,tokyo,板橋区,1R,rc,82000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=90),90
+JP,tokyo,板橋区,1R,wood,52000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=44),44
+JP,tokyo,板橋区,1R,src,63000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20),20
+JP,tokyo,板橋区,1K,rc,99000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=192),192
+JP,tokyo,板橋区,1K,steel,81500,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28),28
+JP,tokyo,板橋区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=37),37
+JP,tokyo,板橋区,1DK,rc,120000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=184),184
+JP,tokyo,板橋区,1LDK,rc,151000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=165),165
+JP,tokyo,板橋区,1LDK,light_steel,127000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=48),48
+JP,tokyo,板橋区,1LDK,wood,121000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=40),40
+JP,tokyo,練馬区,1R,rc,74000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=98),98
+JP,tokyo,練馬区,1R,steel,66000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,tokyo,練馬区,1R,wood,62500,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=72),72
+JP,tokyo,練馬区,1K,rc,89000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=136),136
+JP,tokyo,練馬区,1K,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43),43
+JP,tokyo,練馬区,1K,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48),48
+JP,tokyo,練馬区,1DK,rc,112000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=89),89
+JP,tokyo,練馬区,1LDK,rc,142000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=131),131
+JP,tokyo,練馬区,1LDK,light_steel,123000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=61),61
+JP,tokyo,練馬区,1LDK,steel,126000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=24),24
+JP,tokyo,練馬区,1LDK,wood,122000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=57),57
+JP,tokyo,足立区,1R,rc,79000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=45),45
+JP,tokyo,足立区,1R,steel,66500,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=32),32
+JP,tokyo,足立区,1R,wood,60000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=103),103
+JP,tokyo,足立区,1K,rc,91000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=61),61
+JP,tokyo,足立区,1K,light_steel,76000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=42),42
+JP,tokyo,足立区,1K,steel,70000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=53),53
+JP,tokyo,足立区,1K,wood,69000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=97),97
+JP,tokyo,足立区,1DK,rc,98000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=83),83
+JP,tokyo,足立区,1DK,steel,87750,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,足立区,1DK,wood,83000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,足立区,1LDK,rc,145500,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=90),90
+JP,tokyo,足立区,1LDK,light_steel,118000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=71),71
+JP,tokyo,足立区,1LDK,steel,125000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=31),31
+JP,tokyo,足立区,1LDK,wood,109000,CHINTAI,https://www.chintai.net/tokyo/area/13121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=65),65
+JP,tokyo,葛飾区,1R,rc,64500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=66),66
+JP,tokyo,葛飾区,1R,steel,67500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=36),36
+JP,tokyo,葛飾区,1R,wood,64000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=91),91
+JP,tokyo,葛飾区,1K,rc,92000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=105),105
+JP,tokyo,葛飾区,1K,light_steel,77000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=21),21
+JP,tokyo,葛飾区,1K,steel,81500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,葛飾区,1K,wood,71000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=75),75
+JP,tokyo,葛飾区,1DK,rc,96500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=44),44
+JP,tokyo,葛飾区,1DK,steel,70500,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=28),28
+JP,tokyo,葛飾区,1DK,wood,81000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=27),27
+JP,tokyo,葛飾区,1LDK,rc,119000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,葛飾区,1LDK,light_steel,116000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=58),58
+JP,tokyo,葛飾区,1LDK,steel,114000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=50),50
+JP,tokyo,葛飾区,1LDK,wood,117000,CHINTAI,https://www.chintai.net/tokyo/area/13122/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=80),80
+JP,tokyo,江戸川区,1R,rc,69000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=23),23
+JP,tokyo,江戸川区,1R,steel,58500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=34),34
+JP,tokyo,江戸川区,1R,wood,63000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=86),86
+JP,tokyo,江戸川区,1K,rc,95000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=48),48
+JP,tokyo,江戸川区,1K,light_steel,75500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38),38
+JP,tokyo,江戸川区,1K,steel,76750,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=44),44
+JP,tokyo,江戸川区,1K,wood,71500,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=82),82
+JP,tokyo,江戸川区,1DK,rc,113000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=28),28
+JP,tokyo,江戸川区,1DK,wood,91000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=20),20
+JP,tokyo,江戸川区,1LDK,rc,146000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=99),99
+JP,tokyo,江戸川区,1LDK,light_steel,129000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=59),59
+JP,tokyo,江戸川区,1LDK,steel,121000,CHINTAI,https://www.chintai.net/tokyo/area/13123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=55),55
+JP,osaka,大阪市都島区,1R,rc,63000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=58),58
+JP,osaka,大阪市都島区,1R,steel,38000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市都島区,1K,rc,68000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=168),168
+JP,osaka,大阪市都島区,1K,steel,56500,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=38),38
+JP,osaka,大阪市都島区,1DK,rc,80000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=41),41
+JP,osaka,大阪市都島区,1DK,steel,58000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=32),32
+JP,osaka,大阪市都島区,1LDK,rc,108000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=179),179
+JP,osaka,大阪市都島区,1LDK,steel,86000,CHINTAI,https://www.chintai.net/osaka/area/27102/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市福島区,1R,rc,75000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=49),49
+JP,osaka,大阪市福島区,1R,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=31),31
+JP,osaka,大阪市福島区,1K,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=189),189
+JP,osaka,大阪市福島区,1DK,rc,92000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=65),65
+JP,osaka,大阪市福島区,1LDK,rc,129000,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=170),170
+JP,osaka,大阪市此花区,1K,steel,53000,CHINTAI,https://www.chintai.net/osaka/area/27104/list/page3/?m=1,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市西区,1R,rc,89000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=136),136
+JP,osaka,大阪市西区,1R,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=40),40
+JP,osaka,大阪市西区,1K,rc,70700,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=196),196
+JP,osaka,大阪市西区,1DK,rc,100000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=162),162
+JP,osaka,大阪市西区,1LDK,rc,130000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=194),194
+JP,osaka,大阪市港区,1R,rc,56000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市港区,1R,steel,44000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=51),51
+JP,osaka,大阪市港区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=113),113
+JP,osaka,大阪市港区,1K,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=30),30
+JP,osaka,大阪市港区,1DK,rc,102000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=25),25
+JP,osaka,大阪市港区,1DK,steel,53000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=38),38
+JP,osaka,大阪市港区,1LDK,rc,119000,CHINTAI,https://www.chintai.net/osaka/area/27107/list/page4/?m=3,2026-02-20,2026-02-20,List Median (N=72),72
+JP,osaka,大阪市大正区,1K,rc,64800,CHINTAI,https://www.chintai.net/osaka/area/27108/list/page4/?m=1,2026-02-20,2026-02-20,List Median (N=85),85
+JP,osaka,大阪市大正区,1LDK,rc,102400,CHINTAI,https://www.chintai.net/osaka/area/27108/list/page2/?m=3,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市天王寺区,1R,rc,65500,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市天王寺区,1K,rc,70000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=157),157
+JP,osaka,大阪市天王寺区,1K,steel,53250,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28),28
+JP,osaka,大阪市天王寺区,1DK,rc,86000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=54),54
+JP,osaka,大阪市天王寺区,1LDK,rc,128000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=135),135
+JP,osaka,大阪市天王寺区,1LDK,steel,72000,CHINTAI,https://www.chintai.net/osaka/area/27109/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=21),21
+JP,osaka,大阪市浪速区,1R,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=70),70
+JP,osaka,大阪市浪速区,1R,steel,54000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=33),33
+JP,osaka,大阪市浪速区,1K,rc,69975,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=208),208
+JP,osaka,大阪市浪速区,1DK,rc,98750,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=130),130
+JP,osaka,大阪市浪速区,1LDK,rc,118000,CHINTAI,https://www.chintai.net/osaka/area/27111/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=193),193
+JP,osaka,大阪市西淀川区,1R,rc,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,osaka,大阪市西淀川区,1K,rc,63250,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=116),116
+JP,osaka,大阪市西淀川区,1K,steel,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43),43
+JP,osaka,大阪市西淀川区,1K,wood,57000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=39),39
+JP,osaka,大阪市西淀川区,1DK,rc,94000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=32),32
+JP,osaka,大阪市西淀川区,1LDK,rc,107000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=79),79
+JP,osaka,大阪市西淀川区,1LDK,wood,73000,CHINTAI,https://www.chintai.net/osaka/area/27113/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=87),87
+JP,osaka,大阪市東淀川区,1R,rc,48000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=60),60
+JP,osaka,大阪市東淀川区,1R,steel,33000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=73),73
+JP,osaka,大阪市東淀川区,1R,wood,60500,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=20),20
+JP,osaka,大阪市東淀川区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=118),118
+JP,osaka,大阪市東淀川区,1K,steel,52000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40),40
+JP,osaka,大阪市東淀川区,1K,wood,59000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=73),73
+JP,osaka,大阪市東淀川区,1DK,rc,81000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=128),128
+JP,osaka,大阪市東淀川区,1DK,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=70),70
+JP,osaka,大阪市東淀川区,1LDK,rc,105000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=114),114
+JP,osaka,大阪市東淀川区,1LDK,steel,66000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23),23
+JP,osaka,大阪市東淀川区,1LDK,wood,67000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=57),57
+JP,osaka,大阪市東成区,1R,rc,61750,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=44),44
+JP,osaka,大阪市東成区,1R,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=43),43
+JP,osaka,大阪市東成区,1K,rc,65500,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=187),187
+JP,osaka,大阪市東成区,1K,steel,58000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市東成区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=28),28
+JP,osaka,大阪市東成区,1DK,rc,79400,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=63),63
+JP,osaka,大阪市東成区,1DK,steel,56000,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=56),56
+JP,osaka,大阪市東成区,1LDK,rc,100450,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=115),115
+JP,osaka,大阪市東成区,1LDK,wood,70500,CHINTAI,https://www.chintai.net/osaka/area/27115/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市生野区,1R,rc,53000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=23),23
+JP,osaka,大阪市生野区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page4/?m=0,2026-02-20,2026-02-20,List Median (N=38),38
+JP,osaka,大阪市生野区,1K,rc,59600,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=62),62
+JP,osaka,大阪市生野区,1K,steel,52000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=62),62
+JP,osaka,大阪市生野区,1K,wood,54000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=78),78
+JP,osaka,大阪市生野区,1DK,rc,68300,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=37),37
+JP,osaka,大阪市生野区,1DK,steel,53500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市生野区,1DK,wood,59500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=64),64
+JP,osaka,大阪市生野区,1LDK,rc,79500,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=58),58
+JP,osaka,大阪市生野区,1LDK,steel,80000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23),23
+JP,osaka,大阪市生野区,1LDK,wood,68000,CHINTAI,https://www.chintai.net/osaka/area/27116/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=93),93
+JP,osaka,大阪市旭区,1R,rc,38500,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市旭区,1R,steel,35000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=77),77
+JP,osaka,大阪市旭区,1K,rc,62699,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=75),75
+JP,osaka,大阪市旭区,1K,steel,51500,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=51),51
+JP,osaka,大阪市旭区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=82),82
+JP,osaka,大阪市旭区,1DK,rc,64000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=29),29
+JP,osaka,大阪市旭区,1DK,steel,48000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=45),45
+JP,osaka,大阪市旭区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市旭区,1LDK,rc,93000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49),49
+JP,osaka,大阪市旭区,1LDK,light_steel,102000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39),39
+JP,osaka,大阪市旭区,1LDK,steel,81000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=34),34
+JP,osaka,大阪市旭区,1LDK,wood,70000,CHINTAI,https://www.chintai.net/osaka/area/27117/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49),49
+JP,osaka,大阪市城東区,1R,rc,58000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,osaka,大阪市城東区,1R,steel,36000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=71),71
+JP,osaka,大阪市城東区,1K,rc,68700,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=125),125
+JP,osaka,大阪市城東区,1DK,rc,74000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=59),59
+JP,osaka,大阪市城東区,1DK,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市城東区,1DK,wood,72000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=33),33
+JP,osaka,大阪市城東区,1LDK,rc,96500,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=82),82
+JP,osaka,大阪市城東区,1LDK,steel,79000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20),20
+JP,osaka,大阪市城東区,1LDK,wood,74000,CHINTAI,https://www.chintai.net/osaka/area/27118/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=49),49
+JP,osaka,大阪市阿倍野区,1R,rc,65000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市阿倍野区,1R,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=23),23
+JP,osaka,大阪市阿倍野区,1K,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=141),141
+JP,osaka,大阪市阿倍野区,1K,steel,55000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=43),43
+JP,osaka,大阪市阿倍野区,1LDK,rc,105000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=85),85
+JP,osaka,大阪市阿倍野区,1LDK,steel,90000,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25),25
+JP,osaka,大阪市住吉区,1R,rc,45500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=24),24
+JP,osaka,大阪市住吉区,1R,steel,35000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=93),93
+JP,osaka,大阪市住吉区,1K,rc,56000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=60),60
+JP,osaka,大阪市住吉区,1K,steel,49000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=71),71
+JP,osaka,大阪市住吉区,1K,wood,57000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=114),114
+JP,osaka,大阪市住吉区,1DK,rc,53000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=52),52
+JP,osaka,大阪市住吉区,1DK,steel,48500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=68),68
+JP,osaka,大阪市住吉区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=63),63
+JP,osaka,大阪市住吉区,1LDK,rc,78500,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30),30
+JP,osaka,大阪市住吉区,1LDK,steel,79000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39),39
+JP,osaka,大阪市住吉区,1LDK,wood,68000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=131),131
+JP,osaka,大阪市東住吉区,1R,rc,57000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市東住吉区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=106),106
+JP,osaka,大阪市東住吉区,1R,wood,43000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市東住吉区,1K,rc,60400,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=72),72
+JP,osaka,大阪市東住吉区,1K,steel,49000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=45),45
+JP,osaka,大阪市東住吉区,1K,wood,58000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=67),67
+JP,osaka,大阪市東住吉区,1DK,rc,62000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=46),46
+JP,osaka,大阪市東住吉区,1DK,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=41),41
+JP,osaka,大阪市東住吉区,1DK,wood,64000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市東住吉区,1LDK,rc,97000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=39),39
+JP,osaka,大阪市東住吉区,1LDK,light_steel,86000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=31),31
+JP,osaka,大阪市東住吉区,1LDK,steel,68000,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=25),25
+JP,osaka,大阪市東住吉区,1LDK,wood,67500,CHINTAI,https://www.chintai.net/osaka/area/27121/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=106),106
+JP,osaka,大阪市西成区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=28),28
+JP,osaka,大阪市西成区,1K,rc,58000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=32),32
+JP,osaka,大阪市西成区,1K,steel,54000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40),40
+JP,osaka,大阪市西成区,1DK,steel,62000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=29),29
+JP,osaka,大阪市西成区,1LDK,rc,90000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=3,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市西成区,1LDK,wood,69000,CHINTAI,https://www.chintai.net/osaka/area/27122/list/page3/?m=3,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市淀川区,1R,rc,66000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=80),80
+JP,osaka,大阪市淀川区,1R,steel,40000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=53),53
+JP,osaka,大阪市淀川区,1R,src,54000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=29),29
+JP,osaka,大阪市淀川区,1K,rc,69000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=223),223
+JP,osaka,大阪市淀川区,1DK,rc,81300,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=157),157
+JP,osaka,大阪市淀川区,1LDK,rc,115000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=197),197
+JP,osaka,大阪市鶴見区,1K,rc,61000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=27),27
+JP,osaka,大阪市鶴見区,1K,steel,55500,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=76),76
+JP,osaka,大阪市鶴見区,1K,wood,60000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=54),54
+JP,osaka,大阪市鶴見区,1DK,steel,60000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=36),36
+JP,osaka,大阪市鶴見区,1LDK,rc,96500,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=30),30
+JP,osaka,大阪市鶴見区,1LDK,steel,83750,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=26),26
+JP,osaka,大阪市鶴見区,1LDK,wood,73000,CHINTAI,https://www.chintai.net/osaka/area/27124/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=53),53
+JP,osaka,大阪市住之江区,1R,steel,35000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page3/?m=0,2026-02-20,2026-02-20,List Median (N=32),32
+JP,osaka,大阪市住之江区,1K,rc,61000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=40),40
+JP,osaka,大阪市住之江区,1K,steel,49500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=52),52
+JP,osaka,大阪市住之江区,1K,wood,55500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=86),86
+JP,osaka,大阪市住之江区,1DK,steel,45000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=28),28
+JP,osaka,大阪市住之江区,1DK,wood,65000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page3/?m=2,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市住之江区,1LDK,steel,65000,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=22),22
+JP,osaka,大阪市住之江区,1LDK,wood,68500,CHINTAI,https://www.chintai.net/osaka/area/27125/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=73),73
+JP,osaka,大阪市平野区,1R,steel,37500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=94),94
+JP,osaka,大阪市平野区,1K,rc,61500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=47),47
+JP,osaka,大阪市平野区,1K,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=52),52
+JP,osaka,大阪市平野区,1K,wood,53500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=58),58
+JP,osaka,大阪市平野区,1DK,rc,47500,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=24),24
+JP,osaka,大阪市平野区,1DK,steel,42000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=62),62
+JP,osaka,大阪市平野区,1DK,wood,63000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=57),57
+JP,osaka,大阪市平野区,1LDK,light_steel,87000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=46),46
+JP,osaka,大阪市平野区,1LDK,steel,65000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=20),20
+JP,osaka,大阪市平野区,1LDK,wood,67000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=100),100
+JP,osaka,大阪市北区,1R,rc,81000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=126),126
+JP,osaka,大阪市北区,1R,steel,46500,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=34),34
+JP,osaka,大阪市北区,1R,src,56000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=21),21
+JP,osaka,大阪市北区,1K,rc,72000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=185),185
+JP,osaka,大阪市北区,1DK,rc,92000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page4/?m=2,2026-02-20,2026-02-20,List Median (N=102),102
+JP,osaka,大阪市北区,1LDK,rc,125000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=217),217
+JP,osaka,大阪市北区,1LDK,steel,119000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=23),23
+JP,osaka,大阪市中央区,1R,rc,79500,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=116),116
+JP,osaka,大阪市中央区,1R,steel,47000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=27),27
+JP,osaka,大阪市中央区,1R,src,69000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=0,2026-02-20,2026-02-20,List Median (N=35),35
+JP,osaka,大阪市中央区,1K,rc,77000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=1,2026-02-20,2026-02-20,List Median (N=204),204
+JP,osaka,大阪市中央区,1DK,rc,97000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=184),184
+JP,osaka,大阪市中央区,1DK,steel,74000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=30),30
+JP,osaka,大阪市中央区,1LDK,rc,129000,CHINTAI,https://www.chintai.net/osaka/area/27128/list/page5/?m=3,2026-02-20,2026-02-20,List Median (N=223),223
+JP,tokyo,新宿区,1K,steel,117500,CHINTAI,https://www.chintai.net/tokyo/area/13104/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=32) retry,32
+JP,tokyo,台東区,1K,steel,94500,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=26) retry,26
+JP,tokyo,台東区,1K,src,120000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=25) retry,25
+JP,tokyo,台東区,1DK,steel,109000,CHINTAI,https://www.chintai.net/tokyo/area/13106/list/page10/?m=2,2026-02-20,2026-02-20,List Median (N=23) retry,23
+JP,tokyo,墨田区,1R,steel,78000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=20) retry,20
+JP,tokyo,墨田区,1R,wood,66000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,tokyo,墨田区,1K,steel,91000,CHINTAI,https://www.chintai.net/tokyo/area/13107/list/page7/?m=1,2026-02-20,2026-02-20,List Median (N=22) retry,22
+JP,tokyo,江東区,1R,steel,97000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=41) retry,41
+JP,tokyo,江東区,1R,wood,72000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=31) retry,31
+JP,tokyo,江東区,1R,src,115000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=23) retry,23
+JP,tokyo,江東区,1DK,steel,103000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry,22
+JP,tokyo,江東区,1LDK,light_steel,147000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=25) retry,25
+JP,tokyo,江東区,1LDK,steel,162000,CHINTAI,https://www.chintai.net/tokyo/area/13108/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=31) retry,31
+JP,tokyo,品川区,1K,wood,86000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,tokyo,品川区,1DK,wood,115000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry,22
+JP,tokyo,品川区,1LDK,steel,162000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=26) retry,26
+JP,tokyo,品川区,1LDK,wood,169000,CHINTAI,https://www.chintai.net/tokyo/area/13109/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=25) retry,25
+JP,tokyo,目黒区,1R,src,119000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page9/?m=0,2026-02-20,2026-02-20,List Median (N=29) retry,29
+JP,tokyo,目黒区,1K,light_steel,98000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,tokyo,目黒区,1K,steel,100000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=28) retry,28
+JP,tokyo,目黒区,1K,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,tokyo,目黒区,1K,src,109000,CHINTAI,https://www.chintai.net/tokyo/area/13110/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=31) retry,31
+JP,tokyo,大田区,1R,steel,81000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=32) retry,32
+JP,tokyo,大田区,1K,steel,90000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=28) retry,28
+JP,tokyo,大田区,1DK,wood,115000,CHINTAI,https://www.chintai.net/tokyo/area/13111/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,tokyo,世田谷区,1DK,wood,78000,CHINTAI,https://www.chintai.net/tokyo/area/13112/list/page10/?m=2,2026-02-20,2026-02-20,List Median (N=40) retry,40
+JP,tokyo,渋谷区,1LDK,steel,160000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=24) retry,24
+JP,tokyo,渋谷区,1LDK,src,290000,CHINTAI,https://www.chintai.net/tokyo/area/13113/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=32) retry,32
+JP,tokyo,中野区,1R,steel,77000,CHINTAI,https://www.chintai.net/tokyo/area/13114/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=26) retry,26
+JP,tokyo,杉並区,1R,steel,80000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=33) retry,33
+JP,tokyo,杉並区,1K,light_steel,81000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=30) retry,30
+JP,tokyo,杉並区,1K,steel,86000,CHINTAI,https://www.chintai.net/tokyo/area/13115/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=31) retry,31
+JP,tokyo,豊島区,1R,steel,93000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page9/?m=0,2026-02-20,2026-02-20,List Median (N=24) retry,24
+JP,tokyo,豊島区,1K,steel,82000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=27) retry,27
+JP,tokyo,豊島区,1K,wood,71500,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=24) retry,24
+JP,tokyo,豊島区,1LDK,steel,163000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=44) retry,44
+JP,tokyo,豊島区,1LDK,wood,133000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=41) retry,41
+JP,tokyo,豊島区,1LDK,src,193000,CHINTAI,https://www.chintai.net/tokyo/area/13116/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=20) retry,20
+JP,tokyo,北区,1K,steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=20) retry,20
+JP,tokyo,北区,1DK,wood,90500,CHINTAI,https://www.chintai.net/tokyo/area/13117/list/page7/?m=2,2026-02-20,2026-02-20,List Median (N=22) retry,22
+JP,tokyo,荒川区,1LDK,steel,145000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page8/?m=3,2026-02-20,2026-02-20,List Median (N=23) retry,23
+JP,tokyo,荒川区,1LDK,wood,128000,CHINTAI,https://www.chintai.net/tokyo/area/13118/list/page8/?m=3,2026-02-20,2026-02-20,List Median (N=24) retry,24
+JP,tokyo,板橋区,1R,steel,64000,CHINTAI,https://www.chintai.net/tokyo/area/13119/list/page10/?m=0,2026-02-20,2026-02-20,List Median (N=40) retry,40
+JP,tokyo,練馬区,1K,light_steel,84000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=36) retry,36
+JP,tokyo,練馬区,1DK,wood,80000,CHINTAI,https://www.chintai.net/tokyo/area/13120/list/page5/?m=2,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,osaka,大阪市福島区,1K,steel,65500,CHINTAI,https://www.chintai.net/osaka/area/27103/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=25) retry,25
+JP,osaka,大阪市西区,1R,src,72250,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page8/?m=0,2026-02-20,2026-02-20,List Median (N=24) retry,24
+JP,osaka,大阪市西区,1LDK,src,123000,CHINTAI,https://www.chintai.net/osaka/area/27106/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=27) retry,27
+JP,osaka,大阪市東淀川区,1LDK,light_steel,81000,CHINTAI,https://www.chintai.net/osaka/area/27114/list/page10/?m=3,2026-02-20,2026-02-20,List Median (N=23) retry,23
+JP,osaka,大阪市阿倍野区,1K,wood,64500,CHINTAI,https://www.chintai.net/osaka/area/27119/list/page7/?m=1,2026-02-20,2026-02-20,List Median (N=22) retry,22
+JP,osaka,大阪市住吉区,1LDK,light_steel,99000,CHINTAI,https://www.chintai.net/osaka/area/27120/list/page9/?m=3,2026-02-20,2026-02-20,List Median (N=27) retry,27
+JP,osaka,大阪市淀川区,1K,steel,59000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=27) retry,27
+JP,osaka,大阪市淀川区,1K,src,52750,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page10/?m=1,2026-02-20,2026-02-20,List Median (N=20) retry,20
+JP,osaka,大阪市淀川区,1DK,steel,50000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page9/?m=2,2026-02-20,2026-02-20,List Median (N=29) retry,29
+JP,osaka,大阪市淀川区,1DK,src,55000,CHINTAI,https://www.chintai.net/osaka/area/27123/list/page9/?m=2,2026-02-20,2026-02-20,List Median (N=26) retry,26
+JP,osaka,大阪市平野区,1LDK,rc,67000,CHINTAI,https://www.chintai.net/osaka/area/27126/list/page9/?m=3,2026-02-20,2026-02-20,List Median (N=29) retry,29
+JP,osaka,大阪市北区,1K,steel,62000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=39) retry,39
+JP,osaka,大阪市北区,1K,src,56000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=1,2026-02-20,2026-02-20,List Median (N=21) retry,21
+JP,osaka,大阪市北区,1DK,steel,59000,CHINTAI,https://www.chintai.net/osaka/area/27127/list/page8/?m=2,2026-02-20,2026-02-20,List Median (N=28) retry,28

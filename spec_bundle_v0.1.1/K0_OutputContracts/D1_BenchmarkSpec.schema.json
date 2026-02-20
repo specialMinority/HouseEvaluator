@@ -1,0 +1,253 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "K0_OutputContracts/D1_BenchmarkSpec.schema.json",
+    "title": "D1 Benchmark Spec Contract",
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+        "version",
+        "coverage",
+        "segmentation",
+        "metrics",
+        "sources",
+        "update_policy",
+        "fallback_policy"
+    ],
+    "properties": {
+        "version": {
+            "type": "string",
+            "minLength": 1
+        },
+        "generated_at": {
+            "type": "string"
+        },
+        "coverage": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "prefectures",
+                "layout_types",
+                "hub_stations"
+            ],
+            "properties": {
+                "prefectures": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "saitama",
+                            "tokyo",
+                            "chiba",
+                            "kanagawa"
+                        ]
+                    }
+                },
+                "layout_types": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "1R",
+                            "1K"
+                        ]
+                    }
+                },
+                "hub_stations": {
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "tokyo_station",
+                            "shinjuku",
+                            "shibuya",
+                            "ikebukuro",
+                            "ueno",
+                            "shinagawa",
+                            "other"
+                        ]
+                    }
+                }
+            }
+        },
+        "segmentation": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "dimensions",
+                "bucket_rules"
+            ],
+            "properties": {
+                "dimensions": {
+                    "type": "array",
+                    "minItems": 2,
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "prefecture",
+                            "municipality",
+                            "nearest_station_name",
+                            "layout_type",
+                            "area_bucket",
+                            "building_age_bucket",
+                            "station_walk_bucket",
+                            "hub_station"
+                        ]
+                    }
+                },
+                "bucket_rules": {
+                    "type": "object",
+                    "additionalProperties": true,
+                    "description": "Defines bucket cutoffs for area/building_age/station_walk"
+                }
+            }
+        },
+        "metrics": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "metric_key",
+                    "unit",
+                    "aggregation"
+                ],
+                "properties": {
+                    "metric_key": {
+                        "type": "string",
+                        "enum": [
+                            "benchmark_monthly_fixed_cost_yen_median",
+                            "benchmark_monthly_fixed_cost_yen_p25",
+                            "benchmark_monthly_fixed_cost_yen_p75",
+                            "area_access_score_0_100"
+                        ]
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": [
+                            "yen",
+                            "score"
+                        ]
+                    },
+                    "aggregation": {
+                        "type": "string",
+                        "enum": [
+                            "median",
+                            "p25",
+                            "p75",
+                            "mean"
+                        ]
+                    },
+                    "min_samples": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 10000
+                    }
+                }
+            }
+        },
+        "sources": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "name",
+                    "type",
+                    "notes"
+                ],
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "minLength": 1
+                    },
+                    "type": {
+                        "type": "string",
+                        "enum": [
+                            "portal",
+                            "public",
+                            "other"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "update_policy": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+                "cadence_days",
+                "freshness_target_days"
+            ],
+            "properties": {
+                "cadence_days": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365
+                },
+                "freshness_target_days": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 365
+                },
+                "quality_gate": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "min_samples_station_level": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 10000
+                        },
+                        "min_samples_prefecture_level": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 10000
+                        }
+                    }
+                }
+            }
+        },
+        "fallback_policy": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": [
+                    "level",
+                    "benchmark_confidence"
+                ],
+                "properties": {
+                    "level": {
+                        "type": "string",
+                        "enum": [
+                            "station_level",
+                            "prefecture_level",
+                            "none"
+                        ]
+                    },
+                    "benchmark_confidence": {
+                        "type": "string",
+                        "enum": [
+                            "high",
+                            "mid",
+                            "low",
+                            "none"
+                        ]
+                    },
+                    "notes": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}

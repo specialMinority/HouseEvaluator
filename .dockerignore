@@ -1,0 +1,16 @@
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/node_modules/
+**/dist/
+**/build/
+**/.DS_Store
+frontend/.cache/
+.secrets/
+**/*service-account*.json
+**/*sa_key*.json

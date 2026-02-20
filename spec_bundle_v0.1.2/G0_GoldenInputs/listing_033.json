@@ -1,0 +1,16 @@
+{
+  "hub_station": "tennoji",
+  "prefecture": "osaka",
+  "municipality": "大阪市天王寺区",
+  "nearest_station_name": "天王寺",
+  "station_walk_min": 7,
+  "layout_type": "1DK",
+  "building_structure": "other",
+  "area_sqm": 30,
+  "building_built_year": 2010,
+  "orientation": "SE",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 90000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 380000
+}

@@ -1,0 +1,15 @@
+{
+  "hub_station": "shinagawa",
+  "prefecture": "tokyo",
+  "nearest_station_name": "品川",
+  "station_walk_min": 4,
+  "layout_type": "1R",
+  "building_structure": "other",
+  "area_sqm": 19,
+  "building_built_year": 2016,
+  "orientation": "SW",
+  "bathroom_toilet_separate": false,
+  "rent_yen": 90000,
+  "mgmt_fee_yen": 5000,
+  "initial_cost_total_yen": 285000
+}

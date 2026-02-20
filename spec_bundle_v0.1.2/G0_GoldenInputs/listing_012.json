@@ -1,0 +1,15 @@
+{
+  "hub_station": "shibuya",
+  "prefecture": "saitama",
+  "nearest_station_name": "さいたま新都心",
+  "station_walk_min": 2,
+  "layout_type": "1R",
+  "building_structure": "other",
+  "area_sqm": 12,
+  "building_built_year": 2023,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 150000,
+  "mgmt_fee_yen": 10000,
+  "initial_cost_total_yen": 480000
+}

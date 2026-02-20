@@ -1,0 +1,23 @@
+{
+  "hub_station": "osaka_station",
+  "prefecture": "osaka",
+  "municipality": "大阪市北区",
+  "nearest_station_name": "大阪",
+  "station_walk_min": 4,
+  "layout_type": "1LDK",
+  "building_structure": "other",
+  "area_sqm": 40,
+  "building_built_year": 2020,
+  "orientation": "S",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 140000,
+  "mgmt_fee_yen": 8000,
+  "initial_cost_total_yen": 600000,
+  "shikikin_yen": 140000,
+  "reikin_yen": 140000,
+  "brokerage_fee_yen": 148000,
+  "guarantor_fee_yen": 74000,
+  "fire_insurance_yen": 18000,
+  "key_change_yen": 15000,
+  "cleaning_fee_yen": 65000
+}

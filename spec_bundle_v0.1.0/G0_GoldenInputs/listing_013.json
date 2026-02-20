@@ -1,0 +1,15 @@
+{
+  "hub_station": "ikebukuro",
+  "prefecture": "saitama",
+  "nearest_station_name": "南浦和",
+  "station_walk_min": 10,
+  "layout_type": "1K",
+  "area_sqm": 18,
+  "building_built_year": 2000,
+  "orientation": "W",
+  "bathroom_toilet_separate": true,
+  "rent_yen": 50000,
+  "mgmt_fee_yen": 20000,
+  "initial_cost_total_yen": 350000
+}
+

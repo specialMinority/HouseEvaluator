@@ -1,0 +1,109 @@
+{
+  "cases": [
+    {
+      "id": "tokyo_shinjuku_basic",
+      "label": "Tokyo · Shinjuku · 기본(13개)",
+      "input": {
+        "hub_station": "shinjuku",
+        "prefecture": "tokyo",
+        "nearest_station_name": "高田馬場",
+        "station_walk_min": 7,
+        "layout_type": "1K",
+        "building_structure": "rc",
+        "area_sqm": 24.5,
+        "building_built_year": 2017,
+        "orientation": "SE",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 118000,
+        "mgmt_fee_yen": 8000,
+        "initial_cost_total_yen": 420000
+      }
+    },
+    {
+      "id": "saitama_far_station",
+      "label": "Saitama · 역도보 길음(리스크 유도)",
+      "input": {
+        "hub_station": "ueno",
+        "prefecture": "saitama",
+        "nearest_station_name": "大宮",
+        "station_walk_min": 18,
+        "layout_type": "1R",
+        "building_structure": "wood",
+        "area_sqm": 18,
+        "building_built_year": 1995,
+        "orientation": "N",
+        "bathroom_toilet_separate": false,
+        "rent_yen": 62000,
+        "mgmt_fee_yen": 5000,
+        "initial_cost_total_yen": 260000
+      }
+    },
+    {
+      "id": "chiba_cost_ok",
+      "label": "Chiba · 비용 매력(기본)",
+      "input": {
+        "hub_station": "tokyo_station",
+        "prefecture": "chiba",
+        "nearest_station_name": "船橋",
+        "station_walk_min": 10,
+        "layout_type": "1K",
+        "building_structure": "other",
+        "area_sqm": 26,
+        "building_built_year": 2008,
+        "orientation": "E",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 72000,
+        "mgmt_fee_yen": 6000,
+        "initial_cost_total_yen": 190000
+      }
+    },
+    {
+      "id": "kanagawa_yokohama_ward",
+      "label": "Kanagawa · Yokohama(ward) · hub other",
+      "input": {
+        "hub_station": "other",
+        "hub_station_other_name": "yokohama",
+        "prefecture": "kanagawa",
+        "municipality": "横浜市港北区",
+        "nearest_station_name": "日吉",
+        "station_walk_min": 6,
+        "layout_type": "1K",
+        "building_structure": "rc",
+        "area_sqm": 23,
+        "building_built_year": 2015,
+        "orientation": "S",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 98000,
+        "mgmt_fee_yen": 7000,
+        "initial_cost_total_yen": 350000
+      }
+    },
+    {
+      "id": "tokyo_advanced_breakdown_contract",
+      "label": "Tokyo · Advanced breakdown/contract 포함",
+      "input": {
+        "hub_station": "shibuya",
+        "prefecture": "tokyo",
+        "nearest_station_name": "中目黒",
+        "station_walk_min": 9,
+        "layout_type": "1K",
+        "building_structure": "rc",
+        "area_sqm": 21,
+        "building_built_year": 2012,
+        "orientation": "W",
+        "bathroom_toilet_separate": true,
+        "rent_yen": 122000,
+        "mgmt_fee_yen": 9000,
+        "initial_cost_total_yen": 520000,
+        "reikin_yen": 122000,
+        "brokerage_fee_yen": 61000,
+        "key_change_yen": 22000,
+        "cleaning_fee_yen": 44000,
+        "other_initial_fees_yen": 30000,
+        "contract_term_months": 24,
+        "renewal_fee_months": 1.0,
+        "early_termination_penalty_yen": 120000
+      }
+    }
+  ]
+}

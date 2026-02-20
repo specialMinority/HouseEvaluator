@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(dir:*)",
+      "WebSearch",
+      "WebFetch(domain:ibis.prodouga.com)",
+      "WebFetch(domain:arealty.jp)",
+      "WebFetch(domain:japanlifestart.com)",
+      "WebFetch(domain:suumo.jp)",
+      "WebFetch(domain:smooth.jp)",
+      "WebFetch(domain:www.japan-property.jp)",
+      "WebFetch(domain:www.gtn.co.jp)",
+      "WebFetch(domain:e-housing.jp)",
+      "WebFetch(domain:tokyoportfolio.com)",
+      "WebFetch(domain:wagaya-japan.com)",
+      "WebFetch(domain:osakakiten.com)",
+      "WebFetch(domain:gaijinblog.com)",
+      "WebFetch(domain:blog.gaijinpot.com)",
+      "WebFetch(domain:visitinsidejapan.com)",
+      "WebFetch(domain:resources.realestate.co.jp)",
+      "WebFetch(domain:money-career.com)",
+      "WebFetch(domain:www.futabafudousan.com)",
+      "Bash(wc:*)",
+      "Bash(unzip:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}

@@ -1,0 +1,1975 @@
+{
+  "version": "0.1.0",
+  "generated_at": "2026-02-17",
+  "S1": {
+    "version": "0.1.0",
+    "generated_at": "2026-02-17",
+    "locale_default": "ko",
+    "mvp_required_fields": [
+      "hub_station",
+      "prefecture",
+      "nearest_station_name",
+      "station_walk_min",
+      "layout_type",
+      "area_sqm",
+      "building_built_year",
+      "orientation",
+      "bathroom_toilet_separate",
+      "rent_yen",
+      "mgmt_fee_yen",
+      "initial_cost_total_yen"
+    ],
+    "fields": [
+      {
+        "key": "hub_station",
+        "type": "enum",
+        "required": true,
+        "label_ko": "주요 허브역",
+        "label_ja": "主要ハブ駅",
+        "unit": "none",
+        "constraints": {
+          "enum_values": [
+            "tokyo_station",
+            "shinjuku",
+            "shibuya",
+            "ikebukuro",
+            "ueno",
+            "shinagawa",
+            "other"
+          ]
+        },
+        "ui": {
+          "group": "location",
+          "control": "select",
+          "placeholder_ko": "예: shinjuku",
+          "help_text_ko": "출퇴근/생활권 기준이 되는 대표 역을 선택하세요.",
+          "help_text_ja": "通勤や生活圏の基準となる駅を選択してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "hub_station_other_name",
+        "type": "string",
+        "required": false,
+        "label_ko": "기타 허브역명",
+        "label_ja": "その他のハブ駅名",
+        "unit": "none",
+        "depends_on": {
+          "key": "hub_station",
+          "equals": "other"
+        },
+        "ui": {
+          "group": "location",
+          "control": "text",
+          "placeholder_ko": "예: yokohama",
+          "help_text_ko": "허브역을 'other'로 선택한 경우에만 입력하세요.",
+          "help_text_ja": "ハブ駅で「other」を選択した場合のみ入力してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "prefecture",
+        "type": "enum",
+        "required": true,
+        "label_ko": "도도부현",
+        "label_ja": "都道府県",
+        "unit": "none",
+        "constraints": {
+          "enum_values": [
+            "saitama",
+            "tokyo",
+            "chiba",
+            "kanagawa"
+          ]
+        },
+        "ui": {
+          "group": "location",
+          "control": "select",
+          "placeholder_ko": "예: tokyo",
+          "help_text_ko": "MVP는 사이타마/도쿄/치바/가나가와(요코하마)까지 지원합니다.",
+          "help_text_ja": "MVPは埼玉/東京/千葉/神奈川（横浜）まで対応です。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "nearest_station_name",
+        "type": "string",
+        "required": true,
+        "label_ko": "가까운 역(역명)",
+        "label_ja": "最寄り駅名",
+        "unit": "none",
+        "ui": {
+          "group": "location",
+          "control": "text",
+          "placeholder_ko": "예: 新宿",
+          "help_text_ko": "포털 표기와 최대한 동일하게 입력하세요(역명만).",
+          "help_text_ja": "ポータル表記に合わせて入力してください（駅名のみ）。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "station_walk_min",
+        "type": "integer",
+        "required": true,
+        "label_ko": "도보 시간(분)",
+        "label_ja": "徒歩(分)",
+        "unit": "min",
+        "constraints": {
+          "min": 0,
+          "max": 60,
+          "step": 1
+        },
+        "ui": {
+          "group": "location",
+          "control": "slider",
+          "placeholder_ko": "예: 8",
+          "help_text_ko": "0~60분 범위에서 선택하세요.",
+          "help_text_ja": "0〜60分の範囲で選択してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "layout_type",
+        "type": "enum",
+        "required": true,
+        "label_ko": "평면(1R/1K)",
+        "label_ja": "間取り(1R/1K)",
+        "unit": "none",
+        "constraints": {
+          "enum_values": [
+            "1R",
+            "1K"
+          ]
+        },
+        "ui": {
+          "group": "condition",
+          "control": "select",
+          "placeholder_ko": "예: 1K",
+          "help_text_ko": "MVP는 1R/1K만 평가합니다.",
+          "help_text_ja": "MVPは1R/1Kのみ評価します。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "area_sqm",
+        "type": "number",
+        "required": true,
+        "label_ko": "전용면적(m²)",
+        "label_ja": "専有面積(m²)",
+        "unit": "sqm",
+        "constraints": {
+          "min": 5,
+          "max": 80,
+          "step": 0.5
+        },
+        "ui": {
+          "group": "condition",
+          "control": "number",
+          "placeholder_ko": "예: 22.5",
+          "help_text_ko": "전용면적(㎡) 기준으로 입력하세요.",
+          "help_text_ja": "専有面積(㎡)で入力してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "building_built_year",
+        "type": "integer",
+        "required": true,
+        "label_ko": "준공연도",
+        "label_ja": "築年",
+        "unit": "year",
+        "constraints": {
+          "min": 1950,
+          "max": 2035,
+          "step": 1
+        },
+        "ui": {
+          "group": "condition",
+          "control": "number",
+          "placeholder_ko": "예: 2018",
+          "help_text_ko": "알 수 없으면 부동산/포털 정보를 확인하세요.",
+          "help_text_ja": "不明な場合は不動産/ポータル情報を確認してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "orientation",
+        "type": "enum",
+        "required": true,
+        "label_ko": "방향",
+        "label_ja": "方角",
+        "unit": "none",
+        "constraints": {
+          "enum_values": [
+            "N",
+            "NE",
+            "E",
+            "SE",
+            "S",
+            "SW",
+            "W",
+            "NW",
+            "UNKNOWN"
+          ]
+        },
+        "ui": {
+          "group": "condition",
+          "control": "select",
+          "placeholder_ko": "예: S",
+          "help_text_ko": "모르면 UNKNOWN을 선택하세요.",
+          "help_text_ja": "不明な場合はUNKNOWNを選択してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "bathroom_toilet_separate",
+        "type": "boolean",
+        "required": true,
+        "label_ko": "욕실/화장실 분리",
+        "label_ja": "バス・トイレ別",
+        "unit": "none",
+        "ui": {
+          "group": "condition",
+          "control": "toggle",
+          "help_text_ko": "분리형이면 켬(true), 일체형이면 끔(false).",
+          "help_text_ja": "別ならtrue、同室ならfalse。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "rent_yen",
+        "type": "integer",
+        "required": true,
+        "label_ko": "월세(엔)",
+        "label_ja": "家賃(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 500000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 98000",
+          "help_text_ko": "계약서/모집공고에 적힌 월세만 입력하세요.",
+          "help_text_ja": "契約書/募集情報の家賃のみ入力してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "mgmt_fee_yen",
+        "type": "integer",
+        "required": true,
+        "label_ko": "관리비/공익비(엔)",
+        "label_ja": "管理費・共益費(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 100000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 8000",
+          "help_text_ko": "0이면 0으로 입력하세요.",
+          "help_text_ja": "0の場合は0を入力してください。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "initial_cost_total_yen",
+        "type": "integer",
+        "required": true,
+        "label_ko": "초기비용 합계(엔)",
+        "label_ja": "初期費用合計(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 350000",
+          "help_text_ko": "계약서에 찍히는 초기비용 합계만 입력(이사비/가구가전/생활비 제외).",
+          "help_text_ja": "契約書に記載の初期費用合計のみ（引越し/家具家電/生活費は除外）。",
+          "advanced": false
+        }
+      },
+      {
+        "key": "municipality",
+        "type": "string",
+        "required": false,
+        "label_ko": "시/구/정/촌(선택)",
+        "label_ja": "市区町村(任意)",
+        "unit": "none",
+        "ui": {
+          "group": "location",
+          "control": "text",
+          "placeholder_ko": "예: 新宿区",
+          "help_text_ko": "정밀 비교용(선택).",
+          "help_text_ja": "精密比較用（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "line_name",
+        "type": "string",
+        "required": false,
+        "label_ko": "노선명(선택)",
+        "label_ja": "路線名(任意)",
+        "unit": "none",
+        "ui": {
+          "group": "location",
+          "control": "text",
+          "placeholder_ko": "예: JR山手線",
+          "help_text_ko": "정밀 비교용(선택).",
+          "help_text_ja": "精密比較用（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "shikikin_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "시키킨/보증금(엔)",
+        "label_ja": "敷金(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "reikin_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "레이킨/사례금(엔)",
+        "label_ja": "礼金(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "brokerage_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "중개수수료(엔)",
+        "label_ja": "仲介手数料(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "guarantor_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "보증회사/보증료(엔)",
+        "label_ja": "保証会社費用(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "fire_insurance_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "화재보험(엔)",
+        "label_ja": "火災保険(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 300000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "key_change_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "열쇠교체비(엔)",
+        "label_ja": "鍵交換費(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 200000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "cleaning_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "청소비(엔)",
+        "label_ja": "クリーニング費(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 300000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "초기비용 상세(선택).",
+          "help_text_ja": "初期費用の内訳（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "other_initial_fees_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "기타 초기비용(엔)",
+        "label_ja": "その他初期費用(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 500000,
+          "step": 1000
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "help_text_ko": "명목이 불분명하면 계약서/내역을 확인하세요.",
+          "help_text_ja": "名目が不明な場合は契約書/内訳を確認してください。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "contract_term_months",
+        "type": "integer",
+        "required": false,
+        "label_ko": "계약기간(개월)",
+        "label_ja": "契約期間(月)",
+        "unit": "months",
+        "constraints": {
+          "min": 0,
+          "max": 60,
+          "step": 1
+        },
+        "ui": {
+          "group": "contract",
+          "control": "number",
+          "placeholder_ko": "예: 24",
+          "help_text_ko": "계약 리스크 판단용(선택).",
+          "help_text_ja": "契約リスク判断用（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "renewal_fee_months",
+        "type": "number",
+        "required": false,
+        "label_ko": "갱신료(개월수 기준)",
+        "label_ja": "更新料(ヶ月換算)",
+        "unit": "months",
+        "constraints": {
+          "min": 0,
+          "max": 2,
+          "step": 0.5
+        },
+        "ui": {
+          "group": "contract",
+          "control": "number",
+          "placeholder_ko": "예: 1.0",
+          "help_text_ko": "갱신료를 '월세의 몇 개월치'로 입력(선택).",
+          "help_text_ja": "更新料を「家賃の何ヶ月分」で入力（任意）。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "early_termination_penalty_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "중도해지 위약금(엔)",
+        "label_ja": "違約金(円)",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 2000000,
+          "step": 10000
+        },
+        "ui": {
+          "group": "contract",
+          "control": "number",
+          "placeholder_ko": "예: 100000",
+          "help_text_ko": "중도해지 조항이 있으면 입력(선택).",
+          "help_text_ja": "途中解約の条項があれば入力（任意）。",
+          "advanced": true
+        }
+      }
+    ]
+  },
+  "S2": {
+    "version": "0.1.0",
+    "generated_at": "2026-02-17T00:00:00Z",
+    "weights": {
+      "location": 0.35,
+      "condition": 0.25,
+      "cost": 0.4
+    },
+    "foreigner_adjustment": {
+      "foreign_im_shift_months": 1.0,
+      "foreign_reikin_allowance_months": 1.0,
+      "notes": "QA 체크리스트\\n- weights 합=1.0 (0.35+0.25+0.40)\\n- input_key/enum 참조: V0_Vocabulary.yml의 keys/enums만 사용 (station_walk_min, area_sqm, building_age_years, orientation, bathroom_toilet_separate, rent_delta_ratio, initial_multiple, benchmark_confidence 등)\\n- risk_flag_id: V0 risk_flags의 ID만 사용\\n- grade band 단조: A(85) > B(70) > C(55) > D(0)\\n- benchmark_confidence가 low/none이면 rent_delta_ratio는 중립점(70) 처리하도록 params에 방어 포함\\n- when 조건은 문자열이 아닌 JSONLogic 오브젝트"
+    },
+    "grade_thresholds": {
+      "overall": [
+        {
+          "grade": "A",
+          "min_score": 85
+        },
+        {
+          "grade": "B",
+          "min_score": 70
+        },
+        {
+          "grade": "C",
+          "min_score": 55
+        },
+        {
+          "grade": "D",
+          "min_score": 0
+        }
+      ],
+      "location": [
+        {
+          "grade": "A",
+          "min_score": 85
+        },
+        {
+          "grade": "B",
+          "min_score": 70
+        },
+        {
+          "grade": "C",
+          "min_score": 55
+        },
+        {
+          "grade": "D",
+          "min_score": 0
+        }
+      ],
+      "condition": [
+        {
+          "grade": "A",
+          "min_score": 85
+        },
+        {
+          "grade": "B",
+          "min_score": 70
+        },
+        {
+          "grade": "C",
+          "min_score": 55
+        },
+        {
+          "grade": "D",
+          "min_score": 0
+        }
+      ],
+      "cost": [
+        {
+          "grade": "A",
+          "min_score": 85
+        },
+        {
+          "grade": "B",
+          "min_score": 70
+        },
+        {
+          "grade": "C",
+          "min_score": 55
+        },
+        {
+          "grade": "D",
+          "min_score": 0
+        }
+      ]
+    },
+    "features": [
+      {
+        "feature_id": "loc_station_walk_min",
+        "component": "location",
+        "input_key": "station_walk_min",
+        "method": "bucket",
+        "params": {
+          "direction": "lower_is_better",
+          "buckets": [
+            {
+              "max": 5,
+              "score": 95
+            },
+            {
+              "max": 10,
+              "score": 85
+            },
+            {
+              "max": 15,
+              "score": 70
+            },
+            {
+              "max": 20,
+              "score": 55
+            },
+            {
+              "max": 30,
+              "score": 35
+            },
+            {
+              "min": 31,
+              "score": 15
+            }
+          ],
+          "default_score": 55
+        },
+        "weight": 0.4,
+        "notes": "MVP location은 station_walk_min 중심. (area_access_score_0_100 벤치마크 키는 V0에 없어 스펙에 직접 포함 불가)"
+      },
+      {
+        "feature_id": "loc_area_access_score_0_100",
+        "component": "location",
+        "input_key": "area_access_score_0_100",
+        "method": "linear",
+        "params": {
+          "direction": "higher_is_better",
+          "min_x": 0,
+          "max_x": 100,
+          "min_score": 0,
+          "max_score": 100,
+          "clamp": true,
+          "confidence_key": "benchmark_confidence",
+          "neutral_score_if_confidence_in": [
+            "none",
+            "low"
+          ],
+          "neutral_score": 70,
+          "default_score": 70
+        },
+        "weight": 0.6,
+        "notes": "벤치마크 기반 접근성 점수(0~100). benchmark_confidence가 none/low이면 중립(70) 처리."
+      },
+      {
+        "feature_id": "cond_area_sqm",
+        "component": "condition",
+        "input_key": "area_sqm",
+        "method": "linear",
+        "params": {
+          "direction": "higher_is_better",
+          "min_x": 12,
+          "max_x": 35,
+          "min_score": 40,
+          "max_score": 100,
+          "clamp": true
+        },
+        "weight": 0.35
+      },
+      {
+        "feature_id": "cond_building_age_years",
+        "component": "condition",
+        "input_key": "building_age_years",
+        "method": "bucket",
+        "params": {
+          "direction": "lower_is_better",
+          "buckets": [
+            {
+              "max": 5,
+              "score": 95
+            },
+            {
+              "max": 10,
+              "score": 85
+            },
+            {
+              "max": 20,
+              "score": 70
+            },
+            {
+              "max": 30,
+              "score": 55
+            },
+            {
+              "max": 40,
+              "score": 40
+            },
+            {
+              "min": 41,
+              "score": 25
+            }
+          ],
+          "default_score": 55
+        },
+        "weight": 0.35
+      },
+      {
+        "feature_id": "cond_orientation",
+        "component": "condition",
+        "input_key": "orientation",
+        "method": "lookup",
+        "params": {
+          "table": {
+            "S": 95,
+            "SE": 90,
+            "SW": 90,
+            "E": 80,
+            "W": 80,
+            "NE": 65,
+            "NW": 65,
+            "N": 55,
+            "UNKNOWN": 70
+          },
+          "default_score": 70
+        },
+        "weight": 0.15
+      },
+      {
+        "feature_id": "cond_bathroom_toilet_separate",
+        "component": "condition",
+        "input_key": "bathroom_toilet_separate",
+        "method": "boolean",
+        "params": {
+          "true_score": 85,
+          "false_score": 60
+        },
+        "weight": 0.15
+      },
+      {
+        "feature_id": "cost_rent_delta_ratio",
+        "component": "cost",
+        "input_key": "rent_delta_ratio",
+        "method": "bucket",
+        "params": {
+          "direction": "lower_is_better",
+          "confidence_key": "benchmark_confidence",
+          "neutral_score_if_confidence_in": [
+            "none",
+            "low"
+          ],
+          "neutral_score": 70,
+          "buckets": [
+            {
+              "max": -0.1,
+              "score": 95
+            },
+            {
+              "max": -0.05,
+              "score": 85
+            },
+            {
+              "max": 0.0,
+              "score": 75
+            },
+            {
+              "max": 0.05,
+              "score": 70
+            },
+            {
+              "max": 0.1,
+              "score": 55
+            },
+            {
+              "max": 0.2,
+              "score": 35
+            },
+            {
+              "min": 0.2000001,
+              "score": 15
+            }
+          ],
+          "default_score": 70
+        },
+        "weight": 0.6,
+        "notes": "벤치마크 신뢰도(benchmark_confidence)가 none/low이면 rent_delta_ratio를 중립(70) 처리."
+      },
+      {
+        "feature_id": "cost_initial_multiple_im",
+        "component": "cost",
+        "input_key": "initial_multiple",
+        "method": "bucket",
+        "params": {
+          "direction": "lower_is_better",
+          "foreigner_im_shift_months": 1.0,
+          "apply_foreigner_adjustment": "im_shift_months",
+          "buckets": [
+            {
+              "max": 3.0,
+              "score": 95
+            },
+            {
+              "max": 4.0,
+              "score": 85
+            },
+            {
+              "max": 5.0,
+              "score": 70
+            },
+            {
+              "max": 6.0,
+              "score": 55
+            },
+            {
+              "max": 7.0,
+              "score": 40
+            },
+            {
+              "min": 7.0000001,
+              "score": 20
+            }
+          ],
+          "default_score": 55
+        },
+        "weight": 0.4,
+        "notes": "외국인 프리미엄 상수 보정: foreign_im_shift_months(+1.0)를 적용할 경우 effective_im = max(0, initial_multiple - shift)로 평가(동적/지역별 금지)."
+      }
+    ],
+    "risk_flag_rules": [
+      {
+        "id": "RF_HIGH_INITIAL_MULTIPLE",
+        "priority": 100,
+        "when": {
+          ">=": [
+            {
+              "var": "initial_multiple"
+            },
+            6.0
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "HIGH_INITIAL_MULTIPLE",
+          "severity": "high"
+        }
+      },
+      {
+        "id": "RF_FAR_FROM_STATION",
+        "priority": 200,
+        "when": {
+          ">=": [
+            {
+              "var": "station_walk_min"
+            },
+            15
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "FAR_FROM_STATION",
+          "severity": "mid"
+        }
+      },
+      {
+        "id": "RF_VERY_SMALL_AREA",
+        "priority": 300,
+        "when": {
+          "<": [
+            {
+              "var": "area_sqm"
+            },
+            15
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "VERY_SMALL_AREA",
+          "severity": "mid"
+        }
+      },
+      {
+        "id": "RF_OLD_BUILDING",
+        "priority": 400,
+        "when": {
+          ">=": [
+            {
+              "var": "building_age_years"
+            },
+            30
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "OLD_BUILDING",
+          "severity": "mid"
+        }
+      },
+      {
+        "id": "RF_NORTH_FACING",
+        "priority": 500,
+        "when": {
+          "==": [
+            {
+              "var": "orientation"
+            },
+            "N"
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "NORTH_FACING",
+          "severity": "low"
+        }
+      },
+      {
+        "id": "RF_BATH_NOT_SEPARATE",
+        "priority": 600,
+        "when": {
+          "==": [
+            {
+              "var": "bathroom_toilet_separate"
+            },
+            false
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "BATH_NOT_SEPARATE",
+          "severity": "low"
+        }
+      },
+      {
+        "id": "RF_HIGH_OTHER_FEES",
+        "priority": 700,
+        "when": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "other_initial_fees_yen"
+                },
+                null
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "other_initial_fees_yen"
+                },
+                100000
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "HIGH_OTHER_FEES",
+          "severity": "high"
+        }
+      },
+      {
+        "id": "RF_LONG_CONTRACT_TERM",
+        "priority": 800,
+        "when": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "contract_term_months"
+                },
+                null
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "contract_term_months"
+                },
+                24
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "LONG_CONTRACT_TERM",
+          "severity": "high"
+        }
+      },
+      {
+        "id": "RF_HIGH_EARLY_TERMINATION_PENALTY",
+        "priority": 900,
+        "when": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "early_termination_penalty_yen"
+                },
+                null
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "early_termination_penalty_yen"
+                },
+                100000
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "risk_flag_id": "HIGH_EARLY_TERMINATION_PENALTY",
+          "severity": "high"
+        }
+      }
+    ],
+    "tradeoff_rules": [
+      {
+        "id": "TR_CONDITION_HIGH_COST_LOW",
+        "priority": 100,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "condition_score"
+                },
+                75
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "cost_score"
+                },
+                55
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "tradeoff_tag": "condition_high_cost_low",
+          "message_key": "TRADEOFF_CONDITION_GOOD_BUT_COST_BAD"
+        }
+      },
+      {
+        "id": "TR_LOCATION_HIGH_CONDITION_LOW",
+        "priority": 200,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "location_score"
+                },
+                75
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "condition_score"
+                },
+                55
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "tradeoff_tag": "location_high_condition_low",
+          "message_key": "TRADEOFF_LOCATION_GOOD_BUT_CONDITION_BAD"
+        }
+      },
+      {
+        "id": "TR_LOCATION_LOW_COST_HIGH",
+        "priority": 300,
+        "when": {
+          "and": [
+            {
+              "<=": [
+                {
+                  "var": "location_score"
+                },
+                55
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "cost_score"
+                },
+                75
+              ]
+            }
+          ]
+        },
+        "outputs": {
+          "tradeoff_tag": "location_low_cost_high",
+          "message_key": "TRADEOFF_LOCATION_WEAK_BUT_COST_GOOD"
+        }
+      },
+      {
+        "id": "TR_DEFAULT_BALANCED",
+        "priority": 999,
+        "when": {
+          "==": [
+            1,
+            1
+          ]
+        },
+        "outputs": {
+          "tradeoff_tag": "balanced",
+          "message_key": "TRADEOFF_BALANCED"
+        }
+      }
+    ],
+    "what_if_rules": [
+      {
+        "id": "WI_REDUCE_INITIAL_TOTAL_50K",
+        "enabled_if": {
+          "==": [
+            1,
+            1
+          ]
+        },
+        "actions": [
+          {
+            "type": "delta_yen",
+            "target_key": "initial_cost_total_yen",
+            "value": -50000,
+            "label_ko": "초기비용 총액 5만엔 낮추면?",
+            "label_ja": "初期費用合計を5万円下げたら？"
+          }
+        ]
+      },
+      {
+        "id": "WI_SET_REIKIN_ZERO",
+        "enabled_if": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "reikin_yen"
+                },
+                null
+              ]
+            },
+            {
+              ">": [
+                {
+                  "var": "reikin_yen"
+                },
+                0
+              ]
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "set_zero",
+            "target_key": "reikin_yen",
+            "label_ko": "예: 사례금(礼金) 0엔으로 협상하면?",
+            "label_ja": "例：礼金を0円に交渉できたら？"
+          }
+        ]
+      },
+      {
+        "id": "WI_SCALE_BROKERAGE_HALF",
+        "enabled_if": {
+          "and": [
+            {
+              "!=": [
+                {
+                  "var": "brokerage_fee_yen"
+                },
+                null
+              ]
+            },
+            {
+              ">": [
+                {
+                  "var": "brokerage_fee_yen"
+                },
+                0
+              ]
+            }
+          ]
+        },
+        "actions": [
+          {
+            "type": "scale",
+            "target_key": "brokerage_fee_yen",
+            "value": 0.5,
+            "label_ko": "중개수수료 50%로 낮추면?",
+            "label_ja": "仲介手数料を50%にできたら？"
+          }
+        ]
+      }
+    ]
+  },
+  "D1": {
+    "version": "0.1.0",
+    "generated_at": "2026-02-17",
+    "coverage": {
+      "prefectures": [
+        "saitama",
+        "tokyo",
+        "chiba",
+        "kanagawa"
+      ],
+      "layout_types": [
+        "1R",
+        "1K"
+      ],
+      "hub_stations": [
+        "tokyo_station",
+        "shinjuku",
+        "shibuya",
+        "ikebukuro",
+        "ueno",
+        "shinagawa",
+        "other"
+      ]
+    },
+    "segmentation": {
+      "dimensions": [
+        "prefecture",
+        "municipality",
+        "nearest_station_name",
+        "layout_type",
+        "area_bucket",
+        "building_age_bucket",
+        "station_walk_bucket",
+        "hub_station"
+      ],
+      "bucket_rules": {
+        "municipality_yokohama_wards": {
+          "notes": "If prefecture == 'kanagawa' and municipality starts with '横浜市', treat municipality (e.g., '横浜市港北区') as a ward-level segmentation key. This enables Yokohama-ku granularity; when municipality is missing, fall back to nearest_station_name normalization."
+        },
+        "area_bucket": {
+          "unit": "sqm",
+          "method": "left_closed_right_open",
+          "buckets": [
+            {
+              "key": "lt15",
+              "min_inclusive": null,
+              "max_exclusive": 15
+            },
+            {
+              "key": "15_19",
+              "min_inclusive": 15,
+              "max_exclusive": 20
+            },
+            {
+              "key": "20_24",
+              "min_inclusive": 20,
+              "max_exclusive": 25
+            },
+            {
+              "key": "25_29",
+              "min_inclusive": 25,
+              "max_exclusive": 30
+            },
+            {
+              "key": "ge30",
+              "min_inclusive": 30,
+              "max_exclusive": null
+            }
+          ],
+          "notes": "Uses raw area_sqm (no rounding). These cutoffs are aligned with MVP examples in R0_Requirements.md."
+        },
+        "building_age_bucket": {
+          "unit": "years",
+          "age_years_definition": "max(0, as_of_year - building_built_year)",
+          "as_of_year_strategy": "benchmark: extraction_year; evaluation: current_year",
+          "buckets": [
+            {
+              "key": "0_5",
+              "min_inclusive": 0,
+              "max_inclusive": 5
+            },
+            {
+              "key": "6_10",
+              "min_inclusive": 6,
+              "max_inclusive": 10
+            },
+            {
+              "key": "11_20",
+              "min_inclusive": 11,
+              "max_inclusive": 20
+            },
+            {
+              "key": "ge21",
+              "min_inclusive": 21,
+              "max_inclusive": null
+            }
+          ],
+          "notes": "If building_built_year is missing/invalid in a source row, exclude the row from age-segmented station-level benchmarks and allow only prefecture-level aggregation if available."
+        },
+        "station_walk_bucket": {
+          "unit": "minutes",
+          "buckets": [
+            {
+              "key": "le5",
+              "min_inclusive": null,
+              "max_inclusive": 5
+            },
+            {
+              "key": "6_10",
+              "min_inclusive": 6,
+              "max_inclusive": 10
+            },
+            {
+              "key": "11_15",
+              "min_inclusive": 11,
+              "max_inclusive": 15
+            },
+            {
+              "key": "ge16",
+              "min_inclusive": 16,
+              "max_inclusive": null
+            }
+          ],
+          "notes": "station_walk_min is assumed to be the portal-stated walking minutes. Do not infer from distance unless an explicit, licensed rule is adopted."
+        },
+        "hub_station_compat": {
+          "notes": "Include hub_station as a segmentation dimension to support user hub selection. Cost benchmarks may ignore hub_station (dimension present but not used), while area_access_score_0_100 is expected to vary by hub_station."
+        },
+        "nearest_station_name_normalization": {
+          "notes": "Segment by a normalized station name key (e.g., trim, unicode normalize, remove suffixes like '駅', apply provider-specific alias map). Normalization must be deterministic and documented; do not use fuzzy matching without auditability."
+        }
+      }
+    },
+    "metrics": [
+      {
+        "metric_key": "benchmark_monthly_fixed_cost_yen_median",
+        "unit": "yen",
+        "aggregation": "median",
+        "min_samples": 30
+      },
+      {
+        "metric_key": "benchmark_monthly_fixed_cost_yen_p25",
+        "unit": "yen",
+        "aggregation": "p25",
+        "min_samples": 30
+      },
+      {
+        "metric_key": "benchmark_monthly_fixed_cost_yen_p75",
+        "unit": "yen",
+        "aggregation": "p75",
+        "min_samples": 30
+      },
+      {
+        "metric_key": "area_access_score_0_100",
+        "unit": "score",
+        "aggregation": "mean",
+        "min_samples": 0
+      }
+    ],
+    "sources": [
+      {
+        "name": "SUUMO (Recruit) rental listings (1R/1K)",
+        "type": "portal",
+        "notes": "High coverage and rich listing fields, but Terms of Service may restrict scraping/automated collection. Use only permitted access methods (official APIs/feeds/partnership, or manual export where allowed). Preserve attribution and comply with robots.txt and contractual constraints."
+      },
+      {
+        "name": "LIFULL HOME'S rental listings (1R/1K)",
+        "type": "portal",
+        "notes": "Good coverage and filters; policies may prohibit non-approved crawling. Prefer official data provision programs; avoid account-based or paywalled content extraction without permission."
+      },
+      {
+        "name": "at home rental listings (1R/1K)",
+        "type": "portal",
+        "notes": "Strong agency network coverage; ToS compliance required. Benchmark pipeline should be designed to accept licensed exports rather than brittle page scraping."
+      },
+      {
+        "name": "CHINTAI rental listings (1R/1K)",
+        "type": "portal",
+        "notes": "Useful as an additional portal cross-check; treat automated retrieval as high policy-risk unless explicit permission exists."
+      },
+      {
+        "name": "e-Stat / Housing and Land Survey (住宅・土地統計調査) rent statistics",
+        "type": "public",
+        "notes": "Legally safe public statistics; useful for prefecture-level sanity checks and drift detection. Typically not station-level and not directly comparable to portal 'asking rent' due to survey definitions and sampling."
+      },
+      {
+        "name": "MLIT National Land Numerical Information (国土数値情報) railway/station geodata",
+        "type": "public",
+        "notes": "Public geospatial dataset for station coordinates/lines. Helps normalize nearest_station_name and enables optional access scoring, but does not provide rent/fees."
+      },
+      {
+        "name": "ODPT (Public Transportation Open Data) / Tokyo Metro and participating operators",
+        "type": "public",
+        "notes": "Potential inputs for time-to-hub calculations where licensed and available (API keys/terms apply). Coverage may be partial outside Tokyo; cache and rate-limit per policy; do not republish restricted fields."
+      }
+    ],
+    "update_policy": {
+      "cadence_days": 30,
+      "freshness_target_days": 60,
+      "quality_gate": {
+        "min_samples_station_level": 30,
+        "min_samples_prefecture_level": 200
+      }
+    },
+    "fallback_policy": [
+      {
+        "level": "station_level",
+        "benchmark_confidence": "high",
+        "notes": "Use (prefecture + nearest_station_name + layout_type + area/building_age/station_walk buckets) if sample count >= min_samples_station_level; otherwise drop to prefecture_level. Within station_level, optionally downgrade to mid/low confidence if sample count is below gate but still nonzero (must be labeled explicitly)."
+      },
+      {
+        "level": "prefecture_level",
+        "benchmark_confidence": "mid",
+        "notes": "Use (prefecture + layout_type + area/building_age/station_walk buckets) if sample count >= min_samples_prefecture_level; otherwise set benchmark unavailable. Prefecture-level is expected to be broader and less comparable; always label confidence and show wider uncertainty (p25/p75)."
+      },
+      {
+        "level": "none",
+        "benchmark_confidence": "none",
+        "notes": "No benchmark available (insufficient sample or missing required dimensions). Downstream scoring must not silently impute; it must surface 'benchmark_confidence: none' and rely on rule-based heuristics only."
+      }
+    ]
+  },
+  "C1": {
+    "version": "0.1.0",
+    "generated_at": "2026-02-17",
+    "placeholders": [
+      "{overall_grade}",
+      "{overall_score}",
+      "{location_grade}",
+      "{location_score}",
+      "{condition_grade}",
+      "{condition_score}",
+      "{cost_grade}",
+      "{cost_score}",
+      "{monthly_fixed_cost_yen}",
+      "{initial_cost_total_yen}",
+      "{initial_multiple}",
+      "{rent_delta_ratio}",
+      "{benchmark_confidence}",
+      "{prefecture}",
+      "{nearest_station_name}",
+      "{station_walk_min}",
+      "{layout_type}",
+      "{area_sqm}",
+      "{building_age_years}",
+      "{orientation}",
+      "{bathroom_toilet_separate}"
+    ],
+    "rules": [
+      {
+        "id": "R01_BENCHMARK_NONE",
+        "priority": 900,
+        "when": {
+          "==": [
+            {
+              "var": "benchmark_confidence"
+            },
+            "none"
+          ]
+        },
+        "summary_ko": "이 매물은 종합 {overall_grade}({overall_score})로 보이지만, 벤치마크 신뢰도({benchmark_confidence})가 사실상 없어서 비용/입지/컨디션 비교의 불확실성이 큽니다. 현재 점수({location_grade}/{condition_grade}/{cost_grade})를 기준으로 본인의 우선순위(출퇴근/주거쾌적/지출)를 먼저 정한 뒤, 동일 역·유사 조건 매물 3~5개와 월고정비·초기비용(IM)을 나란히 확인하는 접근이 안전합니다. 외국인 계약 관점에서는 초기비용(IM)을 1개월 정도 보수적으로 보고, 礼金은 1개월까지 허용범위로 가정한 뷰도 함께 확인해 리스크를 줄이세요.",
+        "evidence_bullets_ko": [
+          "월 고정비(임대료+관리비): {monthly_fixed_cost_yen} JPY",
+          "초기비용 합계: {initial_cost_total_yen} JPY (IM={initial_multiple})",
+          "월고정비 벤치마크 대비: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "역 도보 {station_walk_min}분 · 전용 {area_sqm}㎡ · 연식 {building_age_years}년 · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金(레이킨): 감액/0엔 가능 여부 문의(동일 단지/역세권 비교 매물 제시)",
+          "仲介手数料(중개수수료): 상한(0.5개월/1개월) 및 할인/캠페인 적용 여부 확인",
+          "鍵交換費用(열쇠교체): 필수 여부·금액 근거 확인 후 감액/면제 협의",
+          "クリーニング費用(청소비): 퇴거 시 정산으로 전환/감액 가능 여부 협의",
+          "フリーレント: 1개월 등 제공 가능 여부(초기비용 조정 대안으로) 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：減額またはゼロにできないかご相談可能でしょうか（近隣の比較物件も確認しています）。",
+          "仲介手数料：上限（月額賃料の0.5ヶ月/1ヶ月）と割引・キャンペーン適用可否をご確認いただけますか。",
+          "鍵交換費用：必須かどうか、金額の根拠を確認のうえ減額・免除をご相談できますか。",
+          "クリーニング費用：退去時精算への変更、または減額をご相談可能でしょうか。",
+          "フリーレント：1ヶ月などの付与をご相談可能でしょうか（初期費用調整の代替案として）。"
+        ],
+        "alternative_search_queries_ja": [
+          "{prefecture} {nearest_station_name} {layout_type} 賃貸",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} 仲介手数料無料",
+          "{nearest_station_name} {layout_type} 鍵交換なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} クリーニング費用なし",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡ 以上"
+        ]
+      },
+      {
+        "id": "R02_BENCHMARK_LOW",
+        "priority": 850,
+        "when": {
+          "==": [
+            {
+              "var": "benchmark_confidence"
+            },
+            "low"
+          ]
+        },
+        "summary_ko": "종합 {overall_grade}({overall_score})로 평가되지만, 벤치마크 신뢰도({benchmark_confidence})가 낮아 rent_delta_ratio={rent_delta_ratio} 해석 오차가 커질 수 있습니다. 따라서 점수는 참고로 두고, '월고정비 {monthly_fixed_cost_yen} + 초기비용(IM {initial_multiple})'의 현금흐름을 중심으로 {station_walk_min}분 도보/연식 {building_age_years}년/면적 {area_sqm}㎡ 같은 체감 요소와의 트레이드오프를 판단하는 편이 안전합니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 같이 확인해 리스크를 줄이세요.",
+        "evidence_bullets_ko": [
+          "월 고정비: {monthly_fixed_cost_yen} JPY (임대료+관리비)",
+          "초기비용: {initial_cost_total_yen} JPY, IM={initial_multiple}",
+          "벤치마크 대비 월고정비 변화: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "입지/컨디션 체감 지표: 도보 {station_walk_min}분 · 연식 {building_age_years}년 · {area_sqm}㎡ · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 0.5~1개월 감액 또는 0엔 전환 가능 여부 문의",
+          "仲介手数料: 할인/캠페인 적용, 또는 고정비(관리비 포함) 기준으로 재산정 가능 여부 확인",
+          "鍵交換: 교체 생략/비용 상한 적용 가능 여부 협의",
+          "クリーニング: 입주 전 비용 분리 청구 여부 확인 후 감액/퇴거 시 정산 전환 협의",
+          "フリーレント: 0.5~1개월 제공 가능 여부(초기비용 보전 목적) 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：0.5〜1ヶ月分の減額、またはゼロへの変更をご相談可能でしょうか。",
+          "仲介手数料：割引・キャンペーン適用、または管理費込み賃料ベースでの再計算可否をご確認ください。",
+          "鍵交換費用：交換省略、もしくは費用上限の適用をご相談できますか。",
+          "クリーニング費用：内訳を確認のうえ、減額または退去時精算への変更をご相談可能でしょうか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか（初期費用の調整として）。"
+        ],
+        "alternative_search_queries_ja": [
+          "{prefecture} {nearest_station_name} {layout_type} 賃貸",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} 仲介手数料無料",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} 築浅",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡"
+        ]
+      },
+      {
+        "id": "R03_CONDITION_HIGH_COST_LOW",
+        "priority": 800,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "condition_score"
+                },
+                70
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "cost_score"
+                },
+                40
+              ]
+            }
+          ]
+        },
+        "summary_ko": "컨디션은 {condition_grade}({condition_score})로 강점이지만, 비용 효율은 {cost_grade}({cost_score})로 아쉬운 편이라 '살기 편함'과 '지출(월고정비·초기비용)' 사이 트레이드오프가 핵심입니다. 월고정비 {monthly_fixed_cost_yen}와 초기비용(IM {initial_multiple}) 중 어느 쪽이 부담인지 먼저 정한 뒤, rent_delta_ratio={rent_delta_ratio}가 높게 나온 이유(월세/관리비/초기비용 구조)를 분해해서 협상 여지를 찾아보는 게 좋습니다. 외국인 계약은 초기비용(IM)을 1개월 정도 보수적으로, 礼金은 1개월까지 허용범위로 가정한 뷰도 함께 확인하세요.",
+        "evidence_bullets_ko": [
+          "컨디션: {condition_grade}({condition_score}) / 방위 {orientation}, 욕실분리 {bathroom_toilet_separate}",
+          "비용: 월고정비 {monthly_fixed_cost_yen} JPY, 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크 대비: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "체감 요소: 역 도보 {station_walk_min}분 · {area_sqm}㎡ · 연식 {building_age_years}년"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 0~1개월 감액/면제 가능 여부(컨디션 강점은 유지, 비용만 조정) 문의",
+          "仲介手数料: 상한 적용 및 할인/쿠폰 여부 확인",
+          "鍵交換: 필수/선택 여부 확인 후 감액 협의",
+          "クリーニング: 금액 근거 확인 후 감액 또는 퇴거 시 정산 전환 협의",
+          "フリーレント: 0.5~1개월 제공으로 월고정비 부담을 초기로 이동시키는 옵션 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：0〜1ヶ月分の減額・免除をご相談可能でしょうか（条件は気に入っているので費用面を調整したいです）。",
+          "仲介手数料：上限適用と割引の可否をご確認ください。",
+          "鍵交換費用：必須/任意の確認のうえ、減額をご相談できますか。",
+          "クリーニング費用：金額の根拠を確認のうえ、減額または退去時精算への変更をご相談可能でしょうか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか。"
+        ],
+        "alternative_search_queries_ja": [
+          "{nearest_station_name} {layout_type} 築浅",
+          "{nearest_station_name} {layout_type} バス・トイレ別",
+          "{nearest_station_name} {layout_type} 南向き",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type} 築{building_age_years}年",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{prefecture} {nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡"
+        ]
+      },
+      {
+        "id": "R04_LOCATION_HIGH_CONDITION_LOW",
+        "priority": 750,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "location_score"
+                },
+                70
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "condition_score"
+                },
+                40
+              ]
+            }
+          ]
+        },
+        "summary_ko": "입지는 {location_grade}({location_score})로 강하지만, 컨디션은 {condition_grade}({condition_score})로 타협이 필요한 케이스입니다. 즉, '{station_walk_min}분 도보/역 접근성'을 얻는 대신 '{building_age_years}년 연식·{area_sqm}㎡·방위/설비'에서 불편을 감수할 수 있는지가 핵심 트레이드오프입니다. 비용({monthly_fixed_cost_yen}, IM {initial_multiple}, rent_delta_ratio={rent_delta_ratio})은 협상으로 개선 여지가 생길 수 있으니, 외국인 계약 관점까지 포함해(초기비용 1개월 보수, 礼金 1개월 허용 가정) 조정 가능한 항목을 우선적으로 확인하세요.",
+        "evidence_bullets_ko": [
+          "입지: {location_grade}({location_score}), 역 도보 {station_walk_min}분 / {prefecture} {nearest_station_name}",
+          "컨디션: {condition_grade}({condition_score}), 연식 {building_age_years}년 · {area_sqm}㎡ · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}",
+          "월 고정비: {monthly_fixed_cost_yen} JPY / 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크 대비: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 연식/설비 타협을 근거로 감액/0엔 전환 협의",
+          "仲介手数料: 할인 또는 상한 적용 요청(입지 선호로 수요가 높아도 요청은 가능)",
+          "鍵交換: 교체비 상한/면제 가능 여부 확인",
+          "クリーニング: 금액 조정 또는 퇴거 시 정산 전환 협의",
+          "フリーレント: 0.5~1개월 제공으로 체감 비용 보전 가능 여부 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：築年数や設備条件を踏まえて、減額またはゼロをご相談可能でしょうか。",
+          "仲介手数料：割引、もしくは上限適用をご検討いただけますか。",
+          "鍵交換費用：費用上限の適用または免除の可否をご確認ください。",
+          "クリーニング費用：減額、または退去時精算への変更をご相談できますか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか。"
+        ],
+        "alternative_search_queries_ja": [
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}",
+          "{nearest_station_name} {layout_type} バス・トイレ別",
+          "{nearest_station_name} {layout_type} 築古",
+          "{nearest_station_name} {layout_type} 家賃 安い",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{prefecture} {nearest_station_name} {layout_type}",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡"
+        ]
+      },
+      {
+        "id": "R05_COST_HIGH_LOCATION_LOW",
+        "priority": 700,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "cost_score"
+                },
+                70
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "location_score"
+                },
+                40
+              ]
+            }
+          ]
+        },
+        "summary_ko": "비용은 {cost_grade}({cost_score})로 매력적이지만, 입지는 {location_grade}({location_score})로 약해 '저비용'과 '이동/생활 편의'의 트레이드오프가 뚜렷합니다. rent_delta_ratio={rent_delta_ratio}와 IM {initial_multiple}가 유리하게 나온 만큼, 실제 체감은 {station_walk_min}분 도보와 생활권(역 주변 상권/환승)을 감수할 수 있는지에 달려 있습니다. 외국인 계약은 초기비용을 1개월 보수적으로, 礼金 1개월 허용 가정으로 다시 계산해도 여전히 부담이 낮은지 확인하세요.",
+        "evidence_bullets_ko": [
+          "비용: 월고정비 {monthly_fixed_cost_yen} JPY / 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크 대비: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "입지 체감: {prefecture} {nearest_station_name}, 역 도보 {station_walk_min}분",
+          "컨디션 참고: {area_sqm}㎡ · 연식 {building_age_years}년 · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 이미 저비용이면 0엔 전환은 어려울 수 있어, '1개월→0.5개월' 같은 부분 감액부터 요청",
+          "仲介手数料: 할인/캠페인 여부 확인(비용 우위 유지 목적)",
+          "鍵交換: 옵션화/상한 적용 요청",
+          "クリーニング: 감액 또는 퇴거 시 정산 전환 협의",
+          "フリーレント: 추가 0.5개월 등 제공 가능 여부 문의(입지 약점 보완 차원)"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：ゼロが難しい場合でも、1ヶ月→0.5ヶ月など部分的な減額をご相談可能でしょうか。",
+          "仲介手数料：割引・キャンペーン適用可否をご確認ください。",
+          "鍵交換費用：任意化または費用上限の適用をご相談できますか。",
+          "クリーニング費用：減額、または退去時精算への変更をご相談可能でしょうか。",
+          "フリーレント：追加で0.5ヶ月などの付与をご相談可能でしょうか（立地面の補填として）。"
+        ],
+        "alternative_search_queries_ja": [
+          "{prefecture} {nearest_station_name} {layout_type} 家賃 安い",
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} 管理費込み",
+          "{nearest_station_name} {layout_type} 徒歩{station_walk_min}分",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡",
+          "{nearest_station_name} {layout_type} 築{building_age_years}年"
+        ]
+      },
+      {
+        "id": "R06_BALANCED_STRONG",
+        "priority": 650,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "overall_score"
+                },
+                75
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "location_score"
+                },
+                55
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "condition_score"
+                },
+                55
+              ]
+            },
+            {
+              ">=": [
+                {
+                  "var": "cost_score"
+                },
+                55
+              ]
+            },
+            {
+              "in": [
+                {
+                  "var": "benchmark_confidence"
+                },
+                [
+                  "high",
+                  "mid"
+                ]
+              ]
+            }
+          ]
+        },
+        "summary_ko": "종합 {overall_grade}({overall_score})로, 입지/컨디션/비용({location_grade}/{condition_grade}/{cost_grade})이 한쪽으로 치우치지 않은 '균형형'에 가깝습니다. 다만 좋은 밸런스는 곧 협상 여지가 크지 않을 수 있으니, rent_delta_ratio={rent_delta_ratio}와 IM {initial_multiple}를 기준으로 '현금흐름을 더 줄일지(초기비용/월고정비) vs 조건을 유지할지'의 트레이드오프를 정하고 접근하세요. 외국인 계약 관점에서도 초기비용 1개월 보수, 礼金 1개월 허용 가정으로 재평가해도 납득 가능한지 확인하는 게 안전합니다.",
+        "evidence_bullets_ko": [
+          "점수: overall {overall_grade}({overall_score}) / location {location_grade}({location_score}) / condition {condition_grade}({condition_score}) / cost {cost_grade}({cost_score})",
+          "비용: 월고정비 {monthly_fixed_cost_yen} JPY, 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크: rent_delta_ratio={rent_delta_ratio}, 신뢰도={benchmark_confidence}",
+          "기본 스펙: {prefecture} {nearest_station_name} · 도보 {station_walk_min}분 · {layout_type} · {area_sqm}㎡ · 연식 {building_age_years}년"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: '0엔'보다 '부분 감액' 또는 '프리렌트 전환' 같은 대안 협상",
+          "仲介手数料: 할인/캠페인 여부 확인(작게라도 개선)",
+          "鍵交換: 금액 근거 확인 후 상한 적용 요청",
+          "クリーニング: 정액·상한·퇴거 시 정산 전환 중 유리한 옵션으로 협의",
+          "フリーレント: 0.5개월이라도 제공 가능 여부 문의(실질 비용 개선)"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：ゼロが難しければ、減額またはフリーレントへの振替をご相談可能でしょうか。",
+          "仲介手数料：割引・キャンペーン適用の可否をご確認ください。",
+          "鍵交換費用：金額の根拠を確認のうえ、上限適用をご相談できますか。",
+          "クリーニング費用：定額/上限/退去時精算のうち有利な条件へ変更をご相談可能でしょうか。",
+          "フリーレント：0.5ヶ月でも付与をご相談可能でしょうか。"
+        ],
+        "alternative_search_queries_ja": [
+          "{nearest_station_name} {layout_type} 賃貸",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} バス・トイレ別",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡",
+          "{prefecture} {nearest_station_name} {layout_type} 管理費込み"
+        ]
+      },
+      {
+        "id": "R07_HIGH_INITIAL_MULTIPLE",
+        "priority": 600,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "initial_multiple"
+                },
+                6.0
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "var": "cost_score"
+                },
+                55
+              ]
+            }
+          ]
+        },
+        "summary_ko": "초기비용(IM {initial_multiple})이 두드러져 비용 점수({cost_grade} {cost_score})를 끌어내리는 유형입니다. 월고정비 {monthly_fixed_cost_yen} 자체보다 계약 시점 현금유출({initial_cost_total_yen})이 부담이라면, 礼金/중개/열쇠/클리닝/프리렌트 중 어디를 조정할지 우선순위를 정하는 것이 핵심 트레이드오프입니다. 벤치마크 신뢰도({benchmark_confidence})와 rent_delta_ratio={rent_delta_ratio}는 참고하되, 외국인 계약은 초기비용을 1개월 보수적으로 보고도 감당 가능한지 재확인하세요.",
+        "evidence_bullets_ko": [
+          "초기비용 합계: {initial_cost_total_yen} JPY, IM={initial_multiple}",
+          "월 고정비: {monthly_fixed_cost_yen} JPY / rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "입지/기본: {prefecture} {nearest_station_name} · 도보 {station_walk_min}분 · {layout_type}",
+          "컨디션 참고: {area_sqm}㎡ · 연식 {building_age_years}년 · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 1개월→0.5개월 또는 0엔 전환 가능 여부(IM 직접 감소) 협의",
+          "仲介手数料: 상한 적용/할인으로 초기비용 절감 협의",
+          "鍵交換: 옵션화/면제/상한 적용으로 초기비용 절감",
+          "クリーニング: 입주 전/후 비용 분리 확인 후 감액 또는 퇴거 시 정산 전환",
+          "フリーレント: 0.5~1개월 제공으로 '초기비용 체감' 완화 협의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：1ヶ月→0.5ヶ月、またはゼロへの変更をご相談可能でしょうか（初期費用を下げたいです）。",
+          "仲介手数料：上限適用・割引での調整をご相談できますか。",
+          "鍵交換費用：任意化/免除/上限適用をご相談可能でしょうか。",
+          "クリーニング費用：内訳を確認のうえ、減額または退去時精算への変更をご相談できますか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか（初期費用の体感を下げたいです）。"
+        ],
+        "alternative_search_queries_ja": [
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} 仲介手数料無料",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} 鍵交換なし",
+          "{nearest_station_name} {layout_type} クリーニング費用なし",
+          "{prefecture} {nearest_station_name} {layout_type}",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}"
+        ]
+      },
+      {
+        "id": "R08_FAR_FROM_STATION",
+        "priority": 550,
+        "when": {
+          "and": [
+            {
+              ">=": [
+                {
+                  "var": "station_walk_min"
+                },
+                16
+              ]
+            }
+          ]
+        },
+        "summary_ko": "역 도보 {station_walk_min}분이어서 입지 체감이 약해질 수 있는 케이스입니다. 비용({monthly_fixed_cost_yen}, IM {initial_multiple}, rent_delta_ratio={rent_delta_ratio})이 좋더라도 매일 이동 시간이 누적되면 만족도가 떨어질 수 있으니, '비용 절감 vs 이동 부담'의 트레이드오프를 명확히 두고 판단하세요. 외국인 계약 관점에서는 초기비용을 1개월 보수적으로, 礼金 1개월 허용 가정으로 재평가해도 여전히 가치가 있는지 확인하면 안전합니다.",
+        "evidence_bullets_ko": [
+          "입지: {prefecture} {nearest_station_name}, 도보 {station_walk_min}분 (location {location_grade} {location_score})",
+          "비용: 월고정비 {monthly_fixed_cost_yen} JPY / 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크 대비: rent_delta_ratio={rent_delta_ratio} (신뢰도={benchmark_confidence})",
+          "컨디션 참고: {layout_type} · {area_sqm}㎡ · 연식 {building_age_years}년 · 방위 {orientation} · 욕실분리 {bathroom_toilet_separate}"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 도보거리(체감 입지 약점)를 근거로 감액/0엔 전환 협의",
+          "仲介手数料: 할인/상한 적용 요청",
+          "鍵交換: 비용 상한 또는 면제 협의",
+          "クリーニング: 금액 조정 또는 퇴거 시 정산 전환 협의",
+          "フリーレント: 0.5~1개월 제공으로 이동 부담을 비용으로 상쇄하는 옵션 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：徒歩距離を踏まえて、減額またはゼロをご相談可能でしょうか。",
+          "仲介手数料：割引、もしくは上限適用をご検討いただけますか。",
+          "鍵交換費用：上限適用または免除をご相談できますか。",
+          "クリーニング費用：減額、または退去時精算への変更をご相談可能でしょうか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか（徒歩距離のデメリット補填として）。"
+        ],
+        "alternative_search_queries_ja": [
+          "{nearest_station_name} 徒歩15分以内 {layout_type}",
+          "{nearest_station_name} バス便 {layout_type}",
+          "{nearest_station_name} {layout_type} 家賃 安い",
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{prefecture} {nearest_station_name} {layout_type}",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡"
+        ]
+      },
+      {
+        "id": "R99_FALLBACK_GENERAL",
+        "priority": 0,
+        "when": {
+          "==": [
+            1,
+            1
+          ]
+        },
+        "summary_ko": "종합 {overall_grade}({overall_score})이며, 입지/컨디션/비용이 각각 {location_grade}({location_score}) / {condition_grade}({condition_score}) / {cost_grade}({cost_score})로 평가됩니다. 결국 '{station_walk_min}분 도보·생활권'과 '{area_sqm}㎡·연식 {building_age_years}년·방위 {orientation}·욕실분리 {bathroom_toilet_separate}' 그리고 '월고정비 {monthly_fixed_cost_yen} + 초기비용(IM {initial_multiple})' 사이에서 무엇을 우선할지의 트레이드오프가 결론을 좌우합니다. 벤치마크 신뢰도({benchmark_confidence})가 낮을수록 rent_delta_ratio={rent_delta_ratio}는 참고로 두고, 협상(礼金/중개/열쇠/클리닝/프리렌트)으로 조정 가능한 비용을 먼저 확인하세요.",
+        "evidence_bullets_ko": [
+          "점수 요약: overall {overall_grade}({overall_score}) / location {location_grade}({location_score}) / condition {condition_grade}({condition_score}) / cost {cost_grade}({cost_score})",
+          "비용 핵심: 월고정비 {monthly_fixed_cost_yen} JPY, 초기비용 {initial_cost_total_yen} JPY (IM {initial_multiple})",
+          "벤치마크 핵심: rent_delta_ratio={rent_delta_ratio}, 신뢰도={benchmark_confidence}",
+          "기본 스펙: {prefecture} {nearest_station_name} · {layout_type} · 도보 {station_walk_min}분 · {area_sqm}㎡ · 연식 {building_age_years}년"
+        ],
+        "negotiation_suggestions_ko": [
+          "礼金: 0~1개월 범위에서 감액/면제 가능 여부 문의",
+          "仲介手数料: 상한 적용/할인·캠페인 확인",
+          "鍵交換: 필수 여부·금액 근거 확인 후 감액 협의",
+          "クリーニング: 감액 또는 퇴거 시 정산 전환 협의",
+          "フリーレント: 0.5~1개월 제공 가능 여부 문의"
+        ],
+        "negotiation_suggestions_ja": [
+          "礼金：0〜1ヶ月の範囲で減額・免除をご相談可能でしょうか。",
+          "仲介手数料：上限適用や割引・キャンペーンの可否をご確認ください。",
+          "鍵交換費用：必須かどうか、金額根拠を確認のうえ減額をご相談できますか。",
+          "クリーニング費用：減額、または退去時精算への変更をご相談可能でしょうか。",
+          "フリーレント：0.5〜1ヶ月の付与をご相談可能でしょうか。"
+        ],
+        "alternative_search_queries_ja": [
+          "{prefecture} {nearest_station_name} {layout_type} 賃貸",
+          "{nearest_station_name} 徒歩{station_walk_min}分以内 {layout_type}",
+          "{nearest_station_name} {layout_type} 礼金なし",
+          "{nearest_station_name} {layout_type} 仲介手数料無料",
+          "{nearest_station_name} {layout_type} フリーレント",
+          "{nearest_station_name} {layout_type} 初期費用 安い",
+          "{nearest_station_name} {layout_type} バス・トイレ別",
+          "{nearest_station_name} {layout_type} {area_sqm}㎡"
+        ],
+        "notes": "Fallback rule. If multiple rules match, prefer higher priority and more specific trade-off rules."
+      }
+    ]
+  }
+}

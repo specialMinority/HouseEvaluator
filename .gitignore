@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyc
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Debug / temp files
+debug_*.html
+*.tmp
+*.bak
+
+# Logs
+*.log
+logs/
+
+# Node
+node_modules/
+
+# Secrets / Credentials
+*.env
+.env
+service_account*.json
+credentials.json
+secrets/
+
+# Cloud Build artifacts (local)
+*.zip
+
+# agent cache
+.agent/

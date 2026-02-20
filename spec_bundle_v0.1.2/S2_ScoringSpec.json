@@ -1,0 +1,388 @@
+{
+  "version": "0.1.0",
+  "generated_at": "2026-02-17T00:00:00Z",
+  "weights": {
+    "location": 0.35,
+    "condition": 0.25,
+    "cost": 0.4
+  },
+  "foreigner_adjustment": {
+    "foreign_im_shift_months": 1.0,
+    "foreign_reikin_allowance_months": 1.0,
+    "notes": "QA 체크리스트\\n- weights 합=1.0 (0.35+0.25+0.40)\\n- input_key/enum 참조: V0_Vocabulary.yml의 keys/enums만 사용 (station_walk_min, area_sqm, building_age_years, orientation, bathroom_toilet_separate, rent_delta_ratio, initial_multiple, benchmark_confidence 등)\\n- risk_flag_id: V0 risk_flags의 ID만 사용\\n- grade band 단조: A(85) > B(70) > C(55) > D(0)\\n- benchmark_confidence가 low/none이면 rent_delta_ratio는 중립점(70) 처리하도록 params에 방어 포함\\n- when 조건은 문자열이 아닌 JSONLogic 오브젝트"
+  },
+  "grade_thresholds": {
+    "overall": [
+      { "grade": "A", "min_score": 85 },
+      { "grade": "B", "min_score": 70 },
+      { "grade": "C", "min_score": 55 },
+      { "grade": "D", "min_score": 0 }
+    ],
+    "location": [
+      { "grade": "A", "min_score": 85 },
+      { "grade": "B", "min_score": 70 },
+      { "grade": "C", "min_score": 55 },
+      { "grade": "D", "min_score": 0 }
+    ],
+    "condition": [
+      { "grade": "A", "min_score": 85 },
+      { "grade": "B", "min_score": 70 },
+      { "grade": "C", "min_score": 55 },
+      { "grade": "D", "min_score": 0 }
+    ],
+    "cost": [
+      { "grade": "A", "min_score": 85 },
+      { "grade": "B", "min_score": 70 },
+      { "grade": "C", "min_score": 55 },
+      { "grade": "D", "min_score": 0 }
+    ]
+  },
+  "features": [
+    {
+      "feature_id": "loc_station_walk_min",
+      "component": "location",
+      "input_key": "station_walk_min",
+      "method": "bucket",
+      "params": {
+        "direction": "lower_is_better",
+        "buckets": [
+          { "max": 5, "score": 95 },
+          { "max": 10, "score": 90 },
+          { "max": 12, "score": 83 },
+          { "max": 15, "score": 75 },
+          { "max": 20, "score": 60 },
+          { "max": 30, "score": 40 },
+          { "min": 31, "score": 20 }
+        ],
+        "default_score": 55
+      },
+      "weight": 0.4,
+      "notes": "MVP location은 station_walk_min 중심. (area_access_score_0_100 벤치마크 키는 V0에 없어 스펙에 직접 포함 불가)"
+    },
+
+    {
+      "feature_id": "loc_area_access_score_0_100",
+      "component": "location",
+      "input_key": "area_access_score_0_100",
+      "method": "linear",
+      "params": {
+        "direction": "higher_is_better",
+        "min_x": 0,
+        "max_x": 100,
+        "min_score": 0,
+        "max_score": 100,
+        "clamp": true,
+        "confidence_key": "benchmark_confidence",
+        "neutral_score_if_confidence_in": ["none", "low"],
+        "neutral_score": 70,
+        "default_score": 70
+      },
+      "weight": 0.6,
+      "notes": "벤치마크 기반 접근성 점수(0~100). benchmark_confidence가 none/low이면 중립(70) 처리."
+    },
+
+    {
+      "feature_id": "cond_area_sqm",
+      "component": "condition",
+      "input_key": "area_sqm",
+      "method": "linear",
+      "params": {
+        "direction": "higher_is_better",
+        "min_x": 12,
+        "max_x": 35,
+        "min_score": 40,
+        "max_score": 100,
+        "clamp": true
+      },
+      "weight": 0.32
+    },
+    {
+      "feature_id": "cond_building_age_years",
+      "component": "condition",
+      "input_key": "building_age_years",
+      "method": "bucket",
+      "params": {
+        "direction": "lower_is_better",
+        "buckets": [
+          { "max": 5, "score": 95 },
+          { "max": 10, "score": 85 },
+          { "max": 20, "score": 70 },
+          { "max": 30, "score": 55 },
+          { "max": 40, "score": 40 },
+          { "min": 41, "score": 25 }
+        ],
+        "default_score": 55
+      },
+      "weight": 0.32
+    },
+    {
+      "feature_id": "cond_orientation",
+      "component": "condition",
+      "input_key": "orientation",
+      "method": "lookup",
+      "params": {
+        "table": {
+          "S": 95,
+          "SE": 90,
+          "SW": 90,
+          "E": 80,
+          "W": 80,
+          "NE": 65,
+          "NW": 65,
+          "N": 55,
+          "UNKNOWN": 70
+        },
+        "default_score": 70
+      },
+      "weight": 0.14
+    },
+    {
+      "feature_id": "cond_bathroom_toilet_separate",
+      "component": "condition",
+      "input_key": "bathroom_toilet_separate",
+      "method": "boolean",
+      "params": {
+        "true_score": 85,
+        "false_score": 60
+      },
+      "weight": 0.14
+    },
+    {
+      "feature_id": "cond_building_structure",
+      "component": "condition",
+      "input_key": "building_structure",
+      "method": "lookup",
+      "params": {
+        "table": {
+          "wood": 72,
+          "light_steel": 77,
+          "steel": 80,
+          "rc": 88,
+          "src": 90,
+          "other": 78
+        },
+        "default_score": 78
+      },
+      "weight": 0.08,
+      "notes": "건물 구조는 방음/내구/단열 등 컨디션에 영향이 있어 점수에 반영. 모르면 other(중립) 권장."
+    },
+
+    {
+      "feature_id": "cost_rent_delta_ratio",
+      "component": "cost",
+      "input_key": "rent_delta_ratio",
+      "method": "bucket",
+      "params": {
+        "direction": "lower_is_better",
+        "confidence_key": "benchmark_confidence",
+        "neutral_score_if_confidence_in": ["none", "low"],
+        "neutral_score": 70,
+        "buckets": [
+          { "max": -0.1, "score": 95 },
+          { "max": -0.05, "score": 85 },
+          { "max": 0.0, "score": 75 },
+          { "max": 0.05, "score": 70 },
+          { "max": 0.1, "score": 55 },
+          { "max": 0.2, "score": 35 }
+        ],
+        "default_score": 15
+      },
+      "weight": 0.6,
+      "notes": "벤치마크 신뢰도(benchmark_confidence)가 none/low이면 rent_delta_ratio를 중립(70) 처리."
+    },
+    {
+      "feature_id": "cost_initial_multiple_im",
+      "component": "cost",
+      "input_key": "initial_multiple_market_delta_foreigner",
+      "method": "bucket",
+      "params": {
+        "direction": "lower_is_better",
+        "buckets": [
+          { "max": -1.0, "score": 95 },
+          { "max": -0.5, "score": 85 },
+          { "max": 0.0, "score": 75 },
+          { "max": 0.5, "score": 70 },
+          { "max": 1.0, "score": 55 },
+          { "max": 2.0, "score": 40 }
+        ],
+        "default_score": 20
+      },
+      "weight": 0.4,
+      "notes": "초기비용(IM) 시장평균 대비(개월): initial_multiple_market_delta_foreigner = (max(0, initial_multiple - foreign_im_shift_months) - market_avg). 0보다 크면(평균 초과) 비용 점수가 낮아짐."
+    }
+  ],
+  "risk_flag_rules": [
+    {
+      "id": "RF_HIGH_INITIAL_MULTIPLE",
+      "priority": 100,
+      "when": { ">=": [ { "var": "initial_multiple" }, 6.0 ] },
+      "outputs": { "risk_flag_id": "HIGH_INITIAL_MULTIPLE", "severity": "high" }
+    },
+    {
+      "id": "RF_FAR_FROM_STATION",
+      "priority": 200,
+      "when": { ">=": [ { "var": "station_walk_min" }, 15 ] },
+      "outputs": { "risk_flag_id": "FAR_FROM_STATION", "severity": "mid" }
+    },
+    {
+      "id": "RF_VERY_SMALL_AREA",
+      "priority": 300,
+      "when": { "<": [ { "var": "area_sqm" }, 15 ] },
+      "outputs": { "risk_flag_id": "VERY_SMALL_AREA", "severity": "mid" }
+    },
+    {
+      "id": "RF_OLD_BUILDING",
+      "priority": 400,
+      "when": { ">=": [ { "var": "building_age_years" }, 30 ] },
+      "outputs": { "risk_flag_id": "OLD_BUILDING", "severity": "mid" }
+    },
+    {
+      "id": "RF_NORTH_FACING",
+      "priority": 500,
+      "when": { "==": [ { "var": "orientation" }, "N" ] },
+      "outputs": { "risk_flag_id": "NORTH_FACING", "severity": "low" }
+    },
+    {
+      "id": "RF_BATH_NOT_SEPARATE",
+      "priority": 600,
+      "when": { "==": [ { "var": "bathroom_toilet_separate" }, false ] },
+      "outputs": { "risk_flag_id": "BATH_NOT_SEPARATE", "severity": "low" }
+    },
+    {
+      "id": "RF_HIGH_OTHER_FEES",
+      "priority": 700,
+      "when": {
+        "and": [
+          { "!=": [ { "var": "other_initial_fees_yen" }, null ] },
+          { ">=": [ { "var": "other_initial_fees_yen" }, 100000 ] }
+        ]
+      },
+      "outputs": { "risk_flag_id": "HIGH_OTHER_FEES", "severity": "high" }
+    },
+    {
+      "id": "RF_LONG_CONTRACT_TERM",
+      "priority": 800,
+      "when": {
+        "and": [
+          { "!=": [ { "var": "contract_term_months" }, null ] },
+          { ">=": [ { "var": "contract_term_months" }, 24 ] }
+        ]
+      },
+      "outputs": { "risk_flag_id": "LONG_CONTRACT_TERM", "severity": "high" }
+    },
+    {
+      "id": "RF_HIGH_EARLY_TERMINATION_PENALTY",
+      "priority": 900,
+      "when": {
+        "and": [
+          { "!=": [ { "var": "early_termination_penalty_yen" }, null ] },
+          { ">=": [ { "var": "early_termination_penalty_yen" }, 100000 ] }
+        ]
+      },
+      "outputs": { "risk_flag_id": "HIGH_EARLY_TERMINATION_PENALTY", "severity": "high" }
+    }
+  ],
+  "tradeoff_rules": [
+    {
+      "id": "TR_CONDITION_HIGH_COST_LOW",
+      "priority": 100,
+      "when": {
+        "and": [
+          { ">=": [ { "var": "condition_score" }, 75 ] },
+          { "<=": [ { "var": "cost_score" }, 55 ] }
+        ]
+      },
+      "outputs": {
+        "tradeoff_tag": "condition_high_cost_low",
+        "message_key": "TRADEOFF_CONDITION_GOOD_BUT_COST_BAD"
+      }
+    },
+    {
+      "id": "TR_LOCATION_HIGH_CONDITION_LOW",
+      "priority": 200,
+      "when": {
+        "and": [
+          { ">=": [ { "var": "location_score" }, 75 ] },
+          { "<=": [ { "var": "condition_score" }, 55 ] }
+        ]
+      },
+      "outputs": {
+        "tradeoff_tag": "location_high_condition_low",
+        "message_key": "TRADEOFF_LOCATION_GOOD_BUT_CONDITION_BAD"
+      }
+    },
+    {
+      "id": "TR_LOCATION_LOW_COST_HIGH",
+      "priority": 300,
+      "when": {
+        "and": [
+          { "<=": [ { "var": "location_score" }, 55 ] },
+          { ">=": [ { "var": "cost_score" }, 75 ] }
+        ]
+      },
+      "outputs": {
+        "tradeoff_tag": "location_low_cost_high",
+        "message_key": "TRADEOFF_LOCATION_WEAK_BUT_COST_GOOD"
+      }
+    },
+    {
+      "id": "TR_DEFAULT_BALANCED",
+      "priority": 999,
+      "when": { "==": [ 1, 1 ] },
+      "outputs": {
+        "tradeoff_tag": "balanced",
+        "message_key": "TRADEOFF_BALANCED"
+      }
+    }
+  ],
+  "what_if_rules": [
+    {
+      "id": "WI_REDUCE_INITIAL_TOTAL_50K",
+      "enabled_if": { "==": [ 1, 1 ] },
+      "actions": [
+        {
+          "type": "delta_yen",
+          "target_key": "initial_cost_total_yen",
+          "value": -50000,
+          "label_ko": "초기비용 총액 5만엔 낮추면?",
+          "label_ja": "初期費用合計を5万円下げたら？"
+        }
+      ]
+    },
+    {
+      "id": "WI_SET_REIKIN_ZERO",
+      "enabled_if": {
+        "and": [
+          { "!=": [ { "var": "reikin_yen" }, null ] },
+          { ">": [ { "var": "reikin_yen" }, 0 ] }
+        ]
+      },
+      "actions": [
+        {
+          "type": "set_zero",
+          "target_key": "reikin_yen",
+          "label_ko": "예: 사례금(礼金) 0엔으로 협상하면?",
+          "label_ja": "例：礼金を0円に交渉できたら？"
+        }
+      ]
+    },
+    {
+      "id": "WI_SCALE_BROKERAGE_HALF",
+      "enabled_if": {
+        "and": [
+          { "!=": [ { "var": "brokerage_fee_yen" }, null ] },
+          { ">": [ { "var": "brokerage_fee_yen" }, 0 ] }
+        ]
+      },
+      "actions": [
+        {
+          "type": "scale",
+          "target_key": "brokerage_fee_yen",
+          "value": 0.5,
+          "label_ko": "중개수수료 50%로 낮추면?",
+          "label_ja": "仲介手数料を50%にできたら？"
+        }
+      ]
+    }
+  ]
+}
