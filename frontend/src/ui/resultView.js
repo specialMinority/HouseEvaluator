@@ -3,6 +3,11 @@ import { benchmarkConfidenceTextKo, renderRiskChips, renderRiskFlags, stationWal
 import { renderBenchmarkCard, renderCompactBenchmarkSection } from "./benchmarkSection.js";
 import { buildContextLabel, makeConditionDesc, makeCostDesc, makeLocationDesc, renderBullets, renderComponentScoreCard, renderDonutGauge, renderScoreCard } from "./scoreComponents.js";
 
+function toNumberOrNull(value) {
+  if (value === null || value === undefined || value === "") return null;
+  const num = typeof value === "number" ? value : Number(value);
+  return Number.isFinite(num) ? num : null;
+}
 
 export function renderResultView({
   spec,
