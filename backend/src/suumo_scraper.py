@@ -748,17 +748,24 @@ def search_comparable_listings(
     last_error: str | None = None
     last_url: str | None = None
     attempts: list[dict[str, Any]] = []
+    working_md_strategy: str | None = None  # lock to successful strategy across steps
+
     for step_idx in range(0, max_relaxation_steps + 1):
         rent_min_man, rent_max_man = None, None  # avoid rent-anchoring bias
         area_min, area_max = area_range_for_step(step_idx)
         _, _, walk_max = walk_window_for_step(step_idx)
         age_max = age_max_for_step(step_idx)
 
-        md_strategies: list[tuple[str, dict[str, str] | None, bool]] = [
+        all_strategies: list[tuple[str, dict[str, str] | None, bool]] = [
             ("v2", _LAYOUT_TO_MD, True),
             ("legacy", _LAYOUT_TO_MD_LEGACY, True),
             ("no_md", None, False),
         ]
+        # After a strategy successfully fetches listings, lock to it for remaining steps
+        if working_md_strategy is not None:
+            md_strategies = [s for s in all_strategies if s[0] == working_md_strategy]
+        else:
+            md_strategies = all_strategies
 
         for md_strategy, md_map, include_md in md_strategies:
             variants: list[tuple[str, dict[str, Any]]] = [
@@ -807,21 +814,34 @@ def search_comparable_listings(
                 if include_md or last_url is None:
                     last_url = url
                 try:
-                    time.sleep(0.5)  # polite delay
+                    time.sleep(1.5)  # polite delay — increased to avoid 502 rate-limits
                     listings = fetch_suumo_listings(url, timeout=fetch_timeout)
                     break
                 except RuntimeError as e:
-                    last_error = str(e)
+                    err_str = str(e)
+                    # 502/503: rate-limit hit — back off and retry once
+                    if "502" in err_str or "503" in err_str:
+                        try:
+                            time.sleep(2.5)
+                            listings = fetch_suumo_listings(url, timeout=fetch_timeout)
+                            break
+                        except RuntimeError as e2:
+                            err_str = str(e2)
+                    last_error = err_str
                     attempts.append(
                         {"step": step_idx, "md_strategy": md_strategy, "variant": variant_name, "url": url, "error": last_error}
                     )
-                    # If SUUMO rejects the URL, try the minimal variant before giving up.
                     listings = None
                     continue
 
             if listings is None:
                 # All variants failed
                 continue
+
+            # Lock to this strategy for remaining steps (avoids redundant requests)
+            if working_md_strategy is None:
+                working_md_strategy = md_strategy
+
 
             matched = [lst for lst in listings if matches_for_step(lst, step_idx)]
             layout_sample = sorted({lst.layout or "(empty)" for lst in listings[:20]})
