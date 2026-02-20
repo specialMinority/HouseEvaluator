@@ -363,8 +363,16 @@ function renderBenchmarkCard(response, benchmarkMeta, input) {
   }
   if (Number(nSources) === 1) notes.push("주의: 벤치마크가 단일 출처(표본 1개) 기반입니다.");
   if (hasAdjustment) {
+    const adjFactors = [];
+    if (adjustments?.area_factor !== undefined) adjFactors.push("면적");
+    if (adjustments?.building_age_factor !== undefined) adjFactors.push("건물연식");
+    if (adjustments?.station_walk_factor !== undefined) adjFactors.push("역거리");
+    if (adjustments?.building_structure_factor !== undefined) adjFactors.push("건물구조");
+    if (adjustments?.bathroom_toilet_separate_factor !== undefined) adjFactors.push("욕실분리");
+    if (adjustments?.orientation_factor !== undefined) adjFactors.push("방위");
+    const factorStr = adjFactors.join("/") || "복수 항목";
     notes.push(
-      `벤치마크가 면적/건물연식/역거리 기준으로 보정되었습니다. (원본: ${formatYen(rawValue)} → 보정: ${formatYen(value)})`
+      `벤치마크가 ${factorStr} 기준으로 보정되었습니다. (원본: ${formatYen(rawValue)} → 보정: ${formatYen(value)})`
     );
   }
   const note = notes.filter(Boolean).join("\n");
@@ -392,6 +400,198 @@ function renderBenchmarkCard(response, benchmarkMeta, input) {
     ]),
     note ? h("div", { class: "toast", text: note }) : null,
   ]);
+}
+
+// ── New graph-style components ───────────────────────────────────────────────
+
+function renderDonutGauge(score, grade, contextLabel) {
+  const pct = Math.max(0, Math.min(100, Number(score) || 0));
+  const r = 54;
+  const size = 148;
+  const cx = size / 2;
+  const cy = size / 2;
+  const circ = 2 * Math.PI * r;
+  const filled = circ * (pct / 100);
+  const gap = circ - filled;
+  const gradeColors = { A: "#34c759", B: "#0071e3", C: "#ff9f0a", D: "#ff3b30" };
+  const fillColor = gradeColors[String(grade || "B").toUpperCase()] || "#0071e3";
+
+  const svgWrap = h("div", { class: "gauge-svg-wrap" });
+  svgWrap.innerHTML =
+    `<svg viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" aria-hidden="true">` +
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#e5e5ea" stroke-width="13"/>` +
+    `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${fillColor}" stroke-width="13"` +
+    ` stroke-dasharray="${filled.toFixed(2)} ${gap.toFixed(2)}"` +
+    ` stroke-linecap="round" transform="rotate(-90 ${cx} ${cy})"/>` +
+    `</svg>`;
+
+  const scoreText = score !== undefined && score !== null ? String(Math.round(Number(score))) : "--";
+  return h("div", { class: "gauge-section" }, [
+    h("div", { class: "gauge-container" }, [
+      svgWrap,
+      h("div", { class: "gauge-inner" }, [
+        h("span", { class: "gauge-label-text", text: "종합 점수" }),
+        h("span", { class: "gauge-score-num", text: scoreText }),
+        h("span", { class: "gauge-grade-text", text: `/ ${String(grade || "?")}등급` }),
+      ]),
+    ]),
+    contextLabel ? h("div", { class: "gauge-context-label", text: contextLabel }) : null,
+  ]);
+}
+
+function renderComponentScoreCard(title, score, grade, icon, desc) {
+  const pct = Math.max(0, Math.min(100, Number(score) || 0));
+  const gl = String(grade || "").toUpperCase();
+  const gradeCls = "grade-badge" + (["A", "B", "C", "D"].includes(gl) ? ` grade-badge--${gl.toLowerCase()}` : " grade-badge--d");
+  const fill = h("div", { class: "score-bar__fill" });
+  fill.style.width = `${pct}%`;
+  const scoreText = score !== undefined && score !== null ? String(Math.round(Number(score))) : "--";
+  return h("div", { class: "score-card" }, [
+    h("div", { class: "score-card__header" }, [
+      h("span", { class: "score-card__name", text: title }),
+      h("span", { class: "score-card__num", text: scoreText }),
+      h("span", { class: gradeCls, text: gl || "?" }),
+    ]),
+    h("div", { class: "score-bar" }, [fill]),
+    h("div", { class: "score-card__footer" }, [
+      icon ? h("span", { class: "score-card__icon", text: icon }) : null,
+      h("span", { class: "score-card__hint", text: desc || "" }),
+    ]),
+  ]);
+}
+
+function buildContextLabel(input) {
+  const prefMap = { tokyo: "도쿄", osaka: "오사카", kanagawa: "가나가와", saitama: "사이타마", chiba: "지바" };
+  const parts = [];
+  if (input?.prefecture) parts.push(prefMap[String(input.prefecture)] || String(input.prefecture));
+  if (input?.municipality) parts.push(String(input.municipality));
+  else if (input?.nearest_station_name) parts.push(`${input.nearest_station_name}역`);
+  if (input?.layout_type) parts.push(String(input.layout_type));
+  return parts.length ? `평가 기준: ${parts.join(" ")}` : "평가 기준";
+}
+
+function makeLocationDesc(input, grade) {
+  const walk = toNumberOrNull(input?.station_walk_min);
+  const parts = [];
+  if (walk !== null) parts.push(`역 도보 ${walk}분`);
+  if (grade === "A") parts.push("입지 우수");
+  else if (grade === "B") parts.push("입지 양호");
+  else if (grade === "C") parts.push("입지 보통");
+  else if (grade === "D") parts.push("입지 불편");
+  return parts.join(", ");
+}
+
+function makeConditionDesc(input, ageYears) {
+  const age = toNumberOrNull(ageYears);
+  const parts = [];
+  if (age !== null) parts.push(`준공 ${age}년`);
+  if (input?.orientation && input.orientation !== "UNKNOWN") {
+    parts.push(`채광 ${orientationTextKo(input.orientation)}`);
+  }
+  return parts.join(", ");
+}
+
+function makeCostDesc(rentDelta, benchmarkConf, imAssessment) {
+  const parts = [];
+  const d = toNumberOrNull(rentDelta);
+  const conf = String(benchmarkConf || "none");
+  if (conf !== "none" && d !== null) {
+    const absPct = Math.abs(Math.round(d * 100));
+    if (d <= -0.1) parts.push(`시세보다 ${absPct}% 저렴`);
+    else if (d >= 0.1) parts.push(`시세보다 ${absPct}% 비쌈`);
+    else parts.push("시세 수준");
+  }
+  if (imAssessment) parts.push(String(imAssessment).split("(")[0].trim());
+  return parts.join(", ");
+}
+
+function renderRiskChips(flags, explanations, context) {
+  const arr = normalizeList(flags);
+  const walkTier = stationWalkRiskTier(context?.stationWalkMin);
+  const rentTier = rentOverBenchmarkRiskTier(context?.rentDeltaRatio, context?.benchmarkConfidence);
+  const imTier = initialMultipleRiskTier(context?.imAssessment);
+  const chips = [];
+
+  for (const tier of [rentTier, imTier]) {
+    if (!tier) continue;
+    const cls = tier.severity === "high" ? "risk-chip risk-chip--high" : tier.severity === "low" ? "risk-chip risk-chip--low" : "risk-chip";
+    const icon = tier.severity === "high" ? "⚠" : "△";
+    chips.push(h("span", { class: cls, title: tier.desc || "", text: `${icon} ${tier.title || ""}` }));
+  }
+
+  for (const f of arr) {
+    const id = typeof f === "string" ? f : isObject(f) ? safeString(f.risk_flag_id || f.id) : safeString(f);
+    let sev = isObject(f) ? safeString(f.severity) : "mid";
+    if (id === "FAR_FROM_STATION" && walkTier) sev = walkTier.severity;
+    const info = id ? RISK_FLAG_KO[id] : null;
+    const title = info?.title || id || "플래그";
+    const desc = (isObject(explanations) && id ? safeString(explanations[id]) : "") || info?.desc || "";
+    const cls = sev === "high" ? "risk-chip risk-chip--high" : sev === "low" ? "risk-chip risk-chip--low" : "risk-chip";
+    const icon = sev === "high" ? "⚠" : "△";
+    chips.push(h("span", { class: cls, title: desc, text: `${icon} ${title}` }));
+  }
+
+  if (chips.length === 0) return h("span", { class: "hint", text: "리스크 플래그 없음" });
+  return h("div", { class: "risk-chips" }, chips);
+}
+
+function renderCompactBenchmarkSection(response, benchmarkMeta, input) {
+  const conf = pick(response, [
+    "derived.benchmark_confidence",
+    "benchmark_confidence",
+    "benchmark.benchmark_confidence",
+    "derived.benchmark_confidence",
+  ]);
+  const value = pick(response, [
+    "derived.benchmark_monthly_fixed_cost_yen",
+    "benchmark_monthly_fixed_cost_yen",
+    "benchmark.benchmark_monthly_fixed_cost_yen",
+    "benchmark.benchmark_monthly_fixed_cost_yen_median",
+  ]);
+  const nSources = pick(response, ["derived.benchmark_n_sources", "benchmark_n_sources", "derived.benchmark_n_rows"]);
+
+  const prefMap = { tokyo: "도쿄", osaka: "오사카", kanagawa: "가나가와", saitama: "사이타마", chiba: "지바" };
+  const locParts = [];
+  if (input?.prefecture) locParts.push(prefMap[String(input.prefecture)] || String(input.prefecture));
+  if (input?.municipality) locParts.push(String(input.municipality));
+  else if (input?.nearest_station_name) locParts.push(`${input.nearest_station_name}역`);
+  if (input?.layout_type) locParts.push(String(input.layout_type));
+  const locStr = locParts.join(" ");
+
+  const confText = benchmarkConfidenceTextKo(conf);
+  const nText = nSources != null ? `N=${nSources}` : "";
+  const valText = value != null ? formatYen(value) : "없음";
+  const locLabel = locStr || "평가 기준";
+  const summaryText = `${locLabel}: ${valText}${nText ? ` (${nText}, 신뢰도: ${confText})` : ` (신뢰도: ${confText})`}`;
+
+  let expanded = false;
+  const fullDetail = h("div", { id: "benchmark-details", style: "display:none; margin-top:12px;" }, [
+    renderBenchmarkCard(response, benchmarkMeta, input),
+  ]);
+
+  const icon = h("span", { class: "benchmark-compact-icon", text: "▾" });
+  const row = h("div", { class: "benchmark-compact-row" }, [
+    h("span", { class: "benchmark-compact-text" }, [
+      h("strong", { text: "벤치마크 근거" }),
+      h("span", { text: ` — ${summaryText}` }),
+    ]),
+    icon,
+  ]);
+
+  function toggle() {
+    expanded = !expanded;
+    fullDetail.style.display = expanded ? "block" : "none";
+    row.setAttribute("aria-expanded", expanded ? "true" : "false");
+    icon.textContent = expanded ? "▴" : "▾";
+  }
+  row.addEventListener("click", toggle);
+  row.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
+  row.setAttribute("tabindex", "0");
+  row.setAttribute("role", "button");
+  row.setAttribute("aria-expanded", "false");
+  row.setAttribute("aria-controls", "benchmark-details");
+
+  return h("div", {}, [row, fullDetail]);
 }
 
 export function renderResultView({
@@ -634,6 +834,88 @@ export function renderResultView({
       ])
     : null;
 
+  const contextLabel = buildContextLabel(input);
+  const hero = h("div", { class: "result-hero" }, [
+    renderDonutGauge(scores.overall, grades.overall, contextLabel),
+    h("div", { class: "score-grid" }, [
+      renderComponentScoreCard(
+        "입지/교통",
+        scores.location,
+        grades.location,
+        "🚉",
+        makeLocationDesc(input, String(grades.location || "").toUpperCase())
+      ),
+      renderComponentScoreCard(
+        "집 컨디션",
+        scores.condition,
+        grades.condition,
+        "🏠",
+        makeConditionDesc(input, derivedAgeYears)
+      ),
+      renderComponentScoreCard("비용", scores.cost, grades.cost, "💴", makeCostDesc(derivedRentDelta, derivedBenchmarkConf, derivedImAssessment)),
+    ]),
+  ]);
+
+  const summaryCard = h("div", { class: "card" }, [
+    h("h3", { text: "요약" }),
+    (() => {
+      const lines = makeFriendlySummary();
+      return lines.length ? h("ul", { class: "list" }, lines.map((t) => h("li", { text: t }))) : h("div", { class: "hint", text: "없음" });
+    })(),
+    typeof summary === "string" && summary.trim().length ? h("div", { class: "toast", text: summary.trim() }) : null,
+  ]);
+
+  const riskContext = {
+    stationWalkMin: input?.station_walk_min,
+    rentDeltaRatio: derivedRentDelta,
+    benchmarkConfidence: derivedBenchmarkConf,
+    imAssessment: derivedImAssessment,
+  };
+  const riskCard = h("div", { class: "card" }, [
+    h("h3", { text: "리스크" }),
+    renderRiskChips(riskFlags, riskExpl, riskContext),
+    h("details", { open: false }, [
+      h("summary", { class: "pill", text: "자세히 보기" }),
+      h("div", { class: "divider" }),
+      renderRiskFlags(riskFlags, riskExpl, riskContext),
+    ]),
+  ]);
+
+  const criteriaCard = h("div", { class: "card" }, [
+    h("h3", { text: "평가기준" }),
+    h("ul", { class: "list" }, [
+      h("li", { text: "총점: 입지/교통 35% + 집 컨디션 25% + 비용 40%" }),
+      h("li", { text: "입지/교통: 역까지 도보 시간(분) 중심" }),
+      h("li", { text: "집 컨디션: 면적, 연식, 구조, 방향, 욕실/화장실 분리 여부" }),
+      h("li", { text: "비용: 시세 대비 월세(월세+관리비) + 초기비용(IM). 초기비용이 시장 평균보다 높을수록 비용 점수가 내려가요." }),
+    ]),
+    h("div", { class: "hint", text: "시세 비교 데이터가 부족하면(신뢰도 없음) 비용 평가는 중립적으로 나올 수 있어요." }),
+    h("div", { class: "hint", text: "등급 기준: A(85+) / B(70+) / C(55+) / D(0+)" }),
+  ]);
+
+  const evidenceCard = h("div", { class: "card" }, [h("h3", { text: "근거" }), renderBullets(makeFriendlyEvidenceBullets())]);
+
+  const negotiationCard = h("div", { class: "card" }, [
+    h("h3", { text: "협상/대안" }),
+    h("div", { class: "divider" }),
+    h("div", { class: "hint", text: "협상 제안" }),
+    renderBullets(negKo),
+    normalizeList(negJa).length || normalizeList(altJa).length
+      ? h("details", { open: false }, [
+          h("summary", { class: "pill", text: "일본어 문구/검색 쿼리(복사용)" }),
+          h("div", { class: "divider" }),
+          h("div", { class: "hint", text: "협상 문구(일본어)" }),
+          renderBullets(negJa),
+          h("div", { class: "divider" }),
+          h("div", { class: "hint", text: "대안 검색 쿼리(일본어)" }),
+          renderBullets(altJa),
+        ])
+      : null,
+  ]);
+
+  const bottomRow = h("div", { class: "result-bottom-row" }, [negotiationCard, whatIfCard]);
+  const benchmarkCompact = renderCompactBenchmarkSection(response, benchmarkMeta, input);
+
   return h("div", { class: "panel" }, [
     h("div", { class: "panel__header" }, [
       h("div", {}, [h("h2", { class: "panel__title", text: "결과" })]),
@@ -642,71 +924,14 @@ export function renderResultView({
       ]),
     ]),
     h("div", { class: "panel__body" }, [
+      hero,
       h("div", { class: "cards" }, [
-        h("div", { class: "card" }, [
-          h("h3", { text: "요약" }),
-          (() => {
-            const lines = makeFriendlySummary();
-            return lines.length ? h("ul", { class: "list" }, lines.map((t) => h("li", { text: t }))) : h("div", { class: "hint", text: "없음" });
-          })(),
-        ]),
-
-        h("div", { class: "card" }, [
-          h("h3", { text: "점수 카드" }),
-          h("div", { class: "row row--2" }, [
-            renderScoreCard("총점", scores.overall, grades.overall),
-            renderScoreCard("입지/교통", scores.location, grades.location),
-            renderScoreCard("집 컨디션", scores.condition, grades.condition),
-            renderScoreCard("비용", scores.cost, grades.cost),
-          ]),
-        ]),
-
-        h("div", { class: "card" }, [
-          h("h3", { text: "평가기준" }),
-            h("ul", { class: "list" }, [
-            h("li", { text: "총점: 입지/교통 35% + 집 컨디션 25% + 비용 40%" }),
-            h("li", { text: "입지/교통: 역까지 도보 시간(분) 중심" }),
-            h("li", { text: "집 컨디션: 면적, 연식, 구조, 방향, 욕실/화장실 분리 여부" }),
-            h("li", { text: "비용: 시세 대비 월세(월세+관리비) + 초기비용(IM). 초기비용이 시장 평균보다 높을수록 비용 점수가 내려가요." }),
-          ]),
-          h("div", { class: "hint", text: "시세 비교 데이터가 부족하면(신뢰도 없음) 비용 평가는 중립적으로 나올 수 있어요." }),
-          h("div", { class: "hint", text: "등급 기준: A(85+) / B(70+) / C(55+) / D(0+)" }),
-        ]),
-
-        h("div", { class: "card" }, [h("h3", { text: "근거" }), renderBullets(makeFriendlyEvidenceBullets())]),
-
-        renderBenchmarkCard(response, benchmarkMeta, input),
-
-        h("div", { class: "card" }, [
-          h("h3", { text: "리스크 플래그" }),
-          renderRiskFlags(riskFlags, riskExpl, {
-            stationWalkMin: input?.station_walk_min,
-            rentDeltaRatio: derivedRentDelta,
-            benchmarkConfidence: derivedBenchmarkConf,
-            imAssessment: derivedImAssessment,
-          }),
-        ]),
-
-        h("div", { class: "card" }, [
-          h("h3", { text: "협상/대안" }),
-          h("div", { class: "divider" }),
-          h("div", { class: "hint", text: "협상 제안" }),
-          renderBullets(negKo),
-          normalizeList(negJa).length || normalizeList(altJa).length
-            ? h("details", { open: false }, [
-                h("summary", { class: "pill", text: "일본어 문구/검색 쿼리(복사용)" }),
-                h("div", { class: "divider" }),
-                h("div", { class: "hint", text: "협상 문구(일본어)" }),
-                renderBullets(negJa),
-                h("div", { class: "divider" }),
-                h("div", { class: "hint", text: "대안 검색 쿼리(일본어)" }),
-                renderBullets(altJa),
-              ])
-            : null,
-        ]),
-
-        whatIfCard,
-
+        summaryCard,
+        riskCard,
+        bottomRow,
+        benchmarkCompact,
+        evidenceCard,
+        criteriaCard,
         rawDetails,
       ]),
     ]),

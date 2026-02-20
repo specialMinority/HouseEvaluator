@@ -386,6 +386,8 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
         area_sqm=float(payload.get("area_sqm")) if payload.get("area_sqm") is not None else None,
         building_age_years=building_age_years,
         station_walk_min=int(payload.get("station_walk_min")) if payload.get("station_walk_min") is not None else None,
+        orientation=str(payload.get("orientation", "UNKNOWN")),
+        bathroom_toilet_separate=bool(payload["bathroom_toilet_separate"]) if "bathroom_toilet_separate" in payload else None,
         benchmark_spec=rt.spec.get("D1"),
     )
 

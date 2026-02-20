@@ -1451,7 +1451,33 @@
             "1DK": 28,
             "1LDK": 38
           },
-          "area_elasticity": 0.6
+          "area_elasticity": 0.6,
+          "building_structure_multipliers": {
+            "notes": "Applied only when matched_level != muni_structure_level (i.e. structure-unaware benchmark used).",
+            "wood": 0.90,
+            "light_steel": 0.94,
+            "steel": 0.98,
+            "rc": 1.08,
+            "src": 1.12,
+            "other": 1.00
+          },
+          "bathroom_toilet_separate_multipliers": {
+            "notes": "Always applied. Benchmark has no bathroom_toilet_separate segmentation.",
+            "true": 1.05,
+            "false": 0.95
+          },
+          "orientation_multipliers": {
+            "notes": "Always applied. Benchmark has no orientation segmentation.",
+            "S": 1.05,
+            "SE": 1.03,
+            "SW": 1.02,
+            "E": 1.00,
+            "W": 0.99,
+            "NE": 0.97,
+            "NW": 0.97,
+            "N": 0.94,
+            "UNKNOWN": 1.00
+          }
         },
         "hub_station_compat": {
           "notes": "Include hub_station as a segmentation dimension to support user hub selection. Cost benchmarks may ignore hub_station (dimension present but not used), while area_access_score_0_100 is expected to vary by hub_station."
