@@ -4,13 +4,20 @@ import json
 import os
 from dataclasses import dataclass
 from datetime import datetime
-from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Any, Final
 
 from backend.src.benchmark_loader import load_or_build_benchmark_index
 from backend.src.benchmark_matcher import match_benchmark_rent
 from backend.src.rules.jsonlogic import apply as jsonlogic_apply
+from backend.src.scoring import (
+    SpecError,
+    _compute_component_score,
+    _feature_score,
+    _grade_for_score,
+    _round,
+    _select_first_rule_by_priority,
+)
 
 
 ROOT_DIR: Final[Path] = Path(__file__).resolve().parents[2]
@@ -48,8 +55,7 @@ def _im_assessment_label(im: float, market_avg: float) -> str:
     return "높음(시세 크게 초과)"
 
 
-class SpecError(ValueError):
-    pass
+# SpecError is defined in backend.src.scoring and re-exported here for backward compat.
 
 
 def _im_assessment_label_ko(im: float, market_avg: float) -> str:
@@ -240,127 +246,7 @@ def _validate_input(payload: dict[str, Any], s1: dict[str, Any]) -> None:
             raise InputValidationError(f"{k} above max {max_v}")
 
 
-def _grade_for_score(score: float, bands: list[dict[str, Any]]) -> str:
-    # bands are expected to be 4 entries with min_score, grade.
-    # Choose the highest grade whose min_score <= score.
-    best_grade = "D"
-    best_min = -1.0
-    for b in bands:
-        g = b.get("grade")
-        m = b.get("min_score")
-        if isinstance(g, str) and isinstance(m, (int, float)) and score >= float(m) and float(m) >= best_min:
-            best_grade = g
-            best_min = float(m)
-    return best_grade
 
-
-def _score_bucket(value: float, params: dict[str, Any]) -> float:
-    buckets = params.get("buckets") or []
-    for b in buckets:
-        if not isinstance(b, dict):
-            continue
-        if "max" in b and isinstance(b["max"], (int, float)) and value <= float(b["max"]):
-            return float(b["score"])
-        if "min" in b and isinstance(b["min"], (int, float)) and value >= float(b["min"]):
-            return float(b["score"])
-    return float(params.get("default_score", 70))
-
-
-def _score_linear(value: float, params: dict[str, Any]) -> float:
-    min_x = float(params["min_x"])
-    max_x = float(params["max_x"])
-    min_score = float(params["min_score"])
-    max_score = float(params["max_score"])
-    clamp = bool(params.get("clamp", False))
-    direction = params.get("direction", "higher_is_better")
-
-    if max_x == min_x:
-        return float(params.get("default_score", 70))
-
-    if direction == "higher_is_better":
-        t = (value - min_x) / (max_x - min_x)
-    else:
-        t = (max_x - value) / (max_x - min_x)
-
-    score = min_score + t * (max_score - min_score)
-    if clamp:
-        score = max(min_score, min(max_score, score))
-    return float(score)
-
-
-def _feature_score(feature: dict[str, Any], ctx: dict[str, Any], s2: dict[str, Any]) -> float | None:
-    input_key = feature["input_key"]
-    method = feature["method"]
-    params = feature.get("params") or {}
-
-    confidence_key = params.get("confidence_key")
-    if isinstance(confidence_key, str):
-        conf = ctx.get(confidence_key)
-        neutral_list = params.get("neutral_score_if_confidence_in")
-        if isinstance(neutral_list, list) and conf in neutral_list:
-            return float(params.get("neutral_score", 70))
-
-    raw_value = ctx.get(input_key)
-    if raw_value is None:
-        # Input not in ctx → return None so component_score can renormalize weights.
-        # This prevents ghost features (e.g. area_access_score_0_100 which users never input)
-        # from artificially capping the score via a fixed default.
-        return None
-
-    if method == "boolean":
-        return float(params["true_score"] if bool(raw_value) else params["false_score"])
-
-    if method == "lookup":
-        table = params.get("table") or {}
-        if isinstance(table, dict):
-            hit = table.get(raw_value)
-            if isinstance(hit, (int, float)):
-                return float(hit)
-        return float(params.get("default_score", 70))
-
-    if method == "bucket":
-        value = float(raw_value)
-        if params.get("apply_foreigner_adjustment") == "im_shift_months":
-            shift = float(s2.get("foreigner_adjustment", {}).get("foreign_im_shift_months", 0.0))
-            value = max(0.0, value - shift)
-        return _score_bucket(value, params)
-
-    if method == "linear":
-        return _score_linear(float(raw_value), params)
-
-    raise SpecError(f"Unsupported feature method: {method}")
-
-
-def _select_first_rule_by_priority(rules: list[dict[str, Any]], ctx: dict[str, Any]) -> dict[str, Any] | None:
-    # Priority: higher number wins in C1; lower number wins in S2 tradeoff/risk? We'll sort outside when needed.
-    for r in rules:
-        cond = r.get("when")
-        if cond is None:
-            continue
-        try:
-            if bool(jsonlogic_apply(cond, ctx)):
-                return r
-        except Exception:
-            continue
-    return None
-
-
-def _compute_component_score(component_feats: list[dict[str, Any]], ctx: dict[str, Any], s2: dict[str, Any]) -> float:
-    """Compute a weighted average component score with renormalization for absent features."""
-    all_weight = sum(float(f.get("weight", 0.0)) for f in component_feats)
-    avail_weight = 0.0
-    total = 0.0
-    for f in component_feats:
-        w = float(f.get("weight", 0.0))
-        fs = _feature_score(f, ctx, s2)
-        if fs is None:
-            continue
-        total += w * fs
-        avail_weight += w
-    if avail_weight <= 0.0:
-        return _round(70.0, 6)
-    scale = all_weight / avail_weight if all_weight > 0.0 else 1.0
-    return _round(total * scale, 6)
 
 
 def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchmark_index_override: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -647,58 +533,5 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
         },
     }
 
-
-class _ApiHandler(SimpleHTTPRequestHandler):
-    server_version = "wh-eval/0.1"
-
-    def __init__(self, *args, **kwargs):  # noqa: ANN002,ANN003 (SimpleHTTPRequestHandler signature)
-        # Serve static files from the repo root so the frontend can fetch specs/benchmark data
-        # via same-origin paths (e.g. /spec_bundle_v0.1.1/...).
-        super().__init__(*args, directory=str(ROOT_DIR), **kwargs)
-
-    def do_GET(self) -> None:  # noqa: N802 (BaseHTTPRequestHandler convention)
-        # Default UX: open the frontend app at /frontend/ when hitting the service root.
-        if self.path in ("/", "/index.html"):
-            self.send_response(302)
-            self.send_header("Location", "/frontend/")
-            self.end_headers()
-            return
-        return super().do_GET()
-
-    def _send_json(self, status: int, body: dict[str, Any]) -> None:
-        data = json.dumps(body, ensure_ascii=False).encode("utf-8")
-        self.send_response(status)
-        self.send_header("Content-Type", "application/json; charset=utf-8")
-        self.send_header("Content-Length", str(len(data)))
-        self.end_headers()
-        self.wfile.write(data)
-
-    def do_POST(self) -> None:  # noqa: N802 (BaseHTTPRequestHandler convention)
-        if self.path != "/api/evaluate":
-            self._send_json(404, {"error": "not_found"})
-            return
-
-        try:
-            length = int(self.headers.get("Content-Length", "0"))
-            raw = self.rfile.read(length)
-            payload = json.loads(raw.decode("utf-8"))
-            if not isinstance(payload, dict):
-                raise InputValidationError("Request body must be a JSON object")
-            result = evaluate(payload)
-            self._send_json(200, result)
-        except InputValidationError as e:
-            self._send_json(400, {"error": "bad_request", "message": str(e)})
-        except Exception as e:  # noqa: BLE001
-            self._send_json(500, {"error": "internal_error", "message": str(e)})
-
-
-def serve(host: str = "0.0.0.0", port: int = 8000) -> None:
-    httpd = HTTPServer((host, port), _ApiHandler)
-    print(f"Listening on http://{host}:{port}")
-    httpd.serve_forever()
-
-
-if __name__ == "__main__":
-    host = os.getenv("HOST", "0.0.0.0")
-    port = int(os.getenv("PORT", "8000"))
-    serve(host=host, port=port)
+# HTTP server and entrypoint are in backend.src.server.
+# This module is kept focused on evaluation logic only.

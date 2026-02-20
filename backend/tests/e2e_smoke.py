@@ -4,7 +4,7 @@ import unittest
 from http.client import HTTPConnection
 from http.server import HTTPServer
 
-from backend.src.evaluate import _ApiHandler
+from backend.src.server import _ApiHandler
 
 
 class E2ESmokeTest(unittest.TestCase):

@@ -16,4 +16,4 @@ ENV BENCHMARK_INDEX_PATH=/tmp/benchmark_index.json
 
 EXPOSE 8080
 
-CMD ["python", "-m", "backend.src.evaluate"]
+CMD ["python", "-m", "backend.src.server"]
