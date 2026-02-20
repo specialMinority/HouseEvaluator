@@ -39,9 +39,9 @@ def _im_assessment_label(im: float, market_avg: float) -> str:
     delta = im - market_avg
     if delta < -1.5:
         return "매우 낮음(시세보다 크게 저렴)"
-    if delta < -0.5:
+    if delta < -1.0:
         return "낮음(시세 이하)"
-    if delta < 0.5:
+    if delta < 1.0:
         return "평균(시세 수준)"
     if delta < 1.5:
         return "다소 높음(시세 초과)"
@@ -57,9 +57,9 @@ def _im_assessment_label_ko(im: float, market_avg: float) -> str:
     delta = im - market_avg
     if delta < -1.5:
         return "매우 낮음(시세보다 크게 저렴)"
-    if delta < -0.5:
+    if delta < -1.0:
         return "낮음(시세 이하)"
-    if delta < 0.5:
+    if delta < 1.0:
         return "평균(시세 수준)"
     if delta < 1.5:
         return "다소 높음(시세 초과)"

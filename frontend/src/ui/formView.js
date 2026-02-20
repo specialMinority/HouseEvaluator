@@ -338,9 +338,10 @@ function renderGuideBanner() {
 
   const banner = h("div", { class: "guide-banner" }, [
     h("div", { class: "guide-banner__title", html: "\u{1F3E0} \uC774\uC6A9 \uAC00\uC774\uB4DC" }),
-    h("div", { class: "guide-banner__text", html:
-      "\u{1F4DD} \uB9E4\uBB3C \uC815\uBCF4\uB97C \uC785\uB825\uD558\uACE0 <strong>\uD3C9\uAC00\uD558\uAE30</strong>\uB97C \uB204\uB974\uBA74 \uC885\uD569 \uD3C9\uAC00 \uB9AC\uD3EC\uD2B8\uAC00 \uC0DD\uC131\uB429\uB2C8\uB2E4.<br>" +
-      "\u{1F4CB} \uACAC\uC801\uC11C\uC5D0 \uB098\uC640\uC788\uB294 \uC0C1\uC138\uB0B4\uC6A9\uC744 \uC785\uB825\uD558\uBA74 \uC815\uD655\uB3C4\uAC00 \uB354\uC6B1 \uC62C\uB77C\uAC11\uB2C8\uB2E4."
+    h("div", {
+      class: "guide-banner__text", html:
+        "\u{1F4DD} \uB9E4\uBB3C \uC815\uBCF4\uB97C \uC785\uB825\uD558\uACE0 <strong>\uD3C9\uAC00\uD558\uAE30</strong>\uB97C \uB204\uB974\uBA74 \uC885\uD569 \uD3C9\uAC00 \uB9AC\uD3EC\uD2B8\uAC00 \uC0DD\uC131\uB429\uB2C8\uB2E4.<br>" +
+        "\u{1F4CB} \uACAC\uC801\uC11C\uC5D0 \uB098\uC640\uC788\uB294 \uC0C1\uC138\uB0B4\uC6A9\uC744 \uC785\uB825\uD558\uBA74 \uC815\uD655\uB3C4\uAC00 \uB354\uC6B1 \uC62C\uB77C\uAC11\uB2C8\uB2E4."
     }),
     h("button", {
       class: "guide-banner__dismiss",
@@ -366,7 +367,7 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
   }
   for (const f of fields) {
     if (f.type === "boolean" && f.required === true && (values[f.key] === undefined || values[f.key] === null)) {
-      values[f.key] = false;
+      values[f.key] = true;
     }
   }
 
@@ -459,7 +460,7 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
         for (const f of fields) values[f.key] = sel.input?.[f.key];
         for (const f of fields) {
           if (f.type === "boolean" && f.required === true && (values[f.key] === undefined || values[f.key] === null)) {
-            values[f.key] = false;
+            values[f.key] = true;
           }
         }
         for (const f of fields) touched[f.key] = false;
