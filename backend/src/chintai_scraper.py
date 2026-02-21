@@ -483,12 +483,33 @@ def _find_chintai_list_url_from_benchmark_index(
         sources = entry.get("sources") or []
         if not isinstance(sources, list):
             return None
+        chintai_urls: list[str] = []
         for s in sources:
             if not isinstance(s, dict):
                 continue
             url = s.get("source_url")
-            if isinstance(url, str) and "chintai.net/" in url:
-                return url
+            if not isinstance(url, str) or not url:
+                continue
+            if "chintai.net/" in url:
+                chintai_urls.append(url)
+
+        # Prefer actual listing pages. (Some benchmark sources may include
+        # 家賃相場 /rent/ URLs which cannot be used for room sampling.)
+        for url in chintai_urls:
+            try:
+                if "/list/" in (urllib.parse.urlparse(url).path or ""):
+                    return url
+            except Exception:
+                continue
+
+        # If we only have non-list CHINTAI URLs (e.g. /rent/), infer the JIS
+        # code and synthesize the /list/ base.
+        for url in chintai_urls:
+            code = _infer_jis_code_from_source_url(url)
+            if code:
+                pref = str(prefecture).lower().strip()
+                return f"https://www.chintai.net/{pref}/area/{code}/list/"
+
         # Fallback: infer municipality code (JIS) from other provider URLs (e.g. SUUMO sc=13123).
         for s in sources:
             if not isinstance(s, dict):

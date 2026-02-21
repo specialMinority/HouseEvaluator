@@ -213,3 +213,31 @@ def test_build_chintai_list_url_falls_back_to_suumo_sc_code():
     assert parsed.path.endswith("/tokyo/area/13123/list/page2/")
     q = urllib.parse.parse_qs(parsed.query)
     assert q.get("m") == ["2"]
+
+
+def test_build_chintai_list_url_converts_rent_url_to_list_url():
+    from backend.src import chintai_scraper as c
+
+    edogawa = "\u6c5f\u6238\u5ddd\u533a"
+    idx = {
+        "by_pref_muni_layout": {
+            f"tokyo|{edogawa}|1K": {
+                "sources": [
+                    {"source_name": "CHINTAI", "source_url": "https://www.chintai.net/tokyo/area/13123/rent/1k/"},
+                ]
+            }
+        }
+    }
+
+    url = c.build_chintai_list_url(
+        prefecture="tokyo",
+        municipality=edogawa,
+        layout_type="1K",
+        benchmark_index=idx,
+        page=1,
+    )
+    assert url is not None
+    parsed = urllib.parse.urlparse(url)
+    assert parsed.path.endswith("/tokyo/area/13123/list/")
+    q = urllib.parse.parse_qs(parsed.query)
+    assert q.get("m") == ["1"]

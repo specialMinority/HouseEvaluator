@@ -249,7 +249,11 @@ def _parse_yen(text: str) -> int | None:
 
 def _parse_area(text: str) -> float | None:
     """'25.22m2' or '25.22㎡' → 25.22"""
-    m = re.search(r"([\d.]+)\s*(?:m\s*(?:2|\u00b2)|\u33a1)", text, re.IGNORECASE)
+    m = re.search(
+        r"([\d.]+)\s*(?:m\s*(?:2|\u00b2)|m\s*\^\s*(?:\{)?\s*2\s*(?:\})?|\u33a1)",
+        text,
+        re.IGNORECASE,
+    )
     if m:
         try:
             return float(m.group(1))
@@ -344,7 +348,7 @@ def _parse_orientation_from_row(row: str) -> str | None:
         return None
     compact = re.sub(r"\s+", "", row)
     # Prefer matching near the area token ("m2", "㎡") to avoid false positives.
-    m = re.search(r"(?:m\s*(?:2|\u00b2)|\u33a1)", compact, re.IGNORECASE)
+    m = re.search(r"(?:m\s*(?:2|\u00b2)|m\s*\^\s*(?:\{)?\s*2\s*(?:\})?|\u33a1)", compact, re.IGNORECASE)
     tail = compact[m.end() :] if m else compact
     tail = tail.replace("向き", "").replace("方位", "")
     for jp in sorted(_ORIENTATION_JP_TO_ENUM.keys(), key=len, reverse=True):
@@ -388,7 +392,7 @@ def _parse_bathroom_toilet_separate(text: str) -> bool | None:
     return None
 
 
-def _extract_listings_from_block(block: str) -> list[SuumoListing]:
+def _extract_listings_from_block(block: str, *, layout_hint: str | None = None) -> list[SuumoListing]:
     """Extract one or more SuumoListing from a raw cassette text block."""
     # Normalize fullwidth chars (１ＤＫ→1DK, ８.７万円→8.7万円, ３階→3階 etc.)
     # so all downstream regex patterns work on halfwidth ASCII.
@@ -408,6 +412,11 @@ def _extract_listings_from_block(block: str) -> list[SuumoListing]:
     station_names = _parse_station_names(block)
     structure_code = _parse_building_structure_code(block)
     bath_sep = _parse_bathroom_toilet_separate(block)
+    # Some SUUMO result modes only show layout once at the building level.
+    # If the block contains exactly one layout token, use it as a fallback for
+    # per-room rows that omit the layout column.
+    block_layout_candidates = sorted({m.group(1).upper() for m in _LAYOUT_PATTERN.finditer(block)})
+    block_layout_fallback = block_layout_candidates[0] if len(block_layout_candidates) == 1 else ""
 
     for row in rows:
         rent = _parse_man_yen(row)
@@ -429,7 +438,7 @@ def _extract_listings_from_block(block: str) -> list[SuumoListing]:
         orient = _parse_orientation_from_row(row)
 
         layout_m = _LAYOUT_PATTERN.search(row)
-        layout = layout_m.group(1) if layout_m else ""
+        layout = layout_m.group(1) if layout_m else block_layout_fallback
 
         listings.append(SuumoListing(
             rent_yen=rent,
@@ -561,7 +570,7 @@ _FETCH_HEADERS = {
 }
 
 
-def fetch_suumo_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]:
+def fetch_suumo_listings(url: str, *, timeout: int = 12, layout_hint: str | None = None) -> list[SuumoListing]:
     """Fetch SUUMO search page and return parsed listings."""
     req = urllib.request.Request(url, headers=_FETCH_HEADERS)
     try:
@@ -583,7 +592,7 @@ def fetch_suumo_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]:
 
     all_listings: list[SuumoListing] = []
     for block in parser.raw_blocks:
-        all_listings.extend(_extract_listings_from_block(block))
+        all_listings.extend(_extract_listings_from_block(block, layout_hint=layout_hint))
 
     # Diagnostic: if no layout parsed at all, print first raw block sample
     if parser.raw_blocks and not any(lst.layout for lst in all_listings[:5]):
@@ -817,7 +826,7 @@ def search_comparable_listings(
                     last_url = url
                 try:
                     time.sleep(1.5)  # polite delay — increased to avoid 502 rate-limits
-                    listings = fetch_suumo_listings(url, timeout=fetch_timeout)
+                    listings = fetch_suumo_listings(url, timeout=fetch_timeout, layout_hint=str(layout_type))
                     break
                 except RuntimeError as e:
                     err_str = str(e)
@@ -825,7 +834,7 @@ def search_comparable_listings(
                     if "502" in err_str or "503" in err_str:
                         try:
                             time.sleep(2.5)
-                            listings = fetch_suumo_listings(url, timeout=fetch_timeout)
+                            listings = fetch_suumo_listings(url, timeout=fetch_timeout, layout_hint=str(layout_type))
                             break
                         except RuntimeError as e2:
                             err_str = str(e2)
@@ -847,6 +856,15 @@ def search_comparable_listings(
 
             matched = [lst for lst in listings if matches_for_step(lst, step_idx)]
             layout_sample = sorted({lst.layout or "(empty)" for lst in listings[:20]})
+            coverage = {
+                "layout": sum(1 for lst in listings if lst.layout),
+                "area": sum(1 for lst in listings if lst.area_sqm is not None),
+                "walk": sum(1 for lst in listings if lst.walk_min is not None),
+                "age": sum(1 for lst in listings if lst.building_age_years is not None),
+                "structure": sum(1 for lst in listings if lst.building_structure is not None),
+                "bath": sum(1 for lst in listings if lst.bathroom_toilet_separate is not None),
+                "station": sum(1 for lst in listings if lst.station_names),
+            }
             if len(matched) == 0 and listings:
                 print(
                     f"[debug] step{step_idx}/{md_strategy}: matched=0, "
@@ -863,6 +881,7 @@ def search_comparable_listings(
                     "fetched_n": len(listings),
                     "matched_n": len(matched),
                     "layout_sample": layout_sample,
+                    "coverage": coverage,
                 }
             )
             if len(matched) >= min_listings:

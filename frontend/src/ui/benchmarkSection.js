@@ -173,6 +173,7 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
                     if (a?.coverage && typeof a.coverage === "object") {
                       const cov = a.coverage;
                       const parts = [];
+                      if (cov.layout != null) parts.push(`layout=${cov.layout}`);
                       if (cov.area != null) parts.push(`area=${cov.area}`);
                       if (cov.walk != null) parts.push(`walk=${cov.walk}`);
                       if (cov.age != null) parts.push(`age=${cov.age}`);
