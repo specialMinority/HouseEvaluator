@@ -165,7 +165,7 @@ cd HouseEvaluator
 ### 2. ローカル実行 (No Docker)
 ```powershell
 # Python 3.11 이상 필요
-python -m backend.src.evaluate
+python -m backend.src.server
 # → http://localhost:8000/frontend/ 으로 접속
 ```
 

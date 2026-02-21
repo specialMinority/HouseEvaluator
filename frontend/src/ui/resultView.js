@@ -1,12 +1,51 @@
 import { formatCompactNumber, formatYen, h, isObject, parseQuery, pick, safeString } from "../lib/utils.js";
 import { benchmarkConfidenceTextKo, renderRiskChips, renderRiskFlags, stationWalkRiskTier } from "./riskTiers.js";
-import { renderBenchmarkCard, renderCompactBenchmarkSection } from "./benchmarkSection.js";
-import { buildContextLabel, makeConditionDesc, makeCostDesc, makeLocationDesc, renderBullets, renderComponentScoreCard, renderDonutGauge, renderScoreCard } from "./scoreComponents.js";
+import { buildingStructureTextKo, renderBenchmarkCard, renderCompactBenchmarkSection } from "./benchmarkSection.js";
+import { buildContextLabel, makeConditionDesc, makeCostDesc, makeLocationDesc, orientationTextKo, renderBullets, renderComponentScoreCard, renderDonutGauge, renderScoreCard } from "./scoreComponents.js";
 
 function toNumberOrNull(value) {
   if (value === null || value === undefined || value === "") return null;
   const num = typeof value === "number" ? value : Number(value);
   return Number.isFinite(num) ? num : null;
+}
+
+function normalizeList(value) {
+  if (Array.isArray(value)) return value.filter((x) => typeof x === "string" && x.trim().length > 0).map((x) => x.trim());
+  if (typeof value === "string") return value.split(/\r?\n/).map((x) => x.trim()).filter((x) => x.length > 0);
+  return [];
+}
+
+function computeWhatIfInput(baseInput, mode, whatIfState) {
+  const base = isObject(baseInput) ? baseInput : {};
+  const next = { ...base };
+
+  const totalRaw = base.initial_cost_total_yen;
+  const total = typeof totalRaw === "number" ? totalRaw : Number(totalRaw || 0);
+  const safeTotal = Number.isFinite(total) ? total : 0;
+
+  if (mode === "total") {
+    const pct = Number(whatIfState?.reductionPct ?? 0);
+    const factor = Number.isFinite(pct) ? Math.max(0, 1 - pct / 100) : 1;
+    next.initial_cost_total_yen = Math.max(0, Math.round(safeTotal * factor));
+    return next;
+  }
+
+  const keys = ["reikin_yen", "brokerage_fee_yen", "key_change_yen", "cleaning_fee_yen"];
+  let delta = 0;
+  for (const k of keys) {
+    const curRaw = base[k];
+    const cur = typeof curRaw === "number" ? curRaw : Number(curRaw || 0);
+    const curVal = Number.isFinite(cur) ? cur : 0;
+
+    const action = whatIfState?.[k] ?? "no_change";
+    const nextVal = action === "half" ? Math.round(curVal / 2) : action === "waive" ? 0 : curVal;
+
+    next[k] = nextVal;
+    delta += nextVal - curVal;
+  }
+
+  next.initial_cost_total_yen = Math.max(0, Math.round(safeTotal + delta));
+  return next;
 }
 
 export function renderResultView({
@@ -321,16 +360,16 @@ export function renderResultView({
     h("h3", { text: "협상/대안" }),
     h("div", { class: "divider" }),
     h("div", { class: "hint", text: "협상 제안" }),
-    renderBullets(negKo),
+    renderBullets(normalizeList(negKo)),
     normalizeList(negJa).length || normalizeList(altJa).length
       ? h("details", { open: false }, [
         h("summary", { class: "pill", text: "일본어 문구/검색 쿼리(복사용)" }),
         h("div", { class: "divider" }),
         h("div", { class: "hint", text: "협상 문구(일본어)" }),
-        renderBullets(negJa),
+        renderBullets(normalizeList(negJa)),
         h("div", { class: "divider" }),
         h("div", { class: "hint", text: "대안 검색 쿼리(일본어)" }),
-        renderBullets(altJa),
+        renderBullets(normalizeList(altJa)),
       ])
       : null,
   ]);

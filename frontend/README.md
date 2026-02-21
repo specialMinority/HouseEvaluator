@@ -12,7 +12,7 @@ Recommended: run the backend server, which also serves static files from the rep
 
 ```powershell
 cd C:\Users\PC\Downloads\tokyo-wh-house-eval
-python -m backend.src.evaluate
+python -m backend.src.server
 ```
 
 Open:

@@ -10,6 +10,7 @@ import os
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
 from typing import Any, Final
+from urllib.parse import urlparse
 
 from backend.src.evaluate import InputValidationError, ROOT_DIR, evaluate
 try:
@@ -47,9 +48,10 @@ class _ApiHandler(SimpleHTTPRequestHandler):
         return json.loads(raw.decode("utf-8"))
 
     def do_POST(self) -> None:  # noqa: N802
-        if self.path == "/api/evaluate":
+        path = urlparse(self.path).path
+        if path in ("/api/evaluate", "/api/evaluate/"):
             self._handle_evaluate()
-        elif self.path == "/api/parse-url":
+        elif path in ("/api/parse-url", "/api/parse-url/"):
             self._handle_parse_url()
         else:
             self._send_json(404, {"error": "not_found"})
@@ -92,6 +94,10 @@ def serve(host: str = "0.0.0.0", port: int = 8000) -> None:
 
 
 if __name__ == "__main__":
+    # Default-on for the interactive UI/server run. Keep `evaluate()` offline by default
+    # so unit tests and scripts stay deterministic unless explicitly enabled.
+    os.environ.setdefault("SUUMO_LIVE", "1")
+    os.environ.setdefault("LIVE_PROVIDERS", "chintai,suumo")
     host = os.getenv("HOST", "0.0.0.0")
     port = int(os.getenv("PORT", "8000"))
     serve(host=host, port=port)

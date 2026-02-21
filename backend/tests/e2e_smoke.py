@@ -1,4 +1,5 @@
 import json
+import os
 import threading
 import unittest
 from http.client import HTTPConnection
@@ -24,6 +25,10 @@ class E2ESmokeTest(unittest.TestCase):
         return res.status, raw.decode("utf-8", errors="replace")
 
     def test_static_and_api(self) -> None:
+        # E2E smoke must be deterministic/offline. Disable live portal scraping which can
+        # be slow/flaky in CI or sandboxed environments.
+        prev_live = os.environ.get("SUUMO_LIVE")
+        os.environ["SUUMO_LIVE"] = "0"
         httpd = HTTPServer(("127.0.0.1", 0), _ApiHandler)
         port = httpd.server_address[1]
         t = threading.Thread(target=httpd.serve_forever, daemon=True)
@@ -159,6 +164,10 @@ class E2ESmokeTest(unittest.TestCase):
             httpd.shutdown()
             t.join(timeout=5)
             httpd.server_close()
+            if prev_live is None:
+                os.environ.pop("SUUMO_LIVE", None)
+            else:
+                os.environ["SUUMO_LIVE"] = prev_live
 
 
 if __name__ == "__main__":

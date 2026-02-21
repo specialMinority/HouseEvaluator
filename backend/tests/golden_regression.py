@@ -367,9 +367,9 @@ class GoldenRegressionTest(unittest.TestCase):
 
         out_wood = evaluate({**base, "building_structure": "wood"}, runtime=self.runtime, benchmark_index_override=index)
         out_rc = evaluate({**base, "building_structure": "rc"}, runtime=self.runtime, benchmark_index_override=index)
-        # Hedge adjustment is intentionally conservative (shrink + clamp); with n_rows=2 it should be near-raw.
-        self.assertEqual(out_wood["derived"]["benchmark_monthly_fixed_cost_yen"], 120616)
-        self.assertEqual(out_rc["derived"]["benchmark_monthly_fixed_cost_yen"], 160822)
+        # V2: structure-level matches use raw benchmark (no additional hedonic adjustments).
+        self.assertEqual(out_wood["derived"]["benchmark_monthly_fixed_cost_yen"], 120000)
+        self.assertEqual(out_rc["derived"]["benchmark_monthly_fixed_cost_yen"], 160000)
         self.assertEqual(out_wood["derived"]["benchmark_matched_level"], "muni_structure_level")
         self.assertEqual(out_rc["derived"]["benchmark_matched_level"], "muni_structure_level")
 
@@ -403,8 +403,9 @@ class GoldenRegressionTest(unittest.TestCase):
             "initial_cost_total_yen": 400000,
         }
         out = evaluate(payload, runtime=self.runtime, benchmark_index_override=index)
-        # Hedge adjustment is intentionally conservative (shrink + clamp); with n_rows=2 it should be near-raw.
-        self.assertEqual(out["derived"]["benchmark_monthly_fixed_cost_yen"], 151286)
+        # V2: structure-only adjustments apply only when we *didn't* match at structure level.
+        # For building_structure=other the factor is 1.0, so adjusted==raw.
+        self.assertEqual(out["derived"]["benchmark_monthly_fixed_cost_yen"], 150000)
         self.assertEqual(out["derived"]["benchmark_matched_level"], "muni_level")
 
     def test_benchmark_none_still_generates_summary(self) -> None:

@@ -3,7 +3,8 @@
  *
  * Exports: renderScoreCard, renderBullets, renderDonutGauge,
  *          renderComponentScoreCard, buildContextLabel,
- *          makeLocationDesc, makeConditionDesc, makeCostDesc
+ *          makeLocationDesc, makeConditionDesc, makeCostDesc,
+ *          orientationTextKo
  */
 import { formatCompactNumber, h, safeString } from "../lib/utils.js";
 
@@ -12,7 +13,7 @@ function toNumberOrNull(value) {
     return Number.isFinite(n) ? n : null;
 }
 
-function orientationTextKo(value) {
+export function orientationTextKo(value) {
     const v = String(value || "UNKNOWN");
     const map = {
         N: "북쪽", NE: "북동쪽", E: "동쪽", SE: "남동쪽",

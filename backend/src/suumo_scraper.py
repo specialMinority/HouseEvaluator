@@ -157,6 +157,7 @@ class SuumoListing:
     orientation: str | None = None              # N/NE/E/SE/S/SW/W/NW
     building_structure: str | None = None       # wood|light_steel|steel|rc|src
     bathroom_toilet_separate: bool | None = None
+    detail_url: str | None = None
 
 
 @dataclass
@@ -586,7 +587,8 @@ def fetch_suumo_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]:
 
     # Diagnostic: if no layout parsed at all, print first raw block sample
     if parser.raw_blocks and not any(lst.layout for lst in all_listings[:5]):
-        print(f"[debug-block-sample] {parser.raw_blocks[0][:400]!r}", flush=True)
+        sample = next((b for b in parser.raw_blocks if b and str(b).strip()), parser.raw_blocks[0])
+        print(f"[debug-block-sample] {str(sample)[:400]!r}", flush=True)
 
     # Deduplicate: same rent+admin+area combination
     seen: set[tuple] = set()

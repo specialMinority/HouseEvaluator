@@ -1,5 +1,5 @@
 import { saveJson } from "../lib/storage.js";
-import { formatCompactNumber, h, safeString } from "../lib/utils.js";
+import { formatCompactNumber, h, parseQuery, safeString } from "../lib/utils.js";
 
 function fieldLabelText(key, field) {
   if (key === "hub_station") return "주요 이용역(자주 이용할 역)";
@@ -515,6 +515,11 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
                   placeholder: "https://suumo.jp/chintai/jnc_... または 검색결과 URL",
                 });
                 const urlStatus = h("span", { class: "url-import__status" });
+                const debugPre = h("pre", { class: "mono", text: "" });
+                const debugDetails = h("details", { class: "hidden", open: false }, [
+                  h("summary", { class: "pill", text: "debug: parse-url fields" }),
+                  debugPre,
+                ]);
                 const parseBtn = h("button", {
                   type: "button",
                   class: "btn btn--ghost btn--sm",
@@ -526,7 +531,9 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
                     urlStatus.textContent = "⏳ 파싱 중…";
                     urlStatus.className = "url-import__status url-import__status--loading";
                     try {
-                      const resp = await fetch("/api/parse-url", {
+                      const q = parseQuery();
+                      const apiBase = q.apiBase ? String(q.apiBase).replace(/\/$/, "") : "";
+                      const resp = await fetch(`${apiBase}/api/parse-url`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ url: rawUrl }),
@@ -538,31 +545,98 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
                         return;
                       }
                       const fields = data.fields || {};
-                      const FIELD_MAP = {
-                        rent_yen: "rent_yen",
+                      console.log("[parse-url] parsed fields:", fields);
+                      debugPre.textContent = JSON.stringify(fields, null, 2);
+                      debugDetails.classList.add("hidden");
+
+                      const FIELD_ALIASES = {
                         management_fee_yen: "mgmt_fee_yen",
-                        area_sqm: "area_sqm",
-                        layout_type: "layout_type",
-                        station_walk_min: "station_walk_min",
-                        building_age_years: "_building_age_years_hint",
-                        building_structure: "building_structure",
+                        walk_min: "station_walk_min",
                       };
-                      let filled = 0;
-                      Object.entries(FIELD_MAP).forEach(([src, dst]) => {
-                        if (fields[src] === undefined) return;
-                        // building_age_years needs building_built_year conversion
-                        if (src === "building_age_years") {
-                          const yr = new Date().getFullYear() - Number(fields[src]);
-                          const el = document.getElementById("field-building_built_year");
-                          if (el) { el.value = yr; el.dispatchEvent(new Event("input")); filled++; }
-                          return;
+
+                      const normalizeBuildingStructure = (raw) => {
+                        const t = String(raw ?? "").trim();
+                        if (!t) return t;
+                        const ascii = t.replace(/Ｒ/g, "R").replace(/Ｃ/g, "C").replace(/Ｓ/g, "S");
+                        const up = ascii.toUpperCase();
+                        if (up.includes("SRC") || t.includes("鉄骨鉄筋")) return "src";
+                        if (up.includes("RC") || t.includes("鉄筋コンクリート")) return "rc";
+                        if (t.includes("軽量鉄骨")) return "light_steel";
+                        if (t.includes("鉄骨")) return "steel";
+                        if (t.includes("木造") || t.includes("木")) return "wood";
+                        return t.toLowerCase();
+                      };
+
+                      const filledKeys = new Set();
+                      const failedFills = [];
+                      const tryFill = (key, value) => {
+                        if (!key) return false;
+                        if (filledKeys.has(key)) return false;
+
+                        const el = document.getElementById(`f_${key}`);
+                        if (!el) {
+                          failedFills.push({ key, reason: "no_element" });
+                          return false;
                         }
-                        const el = document.getElementById(`field-${dst}`);
-                        if (el) { el.value = fields[src]; el.dispatchEvent(new Event("input")); filled++; }
-                      });
-                      const filledCount = filled;
+
+                        if (el.type === "checkbox") {
+                          el.checked = Boolean(value);
+                          el.dispatchEvent(new Event("change", { bubbles: true }));
+                        } else if (el.tagName === "SELECT") {
+                          let next = String(value);
+                          if (key === "building_structure") next = normalizeBuildingStructure(next);
+                          el.value = next;
+                          el.dispatchEvent(new Event("change", { bubbles: true }));
+                          if (el.value !== next) {
+                            const options = Array.from(el.options || []).map((o) => o.value);
+                            failedFills.push({ key, reason: "invalid_option", value: next, options });
+                            console.warn(`[parse-url] failed to set select '${key}' to '${next}'. options=`, options);
+                            return false;
+                          }
+                        } else {
+                          el.value = value;
+                          el.dispatchEvent(new Event("input", { bubbles: true }));
+                        }
+
+                        filledKeys.add(key);
+                        return true;
+                      };
+
+                      // Prefer built-year if provided; otherwise derive it from age.
+                      if (fields.building_built_year !== undefined) {
+                        tryFill("building_built_year", fields.building_built_year);
+                      } else if (fields.building_age_years !== undefined) {
+                        const yr = new Date().getFullYear() - Number(fields.building_age_years);
+                        if (Number.isFinite(yr) && yr > 0) tryFill("building_built_year", yr);
+                      }
+
+                      for (const [src, value] of Object.entries(fields)) {
+                        if (value === undefined) continue;
+                        if (src === "building_age_years" || src === "building_built_year") continue;
+                        const dst = FIELD_ALIASES[src] || src;
+                        tryFill(dst, value);
+                      }
+
+                      const filledCount = filledKeys.size;
+                      if (failedFills.length) console.log("[parse-url] failed fills:", failedFills);
+
+                      const structureRaw =
+                        fields.building_structure !== undefined && fields.building_structure !== null
+                          ? String(fields.building_structure)
+                          : null;
+                      const structureFilled = filledKeys.has("building_structure");
+                      const structureCode = structureRaw ? normalizeBuildingStructure(structureRaw) : null;
+                      const structureText = structureCode ? enumOptionText("building_structure", structureCode) : null;
+                      const structureBadge = structureRaw
+                        ? ` / 구조: ${structureText}${structureFilled ? "" : " (미반영)"}`
+                        : " / 구조: 없음";
+
+                      if (failedFills.length || !structureRaw || !structureFilled) {
+                        debugDetails.classList.remove("hidden");
+                      }
+
                       urlStatus.textContent = filledCount > 0
-                        ? `✅ ${filledCount}개 항목 자동 입력 완료`
+                        ? `✅ ${filledCount}개 항목 자동 입력 완료${failedFills.length ? ` (실패: ${failedFills.map((f) => f.key).join(", ")})` : ""}${structureBadge}`
                         : "⚠️ 파싱됐지만 매칭 필드 없음";
                       urlStatus.className = "url-import__status url-import__status--ok";
                     } catch (err) {
@@ -573,7 +647,10 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
                     }
                   },
                 });
-                return h("div", { class: "url-import__inner" }, [urlInput, parseBtn, urlStatus]);
+                return h("div", {}, [
+                  h("div", { class: "url-import__inner" }, [urlInput, parseBtn, urlStatus]),
+                  debugDetails,
+                ]);
               })(),
             ]),
           ]),

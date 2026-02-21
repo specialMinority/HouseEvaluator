@@ -19,10 +19,11 @@ from backend.src.scoring import (
     _select_first_rule_by_priority,
 )
 try:
-    from backend.src.suumo_scraper import search_comparable_listings
-    _SUUMO_AVAILABLE = True
+    from backend.src.live_benchmark import available_providers, search_comparable_listings
+    _LIVE_BENCHMARK_AVAILABLE = True
 except Exception:
-    _SUUMO_AVAILABLE = False
+    available_providers = None  # type: ignore[assignment]
+    _LIVE_BENCHMARK_AVAILABLE = False
 
 
 ROOT_DIR: Final[Path] = Path(__file__).resolve().parents[2]
@@ -46,12 +47,40 @@ _IM_MARKET_AVG_BY_PREF: Final[dict[str, float]] = {
 _IM_MARKET_AVG_DEFAULT: Final[float] = 4.5
 
 
+def _estimate_benchmark_mgmt_fee_yen(
+    benchmark_rent_yen: int,
+    *,
+    input_mgmt_fee_yen: int,
+    rate_of_rent: float = 0.05,
+    cap_yen: int = 20000,
+) -> int:
+    """
+    Our CSV benchmark dataset contains *rent only* (no management fee).
+
+    When comparing `monthly_fixed_cost_yen = rent + mgmt_fee` to a rent-only benchmark,
+    the result is biased toward "expensive". To reduce this bias without
+    over-crediting low management fees, we add a conservative estimate to the
+    benchmark, capped and never exceeding the listing's own mgmt fee.
+
+    This keeps mgmt fees from being double-counted (we still penalize unusually
+    high mgmt fees, but avoid a systematic upward bias).
+    """
+    if benchmark_rent_yen <= 0:
+        return 0
+    if input_mgmt_fee_yen <= 0:
+        return 0
+
+    est = int(round(float(benchmark_rent_yen) * float(rate_of_rent)))
+    est = max(0, min(est, int(cap_yen)))
+    return min(int(input_mgmt_fee_yen), est)
+
+
 def _im_assessment_label(im: float, market_avg: float) -> str:
     """Classify initial_multiple relative to prefecture market average."""
     delta = im - market_avg
-    if delta < -1.5:
+    if delta <= -1.5:
         return "매우 낮음(시세보다 크게 저렴)"
-    if delta < -1.0:
+    if delta <= -1.0:
         return "낮음(시세 이하)"
     if delta < 1.0:
         return "평균(시세 수준)"
@@ -66,9 +95,9 @@ def _im_assessment_label(im: float, market_avg: float) -> str:
 def _im_assessment_label_ko(im: float, market_avg: float) -> str:
     """Korean label for initial_multiple vs prefecture market average (months)."""
     delta = im - market_avg
-    if delta < -1.5:
+    if delta <= -1.5:
         return "매우 낮음(시세보다 크게 저렴)"
-    if delta < -1.0:
+    if delta <= -1.0:
         return "낮음(시세 이하)"
     if delta < 1.0:
         return "평균(시세 수준)"
@@ -267,24 +296,93 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     building_age_years = max(0, current_year - int(payload["building_built_year"]))
     initial_multiple = float(payload["initial_cost_total_yen"]) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
 
-    # ── Live benchmark: SUUMO real-time comparable search ────────────────────
+    # ── Live benchmark: real-time comparable search (HOMES/SUUMO) ───────────
     _live_result = None
     _live_used = False
-    use_live = (os.getenv("SUUMO_LIVE", "1") not in ("0", "false", "no")) and _SUUMO_AVAILABLE
+    # Default OFF for offline determinism (unit tests, local scripting).
+    # The HTTP server entrypoint (`python -m backend.src.server`) enables it by default via env setdefault.
+    live_enabled = os.getenv("SUUMO_LIVE", "0") not in ("0", "false", "no")
+    use_live = live_enabled and _LIVE_BENCHMARK_AVAILABLE
+    provider_availability = available_providers() if callable(available_providers) else None
+    providers_env_raw = os.getenv("LIVE_PROVIDERS")
+    provider_order = [p.strip().lower() for p in str(os.getenv("LIVE_PROVIDERS", "chintai,suumo")).split(",") if p.strip()]
+    live_benchmark: dict[str, Any] = {
+        "enabled": bool(live_enabled),
+        "available": bool(_LIVE_BENCHMARK_AVAILABLE),
+        "providers": provider_availability,
+        "providers_env": providers_env_raw,
+        "provider_order": provider_order,
+        "provider": None,
+        "provider_name": None,
+        "attempted": False,
+        "used": False,
+        "confidence": "none",
+        "n_sources": 0,
+        "matched_level": "none",
+        "relaxation_applied": None,
+        "search_url": None,
+        "filters": None,
+        "attempts": None,
+        "error": None,
+    }
+    if not live_enabled:
+        live_benchmark["error"] = "disabled (set SUUMO_LIVE=1 to enable)"
+    elif not _LIVE_BENCHMARK_AVAILABLE:
+        live_benchmark["error"] = "unavailable (live benchmark module import failed)"
     if use_live:
         try:
+            live_benchmark["attempted"] = True
             _live_result = search_comparable_listings(
                 prefecture=str(payload["prefecture"]),
                 municipality=str(payload.get("municipality")) if payload.get("municipality") else None,
                 layout_type=str(payload["layout_type"]),
-                rent_yen=monthly_fixed_cost_yen,
+                benchmark_index=benchmark_index_override if benchmark_index_override is not None else rt.benchmark_index,
+                rent_yen=int(payload["rent_yen"]),
                 area_sqm=float(payload["area_sqm"]) if payload.get("area_sqm") is not None else None,
                 walk_min=int(payload["station_walk_min"]) if payload.get("station_walk_min") is not None else None,
                 building_age_years=building_age_years,
+                nearest_station_name=str(payload.get("nearest_station_name")) if payload.get("nearest_station_name") else None,
+                orientation=str(payload.get("orientation")) if payload.get("orientation") else None,
+                building_structure=str(payload.get("building_structure")) if payload.get("building_structure") else None,
+                bathroom_toilet_separate=bool(payload.get("bathroom_toilet_separate")) if payload.get("bathroom_toilet_separate") is not None else None,
             )
+            if _live_result is not None:
+                live_filters = None
+                live_attempts = None
+                live_provider = None
+                live_provider_name = None
+                if isinstance(getattr(_live_result, "adjustments_applied", None), dict):
+                    lf = _live_result.adjustments_applied.get("filters")
+                    if isinstance(lf, dict):
+                        live_filters = lf
+                    la = _live_result.adjustments_applied.get("attempts")
+                    if isinstance(la, list):
+                        live_attempts = la
+                    lp = _live_result.adjustments_applied.get("provider")
+                    if isinstance(lp, str) and lp:
+                        live_provider = lp
+                    lpn = _live_result.adjustments_applied.get("provider_name")
+                    if isinstance(lpn, str) and lpn:
+                        live_provider_name = lpn
+                live_benchmark.update(
+                    {
+                        "confidence": _live_result.benchmark_confidence,
+                        "n_sources": _live_result.benchmark_n_sources,
+                        "matched_level": _live_result.matched_level,
+                        "relaxation_applied": _live_result.relaxation_applied,
+                        "search_url": _live_result.search_url,
+                        "provider": live_provider,
+                        "provider_name": live_provider_name,
+                        "filters": live_filters,
+                        "attempts": live_attempts,
+                        "error": _live_result.error,
+                    }
+                )
             if _live_result and _live_result.benchmark_confidence != "none":
                 _live_used = True
-        except Exception:
+                live_benchmark["used"] = True
+        except Exception as e:  # noqa: BLE001
+            live_benchmark["error"] = f"exception during live benchmark fetch: {e}"
             _live_result = None
 
     # ── CSV fallback benchmark ────────────────────────────────────────────────
@@ -314,15 +412,51 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             benchmark_spec=rt.spec.get("D1"),
         )
 
-    benchmark_monthly_fixed_cost_yen = bm.benchmark_rent_yen  # Spec prompt allows rent-only benchmark.
+    benchmark_monthly_fixed_cost_yen = bm.benchmark_rent_yen
     benchmark_monthly_fixed_cost_yen_raw = bm.benchmark_rent_yen_raw
     benchmark_confidence = bm.benchmark_confidence
     benchmark_n_sources = bm.benchmark_n_sources
     benchmark_matched_level = bm.matched_level
     benchmark_adjustments = bm.adjustments_applied
 
-    # rent_delta_ratio: monthly_fixed_cost (rent+mgmt) vs rent-only benchmark.
-    # Using monthly_fixed_cost_yen so that mgmt_fee is included in the cost comparison.
+    # CSV benchmark index is rent-only. If the listing has a management fee,
+    # compare against a conservatively mgmt-adjusted benchmark to avoid
+    # systematic "expensive" bias.
+    benchmark_mgmt_fee_estimate_yen = 0
+    is_live_total_benchmark = benchmark_matched_level in (
+        "suumo_live",
+        "suumo_relaxed",
+        "homes_live",
+        "homes_relaxed",
+        "chintai_live",
+        "chintai_relaxed",
+    )
+    if (not is_live_total_benchmark) and benchmark_monthly_fixed_cost_yen is not None:
+        mgmt_fee_yen = int(payload.get("mgmt_fee_yen") or 0)
+        benchmark_mgmt_fee_estimate_yen = _estimate_benchmark_mgmt_fee_yen(
+            int(benchmark_monthly_fixed_cost_yen),
+            input_mgmt_fee_yen=mgmt_fee_yen,
+        )
+        if benchmark_mgmt_fee_estimate_yen > 0:
+            benchmark_monthly_fixed_cost_yen = int(benchmark_monthly_fixed_cost_yen) + int(benchmark_mgmt_fee_estimate_yen)
+            if benchmark_monthly_fixed_cost_yen_raw is not None:
+                benchmark_monthly_fixed_cost_yen_raw = int(benchmark_monthly_fixed_cost_yen_raw) + int(benchmark_mgmt_fee_estimate_yen)
+
+            # Merge into adjustments for transparency (frontend already displays adjustments when present).
+            merged_adj: dict[str, Any] = {}
+            if isinstance(benchmark_adjustments, dict):
+                merged_adj.update(benchmark_adjustments)
+            merged_adj.update(
+                {
+                    "management_fee_estimate_yen": int(benchmark_mgmt_fee_estimate_yen),
+                    "management_fee_estimate_rate_of_rent": 0.05,
+                    "management_fee_estimate_cap_yen": 20000,
+                    "management_fee_estimate_note": "Benchmark dataset is rent-only; added conservative mgmt estimate (<= listing mgmt).",
+                }
+            )
+            benchmark_adjustments = merged_adj
+
+    # rent_delta_ratio: monthly_fixed_cost (rent+mgmt) vs benchmark monthly fixed cost.
     rent_delta_ratio = 0.0
     if benchmark_monthly_fixed_cost_yen and benchmark_monthly_fixed_cost_yen > 0:
         rent_delta_ratio = (float(monthly_fixed_cost_yen) - float(benchmark_monthly_fixed_cost_yen)) / float(
@@ -348,6 +482,7 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "initial_multiple": initial_multiple,
             "benchmark_monthly_fixed_cost_yen": benchmark_monthly_fixed_cost_yen,
             "benchmark_monthly_fixed_cost_yen_raw": benchmark_monthly_fixed_cost_yen_raw,
+            "benchmark_mgmt_fee_estimate_yen": benchmark_mgmt_fee_estimate_yen,
             "benchmark_confidence": benchmark_confidence,
             "benchmark_n_sources": benchmark_n_sources,
             "benchmark_matched_level": benchmark_matched_level,
@@ -546,6 +681,8 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "benchmark_n_sources": benchmark_n_sources,
             "benchmark_matched_level": benchmark_matched_level,
             "benchmark_adjustments": benchmark_adjustments,
+            "benchmark_mgmt_fee_estimate_yen": int(benchmark_mgmt_fee_estimate_yen or 0),
+            "live_benchmark": live_benchmark,
             "rent_delta_ratio": _round(rent_delta_ratio, 6),
             "im_assessment": im_assessment,
             "im_assessment_foreigner": im_assessment_foreigner,
