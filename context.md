@@ -400,3 +400,34 @@ Tests
 
 Notes / next
 - PR-7+ (later): URL resolver 개선, provider별 파서/모델 공통화 리팩터링(핫픽스 범위 밖).
+
+### PR-7 - URL Resolver (CHINTAI municipality mapping without benchmark_index)
+Status: DONE (2026-02-22)
+
+Problem
+- `benchmark_index.json`에 없는 municipality는 CHINTAI base URL(`.../area/{code}/list/`)을 만들 수 없어 live 비교가 즉시 실패함.
+- URL index를 유지보수(수동 갱신)하지 않으면 지역 확장이 불가능해짐.
+
+Goal
+- benchmark_index에 없더라도 CHINTAI가 제공하는 prefecture area index 페이지(예: `https://www.chintai.net/tokyo/area/`)에서 municipality -> area code를 동적으로 찾아 base URL을 생성.
+- 불필요한 네트워크 호출을 줄이기 위해 캐시를 사용.
+
+Implemented
+- Dynamic resolver + cache: `backend/src/url_resolver.py`
+  - `parse_chintai_pref_area_index(html) -> { muni_name -> code }`
+  - `resolve_chintai_area_code(prefecture, municipality_candidates)`:
+    - cache hit 우선
+    - miss 시 CHINTAI area index fetch + 파싱 후 캐시에 저장
+  - Cache path:
+    - env `URL_RESOLVER_CACHE_PATH` 우선
+    - 기본값은 OS temp(`tokyo_wh_url_resolver_cache_v1.json`)
+- CHINTAI URL builder fallback: `backend/src/chintai_scraper.py`
+  - `_find_chintai_list_url_from_benchmark_index(...)` 실패 시 `resolve_chintai_area_code(...)`로 area code를 얻어 `https://www.chintai.net/{pref}/area/{code}/list/` 생성.
+  - URL build failure 메시지 개선(benchmark index + dynamic resolver 포함).
+
+Tests
+- `backend/tests/test_url_resolver.py` 추가
+  - CHINTAI area index 파싱
+  - resolver cache 동작
+  - `build_chintai_list_url(... benchmark_index=None)` dynamic fallback 동작
+  - `python -m pytest backend/tests -q` (54 passed)

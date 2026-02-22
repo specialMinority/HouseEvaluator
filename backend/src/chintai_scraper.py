@@ -29,6 +29,7 @@ from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.live_quality import dedupe_listings, filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
 from backend.src.suumo_scraper import ComparisonResult, SuumoListing
+from backend.src.url_resolver import resolve_chintai_area_code
 
 
 _FETCH_HEADERS = {
@@ -673,13 +674,20 @@ def build_chintai_list_url(
     bathroom_toilet_separate: bool | None = None,
 ) -> str | None:
     """
-    Build a CHINTAI list URL, using benchmark_index as the source of the base
-    municipality path (contains the area code).
+    Build a CHINTAI list URL. Prefer benchmark_index (fast/offline), but fall back
+    to a dynamic resolver (fetching CHINTAI prefecture area index) when the index
+    does not contain the municipality mapping.
 
     Example base from index:
       https://www.chintai.net/tokyo/area/13123/list/page3/?m=2
     """
     src = _find_chintai_list_url_from_benchmark_index(prefecture, municipality, layout_type, benchmark_index)
+    if not src and municipality:
+        muni_cands = _municipality_candidates(prefecture, municipality)
+        code = resolve_chintai_area_code(prefecture, muni_cands)
+        if code:
+            pref = str(prefecture).lower().strip()
+            src = f"https://www.chintai.net/{pref}/area/{code}/list/"
     if not src:
         return None
 
@@ -1148,10 +1156,11 @@ def search_comparable_listings(  # noqa: PLR0913
             last_url = url or last_url
             if not url:
                 if not municipality:
-                    last_error = "CHINTAI URL build failed: missing municipality (市区町村)"
+                    last_error = "CHINTAI URL build failed: missing municipality"
                 else:
                     last_error = (
-                        "CHINTAI URL build failed: missing/unknown municipality mapping in benchmark index "
+                        "CHINTAI URL build failed: unable to resolve municipality mapping "
+                        "(benchmark index + dynamic resolver) "
                         f"({prefecture}|{municipality}|{layout_type_u})"
                     )
                 attempts.append({"step": step_idx, "page": page, "url": None, "error": last_error})
