@@ -33,7 +33,7 @@ function computeDerivedForMock(input) {
   return { monthly_fixed_cost_yen: monthly, initial_multiple: im };
 }
 
-export async function evaluate(input, { mockMode }) {
+export async function evaluate(input, { mockMode = false, signal } = {}) {
   const q = parseQuery();
   const apiBase = q.apiBase ? String(q.apiBase).replace(/\/$/, "") : "";
 
@@ -50,6 +50,6 @@ export async function evaluate(input, { mockMode }) {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(input),
+    signal,
   });
 }
-

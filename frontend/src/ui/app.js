@@ -4,11 +4,14 @@ import { loadSpec } from "../lib/specLoader.js";
 import { loadJson, saveJson } from "../lib/storage.js";
 import { h, parseQuery, replaceChildren } from "../lib/utils.js";
 import { renderFormView } from "./formView.js";
+import { createLoadingOverlay } from "./loadingOverlay.js";
 import { renderResultView } from "./resultView.js";
 
 export function createApp(container, badgesEl) {
   const q = parseQuery();
   const showDebug = q.debug === "1";
+  const overlay = createLoadingOverlay({ showDebug });
+  let activeAbort = null;
 
   const state = {
     spec: null,
@@ -61,12 +64,28 @@ export function createApp(container, badgesEl) {
 
   async function onSubmit(nextInput) {
     saveJson("lastInput", nextInput);
+    activeAbort?.abort();
+    const ctrl = new AbortController();
+    activeAbort = ctrl;
+    overlay.start({
+      onCancel: () => ctrl.abort(),
+      onRetry: () => onSubmit(nextInput),
+    });
+
     set({ input: nextInput, loading: true, error: null });
     try {
-      const resp = await evaluate(nextInput, { mockMode: false });
+      const resp = await evaluate(nextInput, { mockMode: false, signal: ctrl.signal });
+      overlay.finishFromResponse(resp);
       set({ response: resp, view: "result", loading: false });
     } catch (e) {
+      if (ctrl.signal.aborted || e?.name === "AbortError") {
+        set({ loading: false, error: "평가를 취소했습니다." });
+        return;
+      }
+      overlay.fail(e);
       set({ loading: false, error: e?.message || String(e) });
+    } finally {
+      if (activeAbort === ctrl) activeAbort = null;
     }
   }
 

@@ -155,8 +155,20 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
             providerFails.reverse();
 
             const stepAttempts = attempts.filter((a) => isObj(a) && ("step" in a));
-            const tailSteps = stepAttempts.slice(Math.max(0, stepAttempts.length - 4));
+            // Show more than a couple attempts so multi-provider runs don't hide earlier steps.
+            const tailSteps = stepAttempts.slice(Math.max(0, stepAttempts.length - 12));
             const tail = [...providerFails, ...tailSteps];
+
+            const formatTopCounts = (obj, limit = 3) => {
+                if (!obj || typeof obj !== "object") return null;
+                const entries = Object.entries(obj)
+                    .filter(([, v]) => typeof v === "number" && v > 0)
+                    .sort((a, b) => b[1] - a[1])
+                    .slice(0, limit)
+                    .map(([k, v]) => `${k}=${v}`);
+                return entries.length ? entries.join(",") : null;
+            };
+
             const parts = tail.map((a) => {
                 if (a?.provider && !("step" in a)) {
                     let s = `${String(a.provider)}: ${a?.error ? String(a.error) : "failed"}`;
@@ -182,6 +194,14 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
                       if (cov.station != null) parts.push(`station=${cov.station}`);
                       if (parts.length) s += ` [cov: ${parts.join(",")}]`;
                     }
+                    const rejectTop = formatTopCounts(a?.reject_counts, 2);
+                    if (rejectTop) s += ` [reject: ${rejectTop}]`;
+                    const unknownTop = formatTopCounts(a?.unknown_required_counts, 2);
+                    if (unknownTop) s += ` [unknown: ${unknownTop}]`;
+                    const de = a?.detail_enriched_n ?? 0;
+                    const dm = a?.detail_matched_n ?? 0;
+                    const derr = a?.detail_error_n ?? 0;
+                    if (de || dm || derr) s += ` [detail: e=${de},m=${dm},err=${derr}]`;
                     return s;
                 }
                 return `step${step}/${strat}`;

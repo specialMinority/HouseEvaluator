@@ -12,6 +12,9 @@ Constraints:
 
 from __future__ import annotations
 
+import html as html_lib
+import unicodedata
+from collections import Counter
 import re
 import time
 import urllib.error
@@ -87,7 +90,17 @@ def _decode_best_effort(data: bytes, charset: str | None) -> str:
 
 
 def _strip_tags(html: str) -> str:
-    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", html or "")).strip()
+    # CHINTAI list pages frequently include HTML entities like "&nbsp;" inside the
+    # traffic block (沿線/駅/徒歩N分). Without unescaping, station/walk parsing can
+    # fail and lead to overly strict station matching (0 hits).
+    s = re.sub(r"<[^>]+>", " ", html or "")
+    try:
+        s = html_lib.unescape(s)
+    except Exception:
+        pass
+    # Unescape yields NBSP; normalize it to a regular space so regexes using \s work.
+    s = s.replace("\u00a0", " ")
+    return re.sub(r"\s+", " ", s).strip()
 
 
 def _parse_int(text: str) -> int | None:
@@ -124,7 +137,12 @@ def _parse_man_yen(text: str) -> int | None:
 def _parse_area_sqm(text: str) -> float | None:
     if not text:
         return None
-    m = re.search(r"([\d.]+)\s*(?:m(?:2|²)|㎡)", text)
+    t = text
+    try:
+        t = html_lib.unescape(t).replace("\u00a0", " ")
+    except Exception:
+        t = text
+    m = re.search(r"([\d.]+)\s*(?:m(?:2|²)|㎡)", t)
     if not m:
         return None
     try:
@@ -282,9 +300,72 @@ def _structure_code_to_chintai_kz(structure: str) -> str | None:
 
 
 def _normalize_station(st: str) -> str:
-    t = re.sub(r"\s+", "", str(st or ""))
+    t = unicodedata.normalize("NFKC", str(st or ""))
+    t = re.sub(r"\s+", "", t)
     t = t.replace("駅", "")
     return t
+
+
+_STATION_ALIASES: dict[str, set[str]] = {
+    # Minimal alias set for common kana/kanji variants.
+    "難波": {"なんば"},
+    "なんば": {"難波"},
+}
+
+
+def _station_variants(st: str) -> set[str]:
+    base = _normalize_station(st)
+    if not base:
+        return set()
+    out: set[str] = {base}
+    for alt in _STATION_ALIASES.get(base, set()):
+        alt_norm = _normalize_station(alt)
+        if alt_norm:
+            out.add(alt_norm)
+    return out
+
+
+def _station_similar(a: str, b: str) -> bool:
+    if not a or not b:
+        return False
+    a_vars = _station_variants(a)
+    b_vars = _station_variants(b)
+    for av in a_vars:
+        for bv in b_vars:
+            if (av in bv) or (bv in av):
+                return True
+    return False
+
+
+def _parse_station_accesses(text: str) -> list[tuple[str, int]]:
+    """
+    Extract station+walk pairs from a (tag-stripped) CHINTAI block/section.
+    Example matches: "小岩駅 徒歩12分", "なんば駅 歩10分".
+    """
+    if not text:
+        return []
+    t = _strip_tags(text).translate(_FULLWIDTH_ASCII_TRANSLATION)
+    found: list[tuple[str, int]] = []
+    for m in re.finditer(r"([^\s/<>]{1,30})駅\s*(?:徒歩|歩)\s*(\d+)\s*分", t):
+        name = _normalize_station(m.group(1))
+        if not name:
+            continue
+        try:
+            walk = int(m.group(2))
+        except Exception:
+            continue
+        found.append((name, walk))
+
+    # De-duplicate by station name, keep the shortest walk time.
+    best: dict[str, int] = {}
+    order: list[str] = []
+    for name, walk in found:
+        if name not in best:
+            order.append(name)
+            best[name] = walk
+        else:
+            best[name] = min(best[name], walk)
+    return [(name, best[name]) for name in order]
 
 
 def _extract_hidden_value(block_html: str, class_name: str) -> str | None:
@@ -642,7 +723,7 @@ def build_chintai_list_url(
     return urllib.parse.urlunparse((parsed.scheme or "https", parsed.netloc or "www.chintai.net", path, "", query, ""))
 
 
-def fetch_chintai_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]:
+def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str | None = None) -> list[SuumoListing]:
     """
     Fetch and parse CHINTAI list page → per-room listings.
     """
@@ -657,6 +738,8 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]
 
     if _detect_waf_challenge(html):
         raise RuntimeError("CHINTAI returned a WAF/JS challenge page (bot detection). Try again later.")
+
+    target_station_norm = _normalize_station(target_station or "")
 
     listings: list[SuumoListing] = []
     assume_bath_sep_true = False
@@ -681,6 +764,8 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]
         m_age = re.search(r"<th>\s*築年\s*</th>\s*<td[^>]*>\s*([^<]+?)\s*</td>", section)
         if m_age:
             age_years = _parse_building_age_years(m_age.group(1))
+
+        section_accesses = _parse_station_accesses(section)
 
         # Each <tbody ... data-detailurl="..."> corresponds to a room listing.
         for tb in re.finditer(r'<tbody[^>]*data-detailurl="([^"]+)"[^>]*>(.*?)</tbody>', section, flags=re.S):
@@ -717,12 +802,28 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]
             station = _extract_hidden_value(block, "ekiName") or ""
             station_norm = _normalize_station(station)
 
+            station_names: list[str] = []
+            for st_name, _walk in section_accesses:
+                if st_name and st_name not in station_names:
+                    station_names.append(st_name)
+            if station_norm and station_norm not in station_names:
+                station_names.append(station_norm)
+
             walk_min = None
             walk_h = _extract_hidden_value(block, "ekiToho")
             if walk_h:
                 walk_min = _parse_int(walk_h)
             if walk_min is None:
                 walk_min = _parse_walk_min(block)
+
+            # Prefer walk time to the user-selected station if available among multi-access.
+            if target_station_norm and section_accesses:
+                target_walks = [w for (st_name, w) in section_accesses if _station_similar(target_station_norm, st_name)]
+                if target_walks:
+                    walk_min = int(min(target_walks))
+            # If still missing, use the closest access walk time as best-effort.
+            if walk_min is None and section_accesses:
+                walk_min = int(min(w for (_st, w) in section_accesses))
 
             floor = None
             m_floor = re.search(r"(\d+)\s*階", _strip_tags(block))
@@ -755,7 +856,7 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12) -> list[SuumoListing]
                     walk_min=walk_min,
                     building_age_years=age_years,
                     floor=floor,
-                    station_names=[station_norm] if station_norm else [],
+                    station_names=station_names,
                     orientation=orientation,
                     building_structure=structure_code,
                     bathroom_toilet_separate=True if assume_bath_sep_true else None,
@@ -852,7 +953,7 @@ def search_comparable_listings(  # noqa: PLR0913
         if not target_station:
             return True
         if listing.station_names:
-            return any((target_station in s) or (s in target_station) for s in listing.station_names)
+            return any(_station_similar(target_station, s) for s in listing.station_names)
         return False
 
     def orientation_matches(listing: SuumoListing, *, step_idx: int) -> bool:
@@ -885,68 +986,80 @@ def search_comparable_listings(  # noqa: PLR0913
 
     detail_cache: dict[str, _DetailFields] = {}
 
-    def enrich_from_detail(listing: SuumoListing) -> None:
+    def enrich_from_detail(listing: SuumoListing) -> bool:
         if not listing.detail_url:
-            return
+            return False
         if listing.detail_url in detail_cache:
             det = detail_cache[listing.detail_url]
+            fetched = False
         else:
             det = fetch_chintai_detail_fields(listing.detail_url, timeout=fetch_timeout)
             detail_cache[listing.detail_url] = det
+            fetched = True
         if listing.orientation is None and det.orientation is not None:
             listing.orientation = det.orientation
         if listing.bathroom_toilet_separate is None and det.bath_sep is not None:
             listing.bathroom_toilet_separate = det.bath_sep
         if listing.building_structure is None and det.structure is not None:
             listing.building_structure = det.structure
+        return fetched
 
-    def matches_for_step(listing: SuumoListing, step_idx: int) -> bool:
+    def evaluate_listing(listing: SuumoListing, step_idx: int) -> tuple[bool, set[str], str | None]:
+        """
+        Return (hard_ok, needs_enrichment_fields, reject_reason).
+
+        - hard_ok: passed all list-page-only filters (layout/area/age/walk/station)
+        - needs_enrichment_fields: fields required for this step but missing on list page
+        - reject_reason: a single primary reason (for histogram/debug), or None
+        """
         if not listing.layout or listing.layout.upper() != layout_type_u:
-            return False
+            return False, set(), "layout"
 
         lo_area, hi_area = area_range_for_step(step_idx)
         if lo_area is not None and hi_area is not None:
             if listing.area_sqm is None:
-                return False
+                return False, set(), "area"
             if not (float(lo_area) <= float(listing.area_sqm) <= float(hi_area)):
-                return False
+                return False, set(), "area"
 
         age_max = age_max_for_step(step_idx)
         if age_max is not None:
             if listing.building_age_years is None:
-                return False
+                return False, set(), "age"
             if int(listing.building_age_years) > int(age_max):
-                return False
+                return False, set(), "age"
 
         wmax = walk_max_for_step(step_idx)
         if wmax is not None:
             if listing.walk_min is None:
-                return False
+                return False, set(), "walk"
             if int(listing.walk_min) > int(wmax):
-                return False
+                return False, set(), "walk"
 
         if not station_matches(listing):
-            return False
+            return False, set(), "station"
 
-        # Enrich only when needed to satisfy strict checks.
-        needs_detail = False
-        if (step_idx <= 0) and (orientation and str(orientation).upper() != "UNKNOWN") and (listing.orientation is None):
-            needs_detail = True
-        if (step_idx <= 2) and (bathroom_toilet_separate is not None) and (listing.bathroom_toilet_separate is None):
-            needs_detail = True
-        if (step_idx <= 1) and building_structure and str(building_structure).lower() not in ("other", "all") and (listing.building_structure is None):
-            needs_detail = True
-        if needs_detail:
-            enrich_from_detail(listing)
+        needs: set[str] = set()
 
-        if step_idx <= 0 and not orientation_matches(listing, step_idx=step_idx):
-            return False
-        if step_idx <= 1 and not structure_matches(listing):
-            return False
-        if step_idx <= 2 and not bath_matches(listing):
-            return False
+        if step_idx <= 0 and orientation and str(orientation).upper() != "UNKNOWN":
+            if listing.orientation is None:
+                needs.add("orientation")
+            elif not orientation_matches(listing, step_idx=step_idx):
+                return False, needs, "orientation"
 
-        return True
+        if step_idx <= 1 and building_structure and str(building_structure).lower() not in ("other", "all"):
+            if listing.building_structure is None:
+                needs.add("structure")
+            elif not structure_matches(listing):
+                return False, needs, "structure"
+
+        if step_idx <= 2 and bathroom_toilet_separate is not None:
+            if listing.bathroom_toilet_separate is None:
+                needs.add("bath")
+            elif not bath_matches(listing):
+                return False, needs, "bath"
+
+        return True, needs, None
 
     attempts: list[dict[str, Any]] = []
     last_error: str | None = None
@@ -954,6 +1067,8 @@ def search_comparable_listings(  # noqa: PLR0913
 
     for step_idx in range(0, max_relaxation_steps + 1):
         matched_all: list[SuumoListing] = []
+        detail_fetch_budget_step = max(12, int(min_listings) * 8)  # e.g., min_listings=3 -> 24
+        detail_fetch_n_step = 0
         for page in range(1, int(max_pages) + 1):
             lo_area, hi_area = area_range_for_step(step_idx)
             wmax = walk_max_for_step(step_idx)
@@ -985,16 +1100,27 @@ def search_comparable_listings(  # noqa: PLR0913
             try:
                 if request_delay_s and (step_idx > 0 or page > 1):
                     time.sleep(float(request_delay_s))
-                listings = fetch_chintai_listings(url, timeout=fetch_timeout)
+                listings = fetch_chintai_listings(url, timeout=fetch_timeout, target_station=target_station or None)
             except RuntimeError as e:
                 last_error = str(e)
                 attempts.append({"step": step_idx, "page": page, "url": url, "error": last_error})
                 continue
 
+            reject_counts: Counter = Counter()
+            unknown_required_counts: Counter = Counter()
+            needs_detail: list[tuple[SuumoListing, set[str]]] = []
+
             matched_page: list[SuumoListing] = []
             for lst in listings:
-                if matches_for_step(lst, step_idx):
-                    matched_page.append(lst)
+                hard_ok, needs, reason = evaluate_listing(lst, step_idx)
+                if not hard_ok or reason:
+                    reject_counts[str(reason or "unknown")] += 1
+                    continue
+                if needs:
+                    unknown_required_counts.update(needs)
+                    needs_detail.append((lst, needs))
+                    continue
+                matched_page.append(lst)
 
             matched_all.extend(matched_page)
             if matched_all:
@@ -1007,6 +1133,53 @@ def search_comparable_listings(  # noqa: PLR0913
                     seen.add(key)
                     deduped.append(lst)
                 matched_all = deduped
+
+            # Enrich from detail pages only for candidates that pass list-page filters but are
+            # missing required fields (bath/orientation/structure). This avoids expensive detail
+            # fetches for listings that will be rejected anyway.
+            enriched_n = 0
+            enriched_matched_n = 0
+            detail_fetch_n_page = 0
+            detail_error_n = 0
+            if len(matched_all) < int(min_listings) and needs_detail:
+                needs_detail.sort(key=lambda x: len(x[1]))
+                for lst, _needs in needs_detail:
+                    if len(matched_all) >= int(min_listings):
+                        break
+                    if detail_fetch_n_step >= detail_fetch_budget_step:
+                        # Allow cache hits even after budget is reached.
+                        if not lst.detail_url or lst.detail_url not in detail_cache:
+                            break
+                    try:
+                        fetched = enrich_from_detail(lst)
+                        enriched_n += 1
+                        if fetched:
+                            detail_fetch_n_page += 1
+                            detail_fetch_n_step += 1
+                    except Exception:  # noqa: BLE001
+                        detail_error_n += 1
+                        continue
+
+                    hard_ok2, needs2, reason2 = evaluate_listing(lst, step_idx)
+                    if (not hard_ok2) or reason2 or needs2:
+                        if reason2:
+                            reject_counts[str(reason2)] += 1
+                        if needs2:
+                            unknown_required_counts.update(needs2)
+                        continue
+                    matched_all.append(lst)
+                    enriched_matched_n += 1
+
+                if enriched_matched_n:
+                    seen: set[tuple[Any, ...]] = set()
+                    deduped: list[SuumoListing] = []
+                    for lst in matched_all:
+                        key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm, lst.layout)
+                        if key in seen:
+                            continue
+                        seen.add(key)
+                        deduped.append(lst)
+                    matched_all = deduped
 
             coverage = {
                 "area": sum(1 for lst in listings if lst.area_sqm is not None),
@@ -1025,6 +1198,12 @@ def search_comparable_listings(  # noqa: PLR0913
                     "matched_n": len(matched_page),
                     "matched_total_n": len(matched_all),
                     "coverage": coverage,
+                    "reject_counts": dict(reject_counts),
+                    "unknown_required_counts": dict(unknown_required_counts),
+                    "detail_enriched_n": enriched_n,
+                    "detail_matched_n": enriched_matched_n,
+                    "detail_fetch_n": detail_fetch_n_page,
+                    "detail_error_n": detail_error_n,
                 }
             )
 
