@@ -24,6 +24,7 @@ from dataclasses import dataclass, field
 from html.parser import HTMLParser
 from typing import Any
 
+from backend.src.age_proximity import select_by_age_proximity, target_age_candidates
 from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.live_quality import filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
@@ -681,6 +682,11 @@ def search_comparable_listings(
     elif bs in ("wood", "light_steel"):
         desired_building_type = "apartment"
 
+    age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
+    age_target_candidates: list[int] = (
+        target_age_candidates(age_target_years, include_target_minus_one=True) if age_target_years is not None else []
+    )
+
     def area_range_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if area_sqm is None:
             return None, None
@@ -689,13 +695,23 @@ def search_comparable_listings(
         hi = base + 5 + (step_idx * 5)
         return lo, hi
 
-    def age_max_for_step(step_idx: int) -> int | None:
-        if building_age_years is None:
+    def age_delta_ladder_for_step(step_idx: int) -> list[int] | None:
+        if age_target_years is None:
             return None
-        age = max(0, int(building_age_years))
-        # Use 5-year buckets: 0-5, 6-10, 11-15 ...
-        bucket = max(5, int(math.ceil(age / 5.0) * 5))
-        return bucket + (step_idx * 5)
+        if int(step_idx) <= 1:
+            return [0, 1, 2]
+        if int(step_idx) == 2:
+            return [0, 1, 2, 3]
+        return [0, 1, 2, 3, 5]
+
+    def age_max_for_step(step_idx: int) -> int | None:
+        if age_target_years is None:
+            return None
+        ladder = age_delta_ladder_for_step(step_idx) or [0]
+        max_delta = max(int(d) for d in ladder)
+        desired = int(age_target_years) + int(max_delta)
+        snapped = _snap_grid_ceil(float(desired), _SUUMO_AGE_GRID)
+        return int(snapped) if snapped is not None else None
 
     def walk_window_for_step(step_idx: int) -> tuple[int | None, int | None, int | None]:
         if walk_min is None:
@@ -894,6 +910,17 @@ def search_comparable_listings(
 
 
             matched = [lst for lst in listings if matches_for_step(lst, step_idx)]
+            age_ladder = age_delta_ladder_for_step(step_idx) or None
+            age_meta: dict[str, Any] | None = None
+            age_selected: list[SuumoListing] = list(matched)
+            if age_target_years is not None and age_ladder:
+                age_selected, age_meta = select_by_age_proximity(
+                    matched,
+                    target_age_years=age_target_years,
+                    min_keep=int(min_listings),
+                    delta_ladder=age_ladder,
+                    include_target_minus_one=True,
+                )
             layout_sample = sorted({lst.layout or "(empty)" for lst in listings[:20]})
             coverage = {
                 "layout": sum(1 for lst in listings if lst.layout),
@@ -920,17 +947,21 @@ def search_comparable_listings(
                     "url": last_variant_url,
                     "fetched_n": len(listings),
                     "matched_n": len(matched),
+                    "age_selected_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                     "layout_sample": layout_sample,
                     "coverage": coverage,
                 }
             )
-            if len(matched) >= min_listings:
+            if len(age_selected) >= min_listings:
                 quality: dict[str, Any] = {
                     "matched_raw_n": int(len(matched)),
                     "deduped_n": int(len(matched)),
                     "dedupe_removed_n": 0,
+                    "age_selected_raw_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                 }
-                usable = list(matched)
+                usable = list(age_selected)
                 usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
                 usable_after_out, out_stats = filter_outlier_listings_iqr(
                     usable_after_stale,
@@ -977,6 +1008,12 @@ def search_comparable_listings(
                             "walk_min_window": walk_window_for_step(step_idx)[0],
                             "walk_max_window": walk_window_for_step(step_idx)[1],
                             "age_max_years": age_max,
+                            "age_mode": "proximity" if age_target_years is not None else None,
+                            "age_target_years": age_target_years,
+                            "age_target_candidates": age_target_candidates or None,
+                            "age_delta_ladder": age_delta_ladder_for_step(step_idx) if age_target_years is not None else None,
+                            "age_delta_used": (age_meta or {}).get("chosen_delta"),
+                            "age_query_max_years": age_max,
                             "nearest_station_name": nearest_station_name,
                             "orientation": orientation,
                             "building_type": desired_building_type,

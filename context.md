@@ -362,3 +362,41 @@ Notes
 - 진단 강화:
   - reject histogram + coverage warning 출력 고도화.
 예상 변경 위치: `backend/src/live_aggregate.py`, provider scrapers, `backend/src/evaluate.py`, 프론트 벤치마크 표시.
+
+### PR-6 - Age Proximity (준공년도 근접 매칭: 신축 혼입 왜곡 방지)
+Status: DONE (2026-02-22)
+
+Problem
+- 지금까지 라이브 비교는 연식 조건을 사실상 `<= age_max_years` 상한만 적용했습니다.
+- 그 결과, 대상이 2018~2020 준공(예: 築8)인데도 築0~ 같은 신축 프리미엄 매물이 비교군에 섞여 벤치마크가 비정상적으로 올라가며 "말도 안 되게 저렴"이 발생할 수 있습니다.
+
+Goal
+- `target_age_years`(대상 연식) 기준으로 **근접한 연식(d년)** 매물을 우선 채택합니다.
+- 월/일 기준 오차를 감안해 `{target_age, target_age-1}`을 동치 후보로 취급합니다.
+- 보수적 정책: proximity ladder 최대 범위 내에서 `min_listings`를 못 채우면 live benchmark는 **사용하지 않음(confidence=none)** → CSV/index 벤치마크로 fallback.
+
+Implemented (핫픽스 범위, 리라이트/URL 리졸버 대공사 없음)
+- 공통 selector 추가: `backend/src/age_proximity.py`
+  - `select_by_age_proximity(listings, target_age_years, min_keep, delta_ladder, include_target_minus_one=True)`
+  - meta: `target_age_candidates`, `delta_ladder`, `chosen_delta`, `counts_by_delta`, `missing_age_n`, `selected_n`
+- Step 기반 proximity ladder (section 6 정책)
+  - step0~1: `[0, 1, 2]`
+  - step2: `[0, 1, 2, 3]`
+  - step3: `[0, 1, 2, 3, 5]`
+- CHINTAI: `backend/src/chintai_scraper.py`
+  - URL/쿼리 연식 상한을 `target_age + max(delta_ladder)`로 계산(버킷 ceil)해 step별 proximity 범위를 커버.
+  - 조기 종료 조건을 `len(age_selected) >= min_listings`로 변경(기존 `matched_all` 기준 종료 제거).
+  - detail enrichment도 `age_selected` 기준으로만 수행 + 작은 age delta 우선으로 detail fetch.
+  - attempts/filters에 age proximity 메타 추가(`age_selected_n`, `age_proximity`, `age_*` 필터 필드).
+- SUUMO: `backend/src/suumo_scraper.py`
+  - `age_selected` 기준 조기 종료 + attempts/filters 메타 추가.
+  - query max age는 SUUMO age grid로 snap-ceil.
+- HOMES: `backend/src/homes_scraper.py`
+  - `age_selected` 기준 조기 종료 + attempts/filters 메타 추가.
+
+Tests
+- Selector 단위 테스트 추가: `backend/tests/test_age_proximity.py`
+  - `python -m pytest backend/tests -q` (51 passed)
+
+Notes / next
+- PR-7+ (later): URL resolver 개선, provider별 파서/모델 공통화 리팩터링(핫픽스 범위 밖).

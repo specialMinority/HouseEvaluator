@@ -24,6 +24,7 @@ import urllib.request
 from dataclasses import dataclass
 from typing import Any
 
+from backend.src.age_proximity import age_delta_years, select_by_age_proximity, target_age_candidates
 from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.live_quality import dedupe_listings, filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
@@ -963,6 +964,11 @@ def search_comparable_listings(  # noqa: PLR0913
     elif bs in ("wood", "light_steel"):
         desired_building_type = "apartment"
 
+    age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
+    age_target_candidates: list[int] = (
+        target_age_candidates(age_target_years, include_target_minus_one=True) if age_target_years is not None else []
+    )
+
     def area_range_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if area_sqm is None:
             return None, None
@@ -976,11 +982,26 @@ def search_comparable_listings(  # noqa: PLR0913
         # If the bucket exceeds CHINTAI's supported max (typically 20 min), don't filter.
         return int(w) if int(w) <= 20 else None
 
+    def age_delta_ladder_for_step(step_idx: int) -> list[int] | None:
+        if building_age_years is None:
+            return None
+        # Age proximity ladder (cumulative deltas). Step 0~1 keep tight to avoid
+        # mixing in very-new buildings; later steps widen cautiously.
+        if int(step_idx) <= 1:
+            return [0, 1, 2]
+        if int(step_idx) == 2:
+            return [0, 1, 2, 3]
+        return [0, 1, 2, 3, 5]
+
     def age_max_for_step(step_idx: int) -> int | None:
         if building_age_years is None:
             return None
-        a = _bucket_age_max(int(building_age_years), step_idx)
-        return int(a) if int(a) <= 30 else None
+        ladder = age_delta_ladder_for_step(step_idx) or [0]
+        max_delta = max(int(d) for d in ladder)
+        target_age = max(0, int(building_age_years))
+        # URL uses <=N years bucket; ensure it covers the proximity ladder max delta.
+        age_query_max = _bucket_age_max(int(target_age + max_delta), 0)
+        return int(age_query_max) if int(age_query_max) <= 30 else None
 
     def station_matches(listing: SuumoListing) -> bool:
         if not target_station:
@@ -1165,6 +1186,18 @@ def search_comparable_listings(  # noqa: PLR0913
                 matched_all, dstats = dedupe_listings(matched_all, provider="chintai")
                 dedupe_removed_total += int(dstats.get("removed") or 0)
 
+            age_ladder = age_delta_ladder_for_step(step_idx) or None
+            age_meta: dict[str, Any] | None = None
+            age_selected: list[SuumoListing] = list(matched_all)
+            if age_target_years is not None and age_ladder:
+                age_selected, age_meta = select_by_age_proximity(
+                    matched_all,
+                    target_age_years=age_target_years,
+                    min_keep=int(min_listings),
+                    delta_ladder=age_ladder,
+                    include_target_minus_one=True,
+                )
+
             # Enrich from detail pages only for candidates that pass list-page filters but are
             # missing required fields (bath/orientation/structure). This avoids expensive detail
             # fetches for listings that will be rejected anyway.
@@ -1172,10 +1205,20 @@ def search_comparable_listings(  # noqa: PLR0913
             enriched_matched_n = 0
             detail_fetch_n_page = 0
             detail_error_n = 0
-            if len(matched_all) < int(min_listings) and needs_detail:
-                needs_detail.sort(key=lambda x: len(x[1]))
+            if len(age_selected) < int(min_listings) and needs_detail:
+                if age_target_candidates:
+                    needs_detail.sort(
+                        key=lambda x: (
+                            age_delta_years(int(x[0].building_age_years), target_candidates=age_target_candidates)
+                            if x[0].building_age_years is not None
+                            else 999,
+                            len(x[1]),
+                        )
+                    )
+                else:
+                    needs_detail.sort(key=lambda x: len(x[1]))
                 for lst, _needs in needs_detail:
-                    if len(matched_all) >= int(min_listings):
+                    if len(age_selected) >= int(min_listings):
                         break
                     if detail_fetch_n_step >= detail_fetch_budget_step:
                         # Allow cache hits even after budget is reached.
@@ -1200,10 +1243,32 @@ def search_comparable_listings(  # noqa: PLR0913
                         continue
                     matched_all.append(lst)
                     enriched_matched_n += 1
+                    age_selected = list(matched_all)
+                    if age_target_years is not None and age_ladder:
+                        age_selected, age_meta = select_by_age_proximity(
+                            matched_all,
+                            target_age_years=age_target_years,
+                            min_keep=int(min_listings),
+                            delta_ladder=age_ladder,
+                            include_target_minus_one=True,
+                        )
+                    else:
+                        age_meta = None
 
                 if enriched_matched_n:
                     matched_all, dstats2 = dedupe_listings(matched_all, provider="chintai")
                     dedupe_removed_total += int(dstats2.get("removed") or 0)
+                    age_selected = list(matched_all)
+                    if age_target_years is not None and age_ladder:
+                        age_selected, age_meta = select_by_age_proximity(
+                            matched_all,
+                            target_age_years=age_target_years,
+                            min_keep=int(min_listings),
+                            delta_ladder=age_ladder,
+                            include_target_minus_one=True,
+                        )
+                    else:
+                        age_meta = None
 
             coverage = {
                 "area": sum(1 for lst in listings if lst.area_sqm is not None),
@@ -1222,6 +1287,8 @@ def search_comparable_listings(  # noqa: PLR0913
                     "fetched_n": len(listings),
                     "matched_n": len(matched_page),
                     "matched_total_n": len(matched_all),
+                    "age_selected_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                     "coverage": coverage,
                     "reject_counts": dict(reject_counts),
                     "unknown_required_counts": dict(unknown_required_counts),
@@ -1232,14 +1299,16 @@ def search_comparable_listings(  # noqa: PLR0913
                 }
             )
 
-            if len(matched_all) >= int(min_listings):
+            if len(age_selected) >= int(min_listings):
                 # Data quality defenses (PR-2): stale filtering + robust outlier removal.
                 quality: dict[str, Any] = {
                     "matched_raw_n": int(len(matched_all) + int(dedupe_removed_total)),
                     "deduped_n": int(len(matched_all)),
                     "dedupe_removed_n": int(dedupe_removed_total),
+                    "age_selected_raw_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                 }
-                usable = list(matched_all)
+                usable = list(age_selected)
                 usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
                 usable_after_out, out_stats = filter_outlier_listings_iqr(
                     usable_after_stale,
@@ -1287,6 +1356,12 @@ def search_comparable_listings(  # noqa: PLR0913
                             "walk_min_window": 0 if wmax is not None else None,
                             "walk_max_window": wmax,
                             "age_max_years": amax,
+                            "age_mode": "proximity" if age_target_years is not None else None,
+                            "age_target_years": age_target_years,
+                            "age_target_candidates": age_target_candidates or None,
+                            "age_delta_ladder": age_delta_ladder_for_step(step_idx) if age_target_years is not None else None,
+                            "age_delta_used": (age_meta or {}).get("chosen_delta"),
+                            "age_query_max_years": amax,
                             "nearest_station_name": nearest_station_name,
                             "orientation": orientation,
                             "building_structure": building_structure,

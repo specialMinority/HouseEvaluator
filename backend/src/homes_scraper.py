@@ -22,6 +22,7 @@ import urllib.request
 from html.parser import HTMLParser
 from typing import Any
 
+from backend.src.age_proximity import select_by_age_proximity, target_age_candidates
 from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.live_quality import dedupe_listings, filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
@@ -697,6 +698,11 @@ def search_comparable_listings(
     elif bs in ("wood", "light_steel"):
         desired_building_type = "apartment"
 
+    age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
+    age_target_candidates: list[int] = (
+        target_age_candidates(age_target_years, include_target_minus_one=True) if age_target_years is not None else []
+    )
+
     def area_range_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if area_sqm is None:
             return None, None
@@ -705,12 +711,21 @@ def search_comparable_listings(
         hi = base + 5 + (step_idx * 5)
         return lo, hi
 
-    def age_max_for_step(step_idx: int) -> int | None:
-        if building_age_years is None:
+    def age_delta_ladder_for_step(step_idx: int) -> list[int] | None:
+        if age_target_years is None:
             return None
-        age = max(0, int(building_age_years))
-        bucket = max(5, int((age + 4) // 5 * 5))
-        return bucket + (step_idx * 5)
+        if int(step_idx) <= 1:
+            return [0, 1, 2]
+        if int(step_idx) == 2:
+            return [0, 1, 2, 3]
+        return [0, 1, 2, 3, 5]
+
+    def age_max_for_step(step_idx: int) -> int | None:
+        if age_target_years is None:
+            return None
+        ladder = age_delta_ladder_for_step(step_idx) or [0]
+        max_delta = max(int(d) for d in ladder)
+        return int(age_target_years) + int(max_delta)
 
     def walk_window_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if walk_min is None:
@@ -774,7 +789,7 @@ def search_comparable_listings(
             if not (float(lo_area) <= float(listing.area_sqm) <= float(hi_area)):
                 return False
 
-        if building_age_years is not None:
+        if age_target_years is not None:
             age_max = age_max_for_step(step_idx)
             if age_max is not None:
                 if listing.building_age_years is None:
@@ -838,6 +853,18 @@ def search_comparable_listings(
                 matched_all, dstats = dedupe_listings(matched_all, provider="homes")
                 dedupe_removed_total += int(dstats.get("removed") or 0)
 
+            age_ladder = age_delta_ladder_for_step(step_idx) or None
+            age_meta: dict[str, Any] | None = None
+            age_selected: list[SuumoListing] = list(matched_all)
+            if age_target_years is not None and age_ladder:
+                age_selected, age_meta = select_by_age_proximity(
+                    matched_all,
+                    target_age_years=age_target_years,
+                    min_keep=int(min_listings),
+                    delta_ladder=age_ladder,
+                    include_target_minus_one=True,
+                )
+
             layout_sample = sorted({(lst.layout or "(empty)") for lst in listings[:20]})
             coverage = {
                 "area": sum(1 for lst in listings if lst.area_sqm is not None),
@@ -856,18 +883,22 @@ def search_comparable_listings(
                     "fetched_n": len(listings),
                     "matched_n": len(matched_page),
                     "matched_total_n": len(matched_all),
+                    "age_selected_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                     "layout_sample": layout_sample,
                     "coverage": coverage,
                 }
             )
 
-            if len(matched_all) >= int(min_listings):
+            if len(age_selected) >= int(min_listings):
                 quality: dict[str, Any] = {
                     "matched_raw_n": int(len(matched_all) + int(dedupe_removed_total)),
                     "deduped_n": int(len(matched_all)),
                     "dedupe_removed_n": int(dedupe_removed_total),
+                    "age_selected_raw_n": int(len(age_selected)),
+                    "age_proximity": age_meta,
                 }
-                usable = list(matched_all)
+                usable = list(age_selected)
                 usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
                 usable_after_out, out_stats = filter_outlier_listings_iqr(
                     usable_after_stale,
@@ -913,6 +944,12 @@ def search_comparable_listings(
                             "walk_min_window": walk_window_for_step(step_idx)[0],
                             "walk_max_window": walk_window_for_step(step_idx)[1],
                             "age_max_years": age_max_for_step(step_idx),
+                            "age_mode": "proximity" if age_target_years is not None else None,
+                            "age_target_years": age_target_years,
+                            "age_target_candidates": age_target_candidates or None,
+                            "age_delta_ladder": age_delta_ladder_for_step(step_idx) if age_target_years is not None else None,
+                            "age_delta_used": (age_meta or {}).get("chosen_delta"),
+                            "age_query_max_years": age_max_for_step(step_idx),
                             "nearest_station_name": nearest_station_name,
                             "orientation": orientation,
                             "building_type": desired_building_type,
@@ -947,6 +984,12 @@ def search_comparable_listings(
                 "walk_min_window": walk_window_for_step(int(max_relaxation_steps))[0],
                 "walk_max_window": walk_window_for_step(int(max_relaxation_steps))[1],
                 "age_max_years": age_max_for_step(int(max_relaxation_steps)),
+                "age_mode": "proximity" if age_target_years is not None else None,
+                "age_target_years": age_target_years,
+                "age_target_candidates": age_target_candidates or None,
+                "age_delta_ladder": age_delta_ladder_for_step(int(max_relaxation_steps)) if age_target_years is not None else None,
+                "age_delta_used": None,
+                "age_query_max_years": age_max_for_step(int(max_relaxation_steps)),
                 "nearest_station_name": nearest_station_name,
                 "orientation": orientation,
                 "building_type": desired_building_type,
