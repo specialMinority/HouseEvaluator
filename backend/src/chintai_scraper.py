@@ -21,9 +21,9 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from dataclasses import dataclass
-from statistics import median
 from typing import Any
 
+from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.suumo_scraper import ComparisonResult, SuumoListing
 
 
@@ -203,6 +203,19 @@ def _parse_building_structure_code(text: str) -> str | None:
         return "steel"
     if "木造" in t:
         return "wood"
+    return None
+
+
+def _normalize_building_type_label(label: str) -> str | None:
+    t = re.sub(r"\s+", "", str(label or ""))
+    if not t:
+        return None
+    if "マンション" in t:
+        return "mansion"
+    if ("アパート" in t) or ("ハイツ" in t) or ("コーポ" in t):
+        return "apartment"
+    if ("一戸建て" in t) or ("テラス" in t) or ("戸建" in t):
+        return "house"
     return None
 
 
@@ -754,6 +767,11 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str |
         end = starts[i + 1] if (i + 1) < len(starts) else len(html)
         section = html[start:end]
 
+        building_type = None
+        m_type = re.search(r'<span[^>]*class="icn_typeB"[^>]*>\s*賃貸([^<]+?)\s*</span>', section)
+        if m_type:
+            building_type = _normalize_building_type_label(m_type.group(1))
+
         structure_text = None
         m_struct = re.search(r"<th>\s*構造\s*</th>\s*<td[^>]*>\s*([^<]+?)\s*</td>", section)
         if m_struct:
@@ -860,6 +878,7 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str |
                     orientation=orientation,
                     building_structure=structure_code,
                     bathroom_toilet_separate=True if assume_bath_sep_true else None,
+                    building_type=building_type,
                     detail_url=detail_url,
                 )
             )
@@ -877,12 +896,12 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str |
 
 
 def _confidence_from_count(n: int, relaxation: int) -> str:
-    if n == 0:
+    if n < 2:
         return "none"
     if relaxation == 0:
         return "high" if n >= 3 else "mid"
     if relaxation == 1:
-        return "mid"
+        return "mid" if n >= 3 else "low"
     return "low"
 
 
@@ -900,7 +919,7 @@ def search_comparable_listings(  # noqa: PLR0913
     orientation: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
-    min_listings: int = 3,
+    min_listings: int = 2,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
     max_pages: int = 6,
@@ -929,6 +948,12 @@ def search_comparable_listings(  # noqa: PLR0913
         )
 
     target_station = _normalize_station(nearest_station_name or "")
+    desired_building_type = None
+    bs = str(building_structure or "").lower().strip()
+    if bs in ("rc", "src", "steel"):
+        desired_building_type = "mansion"
+    elif bs in ("wood", "light_steel"):
+        desired_building_type = "apartment"
 
     def area_range_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if area_sqm is None:
@@ -1040,6 +1065,10 @@ def search_comparable_listings(  # noqa: PLR0913
             return False, set(), "station"
 
         needs: set[str] = set()
+
+        if step_idx <= 1 and desired_building_type:
+            if listing.building_type and str(listing.building_type).lower().strip() != str(desired_building_type).lower().strip():
+                return False, needs, "building_type"
 
         if step_idx <= 0 and orientation and str(orientation).upper() != "UNKNOWN":
             if listing.orientation is None:
@@ -1188,6 +1217,7 @@ def search_comparable_listings(  # noqa: PLR0913
                 "structure": sum(1 for lst in listings if lst.building_structure is not None),
                 "bath": sum(1 for lst in listings if lst.bathroom_toilet_separate is not None),
                 "station": sum(1 for lst in listings if lst.station_names),
+                "building_type": sum(1 for lst in listings if lst.building_type is not None),
             }
             attempts.append(
                 {
@@ -1210,11 +1240,13 @@ def search_comparable_listings(  # noqa: PLR0913
             if len(matched_all) >= int(min_listings):
                 totals = [lst.monthly_total_yen for lst in matched_all]
                 rents = [lst.rent_yen for lst in matched_all]
+                bench_total, method_total, stats_total = aggregate_benchmark(totals)
+                bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
                 conf = _confidence_from_count(len(matched_all), step_idx)
                 level = "chintai_live" if step_idx == 0 else "chintai_relaxed"
                 return ComparisonResult(
-                    benchmark_rent_yen=int(median(totals)),
-                    benchmark_rent_yen_raw=int(median(rents)),
+                    benchmark_rent_yen=int(bench_total),
+                    benchmark_rent_yen_raw=int(bench_rent),
                     benchmark_n_sources=len(matched_all),
                     benchmark_confidence=conf,
                     matched_level=level,
@@ -1237,6 +1269,11 @@ def search_comparable_listings(  # noqa: PLR0913
                             "orientation": orientation,
                             "building_structure": building_structure,
                             "bathroom_toilet_separate": bathroom_toilet_separate,
+                            "building_type": desired_building_type,
+                        },
+                        "aggregation": {
+                            "total": {"method": method_total, **stats_total},
+                            "rent": {"method": method_rent, **stats_rent},
                         },
                         "attempts": attempts,
                     },
@@ -1263,6 +1300,7 @@ def search_comparable_listings(  # noqa: PLR0913
                 "orientation": orientation,
                 "building_structure": building_structure,
                 "bathroom_toilet_separate": bathroom_toilet_separate,
+                "building_type": desired_building_type,
             },
             "attempts": attempts,
         },

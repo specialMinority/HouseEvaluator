@@ -75,6 +75,85 @@ def _estimate_benchmark_mgmt_fee_yen(
     return min(int(input_mgmt_fee_yen), est)
 
 
+def _subject_pricing_sanity(payload: dict[str, Any], *, initial_multiple: float) -> dict[str, Any]:
+    """
+    Best-effort detection of likely input/parse anomalies that can produce
+    nonsensical rent-vs-initial-cost conclusions (e.g., "78% cheaper" with IM 15+).
+
+    This does *not* change scoring; it is surfaced for UX messaging and debug.
+    """
+    flags: list[str] = []
+
+    rent_yen = int(payload.get("rent_yen") or 0)
+    mgmt_fee_yen = int(payload.get("mgmt_fee_yen") or 0)
+    monthly_total_yen = rent_yen + mgmt_fee_yen
+    initial_cost_total_yen = int(payload.get("initial_cost_total_yen") or 0)
+
+    def _months(cost_yen: Any) -> float | None:
+        if rent_yen <= 0:
+            return None
+        if cost_yen is None:
+            return None
+        try:
+            v = int(cost_yen)
+        except Exception:
+            return None
+        if v <= 0:
+            return None
+        return float(v) / float(rent_yen)
+
+    shikikin_months = _months(payload.get("shikikin_yen"))
+    reikin_months = _months(payload.get("reikin_yen"))
+    brokerage_months = _months(payload.get("brokerage_fee_yen"))
+
+    # Strong anomaly heuristics (conservative thresholds).
+    if initial_multiple >= 10.0:
+        flags.append("initial_multiple_ge_10")
+    if reikin_months is not None and reikin_months > 3.0:
+        flags.append("reikin_months_gt_3")
+    if shikikin_months is not None and shikikin_months > 3.0:
+        flags.append("shikikin_months_gt_3")
+    if brokerage_months is not None and brokerage_months > 2.0:
+        flags.append("brokerage_months_gt_2")
+
+    breakdown_keys = [
+        "shikikin_yen",
+        "reikin_yen",
+        "brokerage_fee_yen",
+        "guarantor_fee_yen",
+        "fire_insurance_yen",
+        "key_change_yen",
+        "cleaning_fee_yen",
+        "other_initial_fees_yen",
+    ]
+    breakdown_sum = 0
+    breakdown_present = False
+    for k in breakdown_keys:
+        if k not in payload or payload.get(k) is None:
+            continue
+        breakdown_present = True
+        try:
+            breakdown_sum += int(payload.get(k) or 0)
+        except Exception:
+            continue
+    if breakdown_present and initial_cost_total_yen > 0 and breakdown_sum > int(round(float(initial_cost_total_yen) * 1.2)):
+        flags.append("initial_breakdown_sum_gt_total_120pct")
+
+    return {
+        "flags": flags,
+        "rent_yen": rent_yen,
+        "mgmt_fee_yen": mgmt_fee_yen,
+        "monthly_total_yen": monthly_total_yen,
+        "initial_cost_total_yen": initial_cost_total_yen,
+        "initial_multiple": float(initial_multiple),
+        "shikikin_months": shikikin_months,
+        "reikin_months": reikin_months,
+        "brokerage_months": brokerage_months,
+        "breakdown_sum_yen": breakdown_sum if breakdown_present else None,
+        "suspect": bool(flags),
+    }
+
+
 def _im_assessment_label(im: float, market_avg: float) -> str:
     """Classify initial_multiple relative to prefecture market average."""
     delta = im - market_avg
@@ -295,6 +374,7 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     monthly_fixed_cost_yen = int(payload["rent_yen"]) + int(payload["mgmt_fee_yen"])
     building_age_years = max(0, current_year - int(payload["building_built_year"]))
     initial_multiple = float(payload["initial_cost_total_yen"]) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
+    subject_pricing_sanity = _subject_pricing_sanity(payload, initial_multiple=initial_multiple)
 
     # ── Live benchmark: real-time comparable search (HOMES/SUUMO) ───────────
     _live_result = None
@@ -431,6 +511,12 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
         "chintai_live",
         "chintai_relaxed",
     )
+
+    # Benchmark baselines for clearer UX (rent-only vs total).
+    # - CSV benchmark: benchmark_monthly_fixed_cost_yen starts as rent-only and later adds a conservative mgmt estimate.
+    # - Live benchmark: benchmark_monthly_fixed_cost_yen is already rent+admin(total), while *_raw is rent-only.
+    benchmark_rent_only_yen: int | None = bm.benchmark_rent_yen_raw if is_live_total_benchmark else bm.benchmark_rent_yen
+
     if (not is_live_total_benchmark) and benchmark_monthly_fixed_cost_yen is not None:
         mgmt_fee_yen = int(payload.get("mgmt_fee_yen") or 0)
         benchmark_mgmt_fee_estimate_yen = _estimate_benchmark_mgmt_fee_yen(
@@ -463,6 +549,12 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             benchmark_monthly_fixed_cost_yen
         )
 
+    rent_delta_ratio_rent_only: float | None = None
+    if benchmark_rent_only_yen and benchmark_rent_only_yen > 0:
+        rent_delta_ratio_rent_only = (float(payload["rent_yen"]) - float(benchmark_rent_only_yen)) / float(benchmark_rent_only_yen)
+
+    benchmark_total_yen: int | None = benchmark_monthly_fixed_cost_yen
+
     # IM assessment: compare initial_multiple to prefecture market average.
     pref_str = str(payload.get("prefecture", ""))
     im_market_avg = _IM_MARKET_AVG_BY_PREF.get(pref_str, _IM_MARKET_AVG_DEFAULT)
@@ -480,6 +572,9 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "monthly_fixed_cost_yen": monthly_fixed_cost_yen,
             "building_age_years": building_age_years,
             "initial_multiple": initial_multiple,
+            "subject_pricing_sanity": subject_pricing_sanity,
+            "benchmark_rent_only_yen": benchmark_rent_only_yen,
+            "benchmark_total_yen": benchmark_total_yen,
             "benchmark_monthly_fixed_cost_yen": benchmark_monthly_fixed_cost_yen,
             "benchmark_monthly_fixed_cost_yen_raw": benchmark_monthly_fixed_cost_yen_raw,
             "benchmark_mgmt_fee_estimate_yen": benchmark_mgmt_fee_estimate_yen,
@@ -488,6 +583,8 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "benchmark_matched_level": benchmark_matched_level,
             "benchmark_adjustments": benchmark_adjustments,
             "rent_delta_ratio": rent_delta_ratio,
+            "rent_delta_ratio_total": rent_delta_ratio,
+            "rent_delta_ratio_rent_only": rent_delta_ratio_rent_only,
             "im_assessment": im_assessment,
             "im_assessment_foreigner": im_assessment_foreigner,
             "initial_multiple_market_avg": im_market_avg,
@@ -675,6 +772,9 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "monthly_fixed_cost_yen": monthly_fixed_cost_yen,
             "building_age_years": building_age_years,
             "initial_multiple": _round(initial_multiple, 6),
+            "subject_pricing_sanity": subject_pricing_sanity,
+            "benchmark_rent_only_yen": benchmark_rent_only_yen,
+            "benchmark_total_yen": benchmark_total_yen,
             "benchmark_monthly_fixed_cost_yen": benchmark_monthly_fixed_cost_yen,
             "benchmark_monthly_fixed_cost_yen_raw": benchmark_monthly_fixed_cost_yen_raw,
             "benchmark_confidence": benchmark_confidence,
@@ -684,6 +784,8 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             "benchmark_mgmt_fee_estimate_yen": int(benchmark_mgmt_fee_estimate_yen or 0),
             "live_benchmark": live_benchmark,
             "rent_delta_ratio": _round(rent_delta_ratio, 6),
+            "rent_delta_ratio_total": _round(rent_delta_ratio, 6),
+            "rent_delta_ratio_rent_only": _round(float(rent_delta_ratio_rent_only), 6) if rent_delta_ratio_rent_only is not None else None,
             "im_assessment": im_assessment,
             "im_assessment_foreigner": im_assessment_foreigner,
             "initial_multiple_market_avg": im_market_avg,

@@ -69,7 +69,7 @@ def search_comparable_listings(  # noqa: PLR0913
     orientation: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
-    min_listings: int = 3,
+    min_listings: int = 2,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
 ) -> ComparisonResult:

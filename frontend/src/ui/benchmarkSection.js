@@ -132,6 +132,7 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
             if (f.building_structure && String(f.building_structure) !== "other") {
                 parts.push(`구조 ${buildingStructureTextKo(String(f.building_structure))}`);
             }
+            if (f.building_type) parts.push(`건물종류 ${String(f.building_type)}`);
             if (f.orientation && String(f.orientation) !== "UNKNOWN") parts.push(`방위 ${String(f.orientation)}`);
             if (parts.length) notes.push(`${providerLabel} 추가 매칭 조건: ${parts.join(", ")}`);
         }
@@ -192,6 +193,7 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
                       if (cov.structure != null) parts.push(`struct=${cov.structure}`);
                       if (cov.bath != null) parts.push(`bath=${cov.bath}`);
                       if (cov.station != null) parts.push(`station=${cov.station}`);
+                      if (cov.building_type != null) parts.push(`type=${cov.building_type}`);
                       if (parts.length) s += ` [cov: ${parts.join(",")}]`;
                     }
                     const rejectTop = formatTopCounts(a?.reject_counts, 2);

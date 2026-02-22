@@ -134,8 +134,8 @@ export function makeCostDesc(rentDelta, benchmarkConf, imAssessment) {
     const conf = String(benchmarkConf || "none");
     if (conf !== "none" && d !== null) {
         const absPct = Math.abs(Math.round(d * 100));
-        if (d <= -0.1) parts.push(`시세보다 ${absPct}% 저렴`);
-        else if (d >= 0.1) parts.push(`시세보다 ${absPct}% 비쌈`);
+        if (d <= -0.1) parts.push(`월고정비 시세보다 ${absPct}% 저렴`);
+        else if (d >= 0.1) parts.push(`월고정비 시세보다 ${absPct}% 비쌈`);
         else parts.push("시세 수준");
     }
     if (imAssessment) parts.push(String(imAssessment).split("(")[0].trim());

@@ -67,17 +67,24 @@ export function renderResultView({
   const negKo = pick(response, ["report.negotiation_suggestions.ko", "negotiation_suggestions.ko"]);
   const negJa = pick(response, ["report.negotiation_suggestions.ja", "negotiation_suggestions.ja"]);
   const altJa = pick(response, ["report.alternative_search_queries_ja", "alternative_search_queries_ja"]);
-  const derivedMonthly = pick(response, ["derived.monthly_fixed_cost_yen", "monthly_fixed_cost_yen"]);
+  const derivedMonthlyTotal = pick(response, ["derived.monthly_fixed_cost_yen", "monthly_fixed_cost_yen"]);
   const derivedAgeYears = pick(response, ["derived.building_age_years", "building_age_years"]);
   const derivedInitialMultiple = pick(response, ["derived.initial_multiple", "initial_multiple"]);
-  const derivedBenchmark = pick(response, ["derived.benchmark_monthly_fixed_cost_yen", "benchmark_monthly_fixed_cost_yen"]);
+  const derivedBenchmarkTotal = pick(response, [
+    "derived.benchmark_total_yen",
+    "derived.benchmark_monthly_fixed_cost_yen",
+    "benchmark_monthly_fixed_cost_yen",
+  ]);
+  const derivedBenchmarkRentOnly = pick(response, ["derived.benchmark_rent_only_yen"]);
   const derivedBenchmarkConf = pick(response, [
     "derived.benchmark_confidence",
     "benchmark_confidence",
     "benchmark.benchmark_confidence",
     "derived.benchmark_confidence",
   ]);
-  const derivedRentDelta = pick(response, ["derived.rent_delta_ratio", "rent_delta_ratio"]);
+  const derivedRentDeltaTotal = pick(response, ["derived.rent_delta_ratio_total", "derived.rent_delta_ratio", "rent_delta_ratio"]);
+  const derivedRentDeltaRentOnly = pick(response, ["derived.rent_delta_ratio_rent_only"]);
+  const subjectSanity = pick(response, ["derived.subject_pricing_sanity"]);
   const derivedImAssessment = pick(response, ["derived.im_assessment"]);
   const derivedImAssessmentForeigner = pick(response, ["derived.im_assessment_foreigner"]);
   const derivedImMarketAvg = pick(response, ["derived.initial_multiple_market_avg"]);
@@ -99,22 +106,24 @@ export function renderResultView({
     const loc = toNumberOrNull(scores.location);
     const cond = toNumberOrNull(scores.condition);
     const cost = toNumberOrNull(scores.cost);
-    const monthly = toNumberOrNull(derivedMonthly);
+    const monthlyTotal = toNumberOrNull(derivedMonthlyTotal);
     const walk = toNumberOrNull(input?.station_walk_min);
     const initialTotal = toNumberOrNull(input?.initial_cost_total_yen);
     const initialMultiple = toNumberOrNull(derivedInitialMultiple);
-    const rentDelta = toNumberOrNull(derivedRentDelta);
+    const rentDeltaTotal = toNumberOrNull(derivedRentDeltaTotal);
+    const rentDeltaRentOnly = toNumberOrNull(derivedRentDeltaRentOnly);
     const confText = benchmarkConfidenceTextKo(derivedBenchmarkConf);
     const out = [];
+    const sanitySuspect = Boolean(subjectSanity && typeof subjectSanity === "object" && subjectSanity.suspect);
 
     if (loc !== null && cond !== null && cost !== null) {
-      if (cond - cost >= 20) out.push("집 상태는 괜찮지만, 비용이 아쉬운 편이에요.");
+      if (cond - cost >= 20) out.push("집 상태는 괜찮지만, 월 고정비/초기비용 중 하나가 부담일 수 있어요.");
       else if (loc - cond >= 20) out.push("교통/입지는 괜찮지만, 집 상태는 타협이 필요해요.");
       else if (cost - loc >= 20) out.push("가격은 괜찮지만, 이동/입지는 불편할 수 있어요.");
       else out.push("입지·집 상태·비용이 비교적 균형 잡힌 편이에요.");
     }
 
-    if (monthly !== null) out.push(`매달 내는 돈(월세+관리비)은 ${formatYen(monthly)}예요.`);
+    if (monthlyTotal !== null) out.push(`매달 내는 돈(월세+관리비)은 ${formatYen(monthlyTotal)}예요.`);
 
     const walkTier = stationWalkRiskTier(walk);
     if (walkTier) out.push(walkTier.summary);
@@ -132,18 +141,28 @@ export function renderResultView({
       );
     }
 
-    if (String(derivedBenchmarkConf || "none") === "none") {
+    if (sanitySuspect) {
+      out.push("가격/초기비용 입력값이 비정상적으로 보일 수 있어요. (상세 항목/단위/파싱값을 한 번 더 확인해 주세요)");
+    } else if (String(derivedBenchmarkConf || "none") === "none") {
       out.push("이 지역은 시세 비교 데이터가 부족해서, 가격 비교는 정확하지 않을 수 있어요.");
-    } else if (rentDelta !== null) {
-      const abs = Math.abs(rentDelta);
+    } else if (rentDeltaTotal !== null) {
+      const abs = Math.abs(rentDeltaTotal);
       const pct = Math.round(abs * 100);
-      if (pct <= 1) out.push(`비슷한 집 시세와 비교하면, 월세는 비슷한 편이에요. (신뢰도: ${confText})`);
-      else if (rentDelta > 0) {
-        if (rentDelta >= 0.5) out.push(`비슷한 집 시세와 비교하면, 월세가 많이 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
-        else if (rentDelta >= 0.25) out.push(`비슷한 집 시세와 비교하면, 월세가 꽤 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
-        else out.push(`비슷한 집 시세와 비교하면, 월세는 약 ${pct}% 비싼 편이에요. (신뢰도: ${confText})`);
+      if (pct <= 1) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 비슷한 편이에요. (신뢰도: ${confText})`);
+      else if (rentDeltaTotal > 0) {
+        if (rentDeltaTotal >= 0.5) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)가 많이 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
+        else if (rentDeltaTotal >= 0.25) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)가 꽤 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
+        else out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 약 ${pct}% 비싼 편이에요. (신뢰도: ${confText})`);
       } else {
-        out.push(`비슷한 집 시세와 비교하면, 월세는 약 ${pct}% 저렴한 편이에요. (신뢰도: ${confText})`);
+        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 약 ${pct}% 저렴한 편이에요. (신뢰도: ${confText})`);
+      }
+
+      if (rentDeltaRentOnly !== null) {
+        const absR = Math.abs(rentDeltaRentOnly);
+        const pctR = Math.round(absR * 100);
+        if (pctR > 1) {
+          out.push(`(참고) 월세(관리비 제외) 기준으로는 약 ${pctR}% ${rentDeltaRentOnly > 0 ? "비싼" : "저렴한"} 편이에요.`);
+        }
       }
     }
 
@@ -170,8 +189,12 @@ export function renderResultView({
       bullets.push(`욕실/화장실: ${input.bathroom_toilet_separate ? "분리" : "일체형"}`);
     }
 
-    const monthly = toNumberOrNull(derivedMonthly);
-    if (monthly !== null) bullets.push(`매달 내는 돈(월세+관리비): ${formatYen(monthly)}`);
+    const rentOnly = toNumberOrNull(input?.rent_yen);
+    if (rentOnly !== null) bullets.push(`월세(관리비 제외): ${formatYen(rentOnly)}`);
+    const mgmt = toNumberOrNull(input?.mgmt_fee_yen);
+    if (mgmt !== null) bullets.push(`관리비: ${formatYen(mgmt)}`);
+    const monthlyTotal = toNumberOrNull(derivedMonthlyTotal);
+    if (monthlyTotal !== null) bullets.push(`매달 내는 돈(월세+관리비): ${formatYen(monthlyTotal)}`);
 
     const initialTotal = toNumberOrNull(input?.initial_cost_total_yen);
     const initialMultiple = toNumberOrNull(derivedInitialMultiple);
@@ -190,12 +213,15 @@ export function renderResultView({
       bullets.push(imBullet);
     }
 
-    const bench = toNumberOrNull(derivedBenchmark);
-    const rentDelta = toNumberOrNull(derivedRentDelta);
+    const sanitySuspect = Boolean(subjectSanity && typeof subjectSanity === "object" && subjectSanity.suspect);
+    const benchTotal = toNumberOrNull(derivedBenchmarkTotal);
+    const rentDeltaTotal = toNumberOrNull(derivedRentDeltaTotal);
     const conf = String(derivedBenchmarkConf || "none");
-    if (conf !== "none" && bench !== null && rentDelta !== null) {
-      const pct = Math.round(Math.abs(rentDelta) * 100);
-      bullets.push(`시세(월세 기준): ${formatYen(bench)} · 지금 월세는 시세보다 약 ${pct}% ${rentDelta < 0 ? "저렴" : "비쌈"} (신뢰도: ${benchmarkConfidenceTextKo(conf)})`);
+    if (!sanitySuspect && conf !== "none" && benchTotal !== null && rentDeltaTotal !== null) {
+      const pct = Math.round(Math.abs(rentDeltaTotal) * 100);
+      bullets.push(
+        `시세(월 고정비 기준): ${formatYen(benchTotal)} · 지금 월 고정비는 시세보다 약 ${pct}% ${rentDeltaTotal < 0 ? "저렴" : "비쌈"} (신뢰도: ${benchmarkConfidenceTextKo(conf)})`
+      );
     }
 
     return bullets;
@@ -313,7 +339,7 @@ export function renderResultView({
         "🏠",
         makeConditionDesc(input, derivedAgeYears)
       ),
-      renderComponentScoreCard("비용", scores.cost, grades.cost, "💴", makeCostDesc(derivedRentDelta, derivedBenchmarkConf, derivedImAssessment)),
+      renderComponentScoreCard("비용", scores.cost, grades.cost, "💴", makeCostDesc(derivedRentDeltaTotal, derivedBenchmarkConf, derivedImAssessment)),
     ]),
   ]);
 
@@ -328,7 +354,7 @@ export function renderResultView({
 
   const riskContext = {
     stationWalkMin: input?.station_walk_min,
-    rentDeltaRatio: derivedRentDelta,
+    rentDeltaRatio: derivedRentDeltaTotal,
     benchmarkConfidence: derivedBenchmarkConf,
     imAssessment: derivedImAssessment,
   };
@@ -348,7 +374,7 @@ export function renderResultView({
       h("li", { text: "총점: 입지/교통 35% + 집 컨디션 25% + 비용 40%" }),
       h("li", { text: "입지/교통: 역까지 도보 시간(분) 중심" }),
       h("li", { text: "집 컨디션: 면적, 연식, 구조, 방향, 욕실/화장실 분리 여부" }),
-      h("li", { text: "비용: 시세 대비 월세(월세+관리비) + 초기비용(IM). 초기비용이 시장 평균보다 높을수록 비용 점수가 내려가요." }),
+      h("li", { text: "비용: 시세 대비 월 고정비(월세+관리비) + 초기비용(IM). 초기비용이 시장 평균보다 높을수록 비용 점수가 내려가요." }),
     ]),
     h("div", { class: "hint", text: "시세 비교 데이터가 부족하면(신뢰도 없음) 비용 평가는 중립적으로 나올 수 있어요." }),
     h("div", { class: "hint", text: "등급 기준: A(85+) / B(70+) / C(55+) / D(0+)" }),

@@ -20,9 +20,9 @@ import time
 import urllib.parse
 import urllib.request
 from html.parser import HTMLParser
-from statistics import median
 from typing import Any
 
+from backend.src.live_aggregate import aggregate_benchmark
 from backend.src.suumo_scraper import ComparisonResult, SuumoListing
 
 
@@ -615,12 +615,12 @@ def fetch_homes_listings(
 
 
 def _confidence_from_count(n: int, relaxation: int) -> str:
-    if n == 0:
+    if n < 2:
         return "none"
     if relaxation == 0:
         return "high" if n >= 3 else "mid"
     if relaxation == 1:
-        return "mid"
+        return "mid" if n >= 3 else "low"
     return "low"
 
 
@@ -638,7 +638,7 @@ def search_comparable_listings(
     orientation: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
-    min_listings: int = 3,
+    min_listings: int = 2,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
     max_pages: int = 10,
@@ -828,11 +828,13 @@ def search_comparable_listings(
             if len(matched_all) >= int(min_listings):
                 totals = [lst.monthly_total_yen for lst in matched_all]
                 rents = [lst.rent_yen for lst in matched_all]
+                bench_total, method_total, stats_total = aggregate_benchmark(totals)
+                bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
                 conf = _confidence_from_count(len(matched_all), step_idx)
                 level = "homes_live" if step_idx == 0 else "homes_relaxed"
                 return ComparisonResult(
-                    benchmark_rent_yen=int(median(totals)),
-                    benchmark_rent_yen_raw=int(median(rents)),
+                    benchmark_rent_yen=int(bench_total),
+                    benchmark_rent_yen_raw=int(bench_rent),
                     benchmark_n_sources=len(matched_all),
                     benchmark_confidence=conf,
                     matched_level=level,
@@ -855,6 +857,10 @@ def search_comparable_listings(
                             "orientation": orientation,
                             "building_structure": building_structure,
                             "bathroom_toilet_separate": bathroom_toilet_separate,
+                        },
+                        "aggregation": {
+                            "total": {"method": method_total, **stats_total},
+                            "rent": {"method": method_rent, **stats_rent},
                         },
                         "attempts": attempts,
                     },

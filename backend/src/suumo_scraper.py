@@ -22,9 +22,9 @@ import urllib.parse
 import urllib.request
 from dataclasses import dataclass, field
 from html.parser import HTMLParser
-from statistics import median
 from typing import Any
 
+from backend.src.live_aggregate import aggregate_benchmark
 
 # ── Prefecture → SUUMO area/ta codes ─────────────────────────────────────────
 
@@ -152,6 +152,7 @@ class SuumoListing:
     walk_min: int | None
     building_age_years: int | None
     floor: int | None
+    building_type: str | None = None            # apartment|mansion|house (provider-normalized)
     building_name: str | None = None
     station_names: list[str] = field(default_factory=list)
     orientation: str | None = None              # N/NE/E/SE/S/SW/W/NW
@@ -614,12 +615,12 @@ def fetch_suumo_listings(url: str, *, timeout: int = 12, layout_hint: str | None
 # ── Main search function ──────────────────────────────────────────────────────
 
 def _confidence_from_count(n: int, relaxation: int) -> str:
-    if n == 0:
+    if n < 2:
         return "none"
     if relaxation == 0:
         return "high" if n >= 3 else "mid"
     if relaxation == 1:
-        return "mid"
+        return "mid" if n >= 3 else "low"
     return "low"
 
 
@@ -636,7 +637,7 @@ def search_comparable_listings(
     orientation: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
-    min_listings: int = 3,
+    min_listings: int = 2,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
 ) -> ComparisonResult:
@@ -887,12 +888,14 @@ def search_comparable_listings(
             if len(matched) >= min_listings:
                 rents = [lst.rent_yen for lst in matched]
                 totals = [lst.monthly_total_yen for lst in matched]
+                bench_total, method_total, stats_total = aggregate_benchmark(totals)
+                bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
                 confidence = _confidence_from_count(len(matched), step_idx)
                 level = "suumo_live" if step_idx == 0 else "suumo_relaxed"
 
                 return ComparisonResult(
-                    benchmark_rent_yen=int(median(totals)),
-                    benchmark_rent_yen_raw=int(median(rents)),
+                    benchmark_rent_yen=int(bench_total),
+                    benchmark_rent_yen_raw=int(bench_rent),
                     benchmark_n_sources=len(matched),
                     benchmark_confidence=confidence,
                     matched_level=level,
@@ -915,6 +918,10 @@ def search_comparable_listings(
                             "orientation": orientation,
                             "building_structure": building_structure,
                             "bathroom_toilet_separate": bathroom_toilet_separate,
+                        },
+                        "aggregation": {
+                            "total": {"method": method_total, **stats_total},
+                            "rent": {"method": method_rent, **stats_rent},
                         },
                         "attempts": attempts,
                     },

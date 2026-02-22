@@ -210,6 +210,18 @@ def test_search_comparable_listings_enriches_missing_orientation_from_detail(mon
               <input type="hidden" value="日本橋駅" class="ekiName">
               <input type="hidden" value="3" class="ekiToho">
             </tbody>
+            <tbody class="js-detailLinkUrl" data-detailurl="/detail/bk-TEST2/">
+              <tr class="detail-inner">
+                <td class="price"><span class="num">8.8</span>万円<br>5,000円</td>
+                <td class="floar"><ul><li>2階</li></ul></td>
+                <td class="layout">1DK<br>25.30m&#178;</td>
+              </tr>
+              <input type="hidden" value="88000" class="chinRyo">
+              <input type="hidden" value="1DK" class="madori">
+              <input type="hidden" value="25.30" class="senMenseki">
+              <input type="hidden" value="日本橋駅" class="ekiName">
+              <input type="hidden" value="3" class="ekiToho">
+            </tbody>
           </table>
         </div>
       </section>
@@ -239,13 +251,13 @@ def test_search_comparable_listings_enriches_missing_orientation_from_detail(mon
         layout_type="1DK",
         benchmark_index=idx,
         orientation="SW",
-        min_listings=1,
+        min_listings=2,
         max_relaxation_steps=0,
         max_pages=1,
         request_delay_s=0,
         fetch_timeout=12,
     )
-    assert res.benchmark_n_sources == 1
+    assert res.benchmark_n_sources == 2
     assert res.benchmark_confidence in ("mid", "high")
     assert res.matched_level == "chintai_live"
 

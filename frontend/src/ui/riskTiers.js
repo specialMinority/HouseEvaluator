@@ -77,22 +77,22 @@ export function rentOverBenchmarkRiskTier(rentDeltaRatio, benchmarkConfidence) {
     if (d >= 0.5) {
         return {
             severity: "high",
-            title: "월세가 시세보다 훨씬 비쌈",
-            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싸요. 같은 예산이면 다른 매물도 함께 보는 걸 추천해요.`,
+            title: "월 고정비가 시세보다 훨씬 비쌈",
+            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싸요. (월세+관리비 기준) 같은 예산이면 다른 매물도 함께 보는 걸 추천해요.`,
         };
     }
     if (d >= 0.25) {
         return {
             severity: "mid",
-            title: "월세가 시세보다 비쌈",
-            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싼 편이에요.`,
+            title: "월 고정비가 시세보다 비쌈",
+            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싼 편이에요. (월세+관리비 기준)`,
         };
     }
     if (d >= 0.1) {
         return {
             severity: "low",
-            title: "월세가 시세보다 조금 비쌈",
-            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싼 편이에요.`,
+            title: "월 고정비가 시세보다 조금 비쌈",
+            desc: `비슷한 조건의 시세보다 약 ${pct}% 비싼 편이에요. (월세+관리비 기준)`,
         };
     }
     return null;
