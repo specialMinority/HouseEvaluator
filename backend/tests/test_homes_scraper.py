@@ -57,6 +57,7 @@ def test_fetch_homes_listings_parses_core_fields(monkeypatch):
         <li>8.7 万円/5,000円</li>
         <li>1ヶ月/1ヶ月/-/-1DK</li>
         <li>25.21m²</li>
+        <li>マンション</li>
         <li>バス・トイレ別</li>
         <li>主要採光面 南西</li>
         <li>ＲＣ造</li>
@@ -77,7 +78,7 @@ def test_fetch_homes_listings_parses_core_fields(monkeypatch):
     assert lst.walk_min == 12
     assert lst.building_age_years == 0
     assert lst.orientation == "SW"
+    assert lst.building_type == "mansion"
     assert lst.building_structure == "rc"
     assert lst.bathroom_toilet_separate is True
     assert lst.station_names == ["小岩"]
-

@@ -526,6 +526,126 @@
         }
       },
       {
+        "key": "initial_cost_includes_first_month_rent",
+        "type": "boolean",
+        "required": false,
+        "label_ko": "초기비용에 1개월치 월세(월세+관리비) 포함",
+        "label_ja": "初期費用に1ヶ月分の家賃(家賃+管理費)を含む",
+        "unit": "none",
+        "ui": {
+          "group": "cost",
+          "control": "toggle",
+          "help_text_ko": "초기비용 총액이 '초기비용만'인지 '초기비용+첫달 월세'인지 선택하세요. (기본: 초기비용만)",
+          "help_text_ja": "初期費用の合計に初月の家賃(家賃+管理費)が含まれている場合はONにしてください。(既定: OFF)",
+          "advanced": true
+        }
+      },
+      {
+        "key": "monthly_support_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "월 추가 고정비(입주서포트/24H 등)",
+        "label_ja": "月額サポート費",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 50000,
+          "step": 100
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 1100",
+          "help_text_ko": "입주서포트/24H 서비스 등 매달 붙는 비용(선택).",
+          "help_text_ja": "入居サポート/24Hサービス等の月額費用(任意)。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "monthly_guarantor_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "월 추가 고정비(보증회사)",
+        "label_ja": "月額保証料",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 50000,
+          "step": 100
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 0",
+          "help_text_ko": "보증회사 월 수수료가 있는 경우(선택).",
+          "help_text_ja": "保証会社の月額手数料がある場合(任意)。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "monthly_insurance_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "월 추가 고정비(보험)",
+        "label_ja": "月額保険料",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 50000,
+          "step": 100
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 0",
+          "help_text_ko": "화재보험 등이 월납인 경우(선택).",
+          "help_text_ja": "火災保険等が月払いの場合(任意)。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "monthly_community_fee_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "월 추가 고정비(町会費/自治会費)",
+        "label_ja": "月額町会費/自治会費",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 20000,
+          "step": 100
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 0",
+          "help_text_ko": "町会費/自治会費 등 월 비용이 있는 경우(선택).",
+          "help_text_ja": "町会費/自治会費等がある場合(任意)。",
+          "advanced": true
+        }
+      },
+      {
+        "key": "monthly_other_fees_yen",
+        "type": "integer",
+        "required": false,
+        "label_ko": "월 추가 고정비(기타)",
+        "label_ja": "月額その他費用",
+        "unit": "yen",
+        "constraints": {
+          "min": 0,
+          "max": 100000,
+          "step": 100
+        },
+        "ui": {
+          "group": "cost",
+          "control": "number",
+          "placeholder_ko": "예: 0",
+          "help_text_ko": "내역이 불명확한 월 비용이 있는 경우(선택).",
+          "help_text_ja": "内訳が不明な月額費用がある場合(任意)。",
+          "advanced": true
+        }
+      },
+      {
         "key": "contract_term_months",
         "type": "integer",
         "required": false,

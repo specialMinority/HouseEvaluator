@@ -57,3 +57,10 @@ def test_no_false_positive_from_area():
     listings = _extract_listings_from_block(block)
     assert len(listings) >= 1
     assert listings[0].layout == "1DK"
+
+
+def test_building_type_parses_mansion():
+    block = "3階 8.7万円5,000円1DK25.21m2 マンション 南西 築5年 歩12分"
+    listings = _extract_listings_from_block(block)
+    assert len(listings) >= 1
+    assert listings[0].building_type == "mansion"

@@ -38,10 +38,12 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
 
     const value = pick(response, [
         "derived.benchmark_monthly_fixed_cost_yen",
+        "derived.benchmark_total_yen",
         "benchmark_monthly_fixed_cost_yen",
         "benchmark.benchmark_monthly_fixed_cost_yen",
         "benchmark.benchmark_monthly_fixed_cost_yen_median",
     ]);
+    const rentOnlyValue = pick(response, ["derived.benchmark_rent_only_yen"]);
     const rawValue = pick(response, [
         "derived.benchmark_monthly_fixed_cost_yen_raw",
         "derived.benchmark_rent_yen_raw",
@@ -254,6 +256,8 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
         h("div", { class: "kv" }, [
             h("div", { class: "k", text: "벤치마크(월 고정비)" }),
             h("div", { class: "v mono", text: value === undefined || value === null ? "없음" : formatYen(value) }),
+            rentOnlyValue !== undefined && rentOnlyValue !== null ? h("div", { class: "k", text: "벤치마크(월세만)" }) : null,
+            rentOnlyValue !== undefined && rentOnlyValue !== null ? h("div", { class: "v mono", text: formatYen(rentOnlyValue) }) : null,
             hasAdjustment ? h("div", { class: "k", text: "원본(보정 전)" }) : null,
             hasAdjustment ? h("div", { class: "v mono", text: formatYen(rawValue) }) : null,
             h("div", { class: "k", text: "매칭 레벨" }),
@@ -280,6 +284,7 @@ export function renderCompactBenchmarkSection(response, benchmarkMeta, input) {
     ]);
     const value = pick(response, [
         "derived.benchmark_monthly_fixed_cost_yen",
+        "derived.benchmark_total_yen",
         "benchmark_monthly_fixed_cost_yen",
         "benchmark.benchmark_monthly_fixed_cost_yen",
         "benchmark.benchmark_monthly_fixed_cost_yen_median",

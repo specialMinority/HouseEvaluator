@@ -46,6 +46,36 @@ _IM_MARKET_AVG_BY_PREF: Final[dict[str, float]] = {
 }
 _IM_MARKET_AVG_DEFAULT: Final[float] = 4.5
 
+_MONTHLY_EXTRA_COST_KEYS: Final[list[str]] = [
+    "monthly_support_fee_yen",
+    "monthly_guarantor_fee_yen",
+    "monthly_insurance_fee_yen",
+    "monthly_community_fee_yen",
+    "monthly_other_fees_yen",
+]
+
+
+def _sum_optional_yen(payload: dict[str, Any], keys: list[str]) -> int:
+    total = 0
+    for k in keys:
+        try:
+            total += int(payload.get(k) or 0)
+        except Exception:
+            continue
+    return int(total)
+
+
+def _monthly_extra_cost_breakdown(payload: dict[str, Any]) -> dict[str, int]:
+    out: dict[str, int] = {}
+    for k in _MONTHLY_EXTRA_COST_KEYS:
+        try:
+            v = int(payload.get(k) or 0)
+        except Exception:
+            continue
+        if v > 0:
+            out[k] = int(v)
+    return out
+
 
 def _estimate_benchmark_mgmt_fee_yen(
     benchmark_rent_yen: int,
@@ -371,9 +401,24 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     _validate_input(payload, s1)
 
     current_year = datetime.now().year
-    monthly_fixed_cost_yen = int(payload["rent_yen"]) + int(payload["mgmt_fee_yen"])
+    rent_yen = int(payload["rent_yen"])
+    mgmt_fee_yen = int(payload["mgmt_fee_yen"])
+    monthly_fixed_cost_yen = rent_yen + mgmt_fee_yen  # base monthly (rent + mgmt)
+    monthly_extra_cost_yen = _sum_optional_yen(payload, list(_MONTHLY_EXTRA_COST_KEYS))
+    monthly_all_in_cost_yen = monthly_fixed_cost_yen + monthly_extra_cost_yen
+    monthly_extra_costs = _monthly_extra_cost_breakdown(payload)
+
+    initial_cost_total_yen = int(payload["initial_cost_total_yen"])
+    initial_includes_first_month = bool(payload.get("initial_cost_includes_first_month_rent"))
+    initial_cost_contract_only_yen = initial_cost_total_yen - monthly_fixed_cost_yen if initial_includes_first_month else initial_cost_total_yen
+    initial_cost_contract_only_yen = max(0, int(initial_cost_contract_only_yen))
+    move_in_total_yen = initial_cost_contract_only_yen + monthly_all_in_cost_yen
+
     building_age_years = max(0, current_year - int(payload["building_built_year"]))
-    initial_multiple = float(payload["initial_cost_total_yen"]) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
+    initial_multiple = float(initial_cost_contract_only_yen) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
+    initial_multiple_move_in_total = float(move_in_total_yen) / monthly_fixed_cost_yen if monthly_fixed_cost_yen > 0 else 0.0
+    initial_multiple_all_in = float(initial_cost_contract_only_yen) / monthly_all_in_cost_yen if monthly_all_in_cost_yen > 0 else 0.0
+    initial_multiple_move_in_total_all_in = float(move_in_total_yen) / monthly_all_in_cost_yen if monthly_all_in_cost_yen > 0 else 0.0
     subject_pricing_sanity = _subject_pricing_sanity(payload, initial_multiple=initial_multiple)
 
     # ── Live benchmark: real-time comparable search (HOMES/SUUMO) ───────────
@@ -403,6 +448,7 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
         "search_url": None,
         "filters": None,
         "attempts": None,
+        "quality": None,
         "error": None,
     }
     if not live_enabled:
@@ -431,6 +477,7 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
                 live_attempts = None
                 live_provider = None
                 live_provider_name = None
+                live_quality = None
                 if isinstance(getattr(_live_result, "adjustments_applied", None), dict):
                     lf = _live_result.adjustments_applied.get("filters")
                     if isinstance(lf, dict):
@@ -438,6 +485,9 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
                     la = _live_result.adjustments_applied.get("attempts")
                     if isinstance(la, list):
                         live_attempts = la
+                    lq = _live_result.adjustments_applied.get("quality")
+                    if isinstance(lq, dict):
+                        live_quality = lq
                     lp = _live_result.adjustments_applied.get("provider")
                     if isinstance(lp, str) and lp:
                         live_provider = lp
@@ -455,6 +505,7 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
                         "provider_name": live_provider_name,
                         "filters": live_filters,
                         "attempts": live_attempts,
+                        "quality": live_quality,
                         "error": _live_result.error,
                     }
                 )
@@ -569,9 +620,20 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     ctx.update(payload)
     ctx.update(
         {
+            # Cost model (PR-4): base monthly vs optional extra monthly, contract-only initial vs move-in total.
+            "monthly_base_cost_yen": monthly_fixed_cost_yen,
             "monthly_fixed_cost_yen": monthly_fixed_cost_yen,
+            "monthly_extra_cost_yen": monthly_extra_cost_yen,
+            "monthly_extra_costs": monthly_extra_costs,
+            "monthly_all_in_cost_yen": monthly_all_in_cost_yen,
+            "initial_cost_includes_first_month_rent": initial_includes_first_month,
+            "initial_cost_contract_only_yen": initial_cost_contract_only_yen,
+            "move_in_total_yen": move_in_total_yen,
             "building_age_years": building_age_years,
             "initial_multiple": initial_multiple,
+            "initial_multiple_move_in_total": initial_multiple_move_in_total,
+            "initial_multiple_all_in": initial_multiple_all_in,
+            "initial_multiple_move_in_total_all_in": initial_multiple_move_in_total_all_in,
             "subject_pricing_sanity": subject_pricing_sanity,
             "benchmark_rent_only_yen": benchmark_rent_only_yen,
             "benchmark_total_yen": benchmark_total_yen,
@@ -713,7 +775,19 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
 
             # Re-evaluate only the values UX expects to change.
             new_monthly_fixed = int(new_payload["rent_yen"]) + int(new_payload["mgmt_fee_yen"])
-            new_im = float(new_payload["initial_cost_total_yen"]) / new_monthly_fixed if new_monthly_fixed > 0 else 0.0
+            new_monthly_extra = _sum_optional_yen(new_payload, list(_MONTHLY_EXTRA_COST_KEYS))
+            new_monthly_all_in = new_monthly_fixed + new_monthly_extra
+
+            new_initial_total = int(new_payload["initial_cost_total_yen"])
+            new_initial_includes_first_month = bool(new_payload.get("initial_cost_includes_first_month_rent"))
+            new_initial_contract_only = new_initial_total - new_monthly_fixed if new_initial_includes_first_month else new_initial_total
+            new_initial_contract_only = max(0, int(new_initial_contract_only))
+            new_move_in_total = new_initial_contract_only + new_monthly_all_in
+
+            new_im = float(new_initial_contract_only) / new_monthly_fixed if new_monthly_fixed > 0 else 0.0
+            new_im_move_in_total = float(new_move_in_total) / new_monthly_fixed if new_monthly_fixed > 0 else 0.0
+            new_im_all_in = float(new_initial_contract_only) / new_monthly_all_in if new_monthly_all_in > 0 else 0.0
+            new_im_move_in_total_all_in = float(new_move_in_total) / new_monthly_all_in if new_monthly_all_in > 0 else 0.0
             new_rent_delta_ratio = (
                 (float(new_monthly_fixed) - float(benchmark_monthly_fixed_cost_yen)) / float(benchmark_monthly_fixed_cost_yen)
                 if benchmark_monthly_fixed_cost_yen and benchmark_monthly_fixed_cost_yen > 0
@@ -725,9 +799,18 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
             new_ctx.update(
                 {
                     **new_payload,
+                    "monthly_base_cost_yen": new_monthly_fixed,
                     "monthly_fixed_cost_yen": new_monthly_fixed,
+                    "monthly_extra_cost_yen": new_monthly_extra,
+                    "monthly_all_in_cost_yen": new_monthly_all_in,
+                    "initial_cost_includes_first_month_rent": new_initial_includes_first_month,
+                    "initial_cost_contract_only_yen": new_initial_contract_only,
+                    "move_in_total_yen": new_move_in_total,
                     "rent_delta_ratio": new_rent_delta_ratio,
                     "initial_multiple": new_im,
+                    "initial_multiple_move_in_total": new_im_move_in_total,
+                    "initial_multiple_all_in": new_im_all_in,
+                    "initial_multiple_move_in_total_all_in": new_im_move_in_total_all_in,
                     "initial_multiple_market_delta": new_im - im_market_avg,
                     "initial_multiple_market_delta_foreigner": new_effective_im_foreigner - im_market_avg,
                 }
@@ -748,8 +831,14 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
                     "id": wi.get("id"),
                     "label_ko": action.get("label_ko"),
                     "label_ja": action.get("label_ja"),
-                    "initial_cost_total_yen": int(new_payload["initial_cost_total_yen"]),
+                    "monthly_fixed_cost_yen": int(new_monthly_fixed),
+                    "monthly_extra_cost_yen": int(new_monthly_extra),
+                    "monthly_all_in_cost_yen": int(new_monthly_all_in),
+                    "initial_cost_total_yen": int(new_initial_total),
+                    "initial_cost_contract_only_yen": int(new_initial_contract_only),
+                    "move_in_total_yen": int(new_move_in_total),
                     "initial_multiple": _round(new_im, 6),
+                    "initial_multiple_move_in_total": _round(new_im_move_in_total, 6),
                     "cost_score": new_cost_score,
                     "overall_score": new_overall_score,
                     "cost_grade": new_cost_grade,
@@ -769,9 +858,19 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
 
     return {
         "derived": {
+            "monthly_base_cost_yen": monthly_fixed_cost_yen,
             "monthly_fixed_cost_yen": monthly_fixed_cost_yen,
+            "monthly_extra_cost_yen": int(monthly_extra_cost_yen),
+            "monthly_extra_costs": monthly_extra_costs,
+            "monthly_all_in_cost_yen": int(monthly_all_in_cost_yen),
+            "initial_cost_includes_first_month_rent": bool(initial_includes_first_month),
+            "initial_cost_contract_only_yen": int(initial_cost_contract_only_yen),
+            "move_in_total_yen": int(move_in_total_yen),
             "building_age_years": building_age_years,
             "initial_multiple": _round(initial_multiple, 6),
+            "initial_multiple_move_in_total": _round(initial_multiple_move_in_total, 6),
+            "initial_multiple_all_in": _round(initial_multiple_all_in, 6),
+            "initial_multiple_move_in_total_all_in": _round(initial_multiple_move_in_total_all_in, 6),
             "subject_pricing_sanity": subject_pricing_sanity,
             "benchmark_rent_only_yen": benchmark_rent_only_yen,
             "benchmark_total_yen": benchmark_total_yen,

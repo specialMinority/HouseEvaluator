@@ -201,3 +201,164 @@ python -m backend.src.server
 - [ ] 표본 수 확대 + IQR 기반 confidence 개선
 - [ ] 문서 업데이트(`backend/README.md`의 LIVE_PROVIDERS 기본값 등은 현재 코드와 불일치 가능)
 
+---
+
+## 10) Work Log (From 2026-02-22)
+> NOTE: 2026-02-22부터의 변경/작업 로그는 모두 여기에 누적합니다. (요청사항)
+
+### 2026-02-22 — Frontend UX Hotfix (Loading + Mobile)
+- “평가” 버튼 이후 30~60초 대기 구간을 전문적으로 보이게 만드는 로딩 UX 추가:
+  - `LoadingOverlay`(스텝퍼 + 메시지 로테이션 + 디버그 로그 + 취소/재시도).
+  - 마스코트 이미지(Search/Analyze/Success/Error) 사용.
+  - 라이브 비교가 “시도는 했지만 사용 불가”일 때 partial 완료 상태 표시.
+- 모바일 결과 화면에서 “요약 카드부터 텍스트가 화면 밖으로 이탈”하는 문제 수정:
+  - CSS에서 카드/텍스트가 모바일 뷰포트 안에 유지되도록 줄바꿈/오버플로우 처리.
+
+### 2026-02-22 — 마스코트 이미지 404 / 늦은 로딩 대응
+- 증상: 로딩 오버레이에서 이미지가 늦게 뜨거나 404가 발생(배포/로컬 모두).
+- 조치:
+  - `/frontend/` 중첩과 무관하게 동작하도록, 이미지 URL을 항상 절대경로(`/image/*.png`)로 계산.
+  - 앱 초기화 시점에 이미지 “warm preload” 수행 + `Image()` 참조를 유지해 preload 취소/GC 이슈 완화.
+  - `loading="eager"`, `fetchpriority`, `width/height` + CSS `aspect-ratio`로 레이아웃 시프트 감소.
+- 배포 패키징:
+  - `scripts/make_cloudbuild_zip.py`에 `image/`, `error_image/` 포함(Cloud Build zip 배포 시 404 방지).
+  - Dockerfile은 이미 `image/`, `error_image/`를 COPY 하고 있음.
+
+### 2026-02-22 — “예시 입력(매물 자동입력)” 제거
+- 예시 불러오기 기능은 유지 가치가 낮다고 판단하여 UI/로딩 경로 제거:
+  - `frontend/src/ui/app.js`: fixtures fetch/state 제거.
+  - `frontend/src/ui/formView.js`: “예시” 카드/셀렉트 제거.
+
+### 2026-02-22 — PR-1 (시세 비교 기준 투명화 + “0%” 혼란 제거)
+목표: 작은 차이를 `Math.round()`로 % 정수 반올림해 “0%”로 보이던 UX를 개선하고, 비교 기준을 명시.
+- 결과 문구 개선:
+  - ΔJPY + 소수점 1자리 % 표시.
+  - 미세 차이(예: |Δ| < 1.0%)는 “시세 범위 내(±1.0%)” 밴드로 표현.
+  - “(참고) 월세만 기준” 시세도 함께 표시(가능할 때).
+- 변경 파일:
+  - `frontend/src/ui/resultView.js`: 델타 포맷 헬퍼 추가 + 요약/근거 bullets 개선.
+  - `frontend/src/ui/benchmarkSection.js`: `벤치마크(월세만)` 라인 추가.
+
+### 2026-02-22 — PR-2 (라이브 벤치마크 데이터 품질 방어막: 중복/스테일/아웃라이어)
+목표: 허위/중복/극단값(아웃라이어)로 벤치마크가 왜곡되는 문제를 방어하고, 제거/보정 과정을 투명하게 노출.
+- 공통 품질 유틸 추가:
+  - `backend/src/live_quality.py` 추가
+    - `dedupe_listings()` : detail_url → fingerprint 우선순위로 중복 제거(순서 보존)
+    - `filter_stale_listings()` : `info_updated_at`(ISO) 기반 스테일 필터(최소 표본 보존 정책 포함)
+    - `filter_outlier_listings_iqr()` : IQR fence 기반 아웃라이어 제거(과제거/표본부족 시 스킵)
+- CHINTAI:
+  - 목록 섹션 텍스트에서 “YYYY年M月D日 / YYYY-MM-DD” 형태 full-date를 best-effort로 파싱해 `info_updated_at`에 기록.
+  - 매칭된 comparables에 stale/outlier 필터 적용 후 집계(필터로 표본이 너무 줄면 unfiltered로 fallback).
+  - 결과에 `quality` 통계 포함(원본/중복제거/스테일/아웃라이어/최종 사용 표본 수).
+- SUUMO/HOMES:
+  - comparables 집계 직전에 동일한 stale/outlier 필터를 적용 + `quality` 통계 포함.
+  - SUUMO fetch dedupe 키를 `(rent, admin, area, layout)`로 강화.
+- API 응답:
+  - `derived.live_benchmark.quality`로 품질 통계가 내려오도록 `backend/src/evaluate.py`에서 passthrough 추가.
+- 테스트:
+  - `backend/tests/test_live_quality.py` 추가(중복/스테일/아웃라이어).
+  - `backend/tests/test_chintai_scraper.py`에 update-date 파싱 검증 추가.
+
+### 2026-02-22 — PR-3 (건물종류/建物種別 파싱 + 매칭 반영)
+목표: “비슷한 집” 비교군에서 아파트/맨션/단독(테라스) 혼재로 인한 시세 왜곡을 줄이기.
+- Listing 필드:
+  - 공통 `SuumoListing.building_type`(provider-normalized: `apartment|mansion|house`) 사용.
+- 파싱:
+  - CHINTAI: `<span class="icn_typeB">賃貸マンション</span>` 등에서 추출(기존 로직 활용).
+  - SUUMO: raw block 텍스트에 포함된 `マンション/アパート/一戸建て` 키워드로 best-effort 추출.
+  - HOMES: 목록 텍스트 라인에 포함된 `マンション/アパート/一戸建て` 키워드로 best-effort 추출.
+- 매칭(타이트 단계):
+  - 사용자 입력 `building_structure`로부터 기대 building_type을 보수적으로 추정(rc/src/steel→mansion, wood/light_steel→apartment)하고, 리스트에서 building_type이 노출되는 경우 mismatch를 reject(미노출은 soft-pass).
+  - attempts.coverage에 `building_type` 포함.
+- 디버그/투명성:
+  - `adjustments_applied.filters.building_type`로 기대 타입을 노출.
+- 테스트:
+  - CHINTAI/HOMES/SUUMO 각각 building_type 파싱 케이스 추가.
+
+---
+
+## 11) Next Work (PR-2 → PR-5)
+> 사용자 요청: 다음 작업(PR-2~PR-5) 내용을 이 파일에 미리 기록.
+
+### PR-2 — 데이터 품질 방어막 (중복/스테일/아웃라이어)
+Status: DONE (2026-02-22) — 상세는 위 Work Log 참고
+목표: 허위/중복/극단값(아웃라이어)이 벤치마크를 과도하게 낮추는 문제를 방어.
+- Dedupe:
+  - 우선순위: (가능하면) provider listing id → URL → fingerprint(`station+walk+layout+area+rent+fee`).
+- 스테일(정보 업데이트일) 필터:
+  - provider가 `情報更新日`를 제공하면 14~30일 기준으로 제외/감점(정책화).
+- 아웃라이어 제거:
+  - (월세+관리비) 기준으로 IQR 또는 MAD로 극단값 제거.
+- 투명성:
+  - `n_raw/n_deduped/n_after_outlier`, min/median/max, 제거 개수를 `derived.live_benchmark`에 포함.
+예상 변경 위치: `backend/src/live_aggregate.py`, `backend/src/chintai_scraper.py`, `backend/src/evaluate.py` (+ 필요 시 프론트 표시).
+
+### PR-3 — 건물종류(建物種別) 파싱 + 매칭 반영
+Status: DONE (2026-02-22) — 상세는 위 Work Log 참고
+목표: 아파트/맨션/단독(테라스) 구분을 비교 조건에 반영.
+- `building_type` 정규화 필드 추가(APARTMENT/MANSION/HOUSE/UNKNOWN).
+- CHINTAI 카드에서 `賃貸アパート/賃貸マンション/ハイツ` 등으로 추출(하이츠는 APARTMENT로 묶는 방향).
+- 매칭 “타이트 레벨”에서 building_type을 유지(초기 완화에서는 유지).
+예상 변경 위치: `backend/src/chintai_scraper.py`, 매칭 로직, 프론트 근거 문구.
+
+### PR-4 — 비용 모델 개선(월 추가비용 + 초기비용 정의 분리)
+Status: DONE (2026-02-22)
+
+Implemented
+- S1 입력 확장(Advanced/옵션): `initial_cost_includes_first_month_rent`, `monthly_*_fee_yen`(support/guarantor/insurance/community/other).
+- Backend(PR-4 cost model): base 월고정비(월세+관리비) + 추가 월고정비(옵션) + 계약 초기비용(월세 제외) + 입주 총 납부액(가정) 파생값을 `derived`에 노출.
+  - New derived: `monthly_base_cost_yen`, `monthly_extra_cost_yen`, `monthly_all_in_cost_yen`, `initial_cost_contract_only_yen`, `move_in_total_yen`,
+    `initial_multiple_move_in_total`, `initial_multiple_all_in`, `initial_multiple_move_in_total_all_in` (+ `monthly_extra_costs` breakdown).
+- Frontend 요약/근거 카드 문구 개선: 월 고정비(기본/옵션/합계) + 초기비용(계약/입주총액) + IM(2종)을 분리해서 표시.
+- What-if 결과에도 PR-4 비용 파생값을 함께 포함(UX 디버그/투명성).
+- Tests: `backend/tests/test_cost_model_pr4.py` 추가, `python -m pytest backend/tests -q` 통과.
+
+Notes
+- 벤치마크(시세) 비교는 계속 base 월고정비(월세+관리비) 기준으로 유지(옵션 월비용은 비교군 데이터가 없으므로 정보성 표시).
+목표: 일본 임대 현실(월 추가비용/초기비용 구성 차이)을 모델에 반영하고 문구 혼란을 줄임.
+- 비용 4분면 분리:
+  1) 월 고정비 기본: 월세 + 관리비
+  2) 월 고정비 추가(옵션): 入居サポート/保険(月)/保証更新(月)/自治会費 등(기본 0, 사용자 입력/토글)
+  3) 계약 초기비용(월세 제외)
+  4) 입주 시점 총 납부액(초기비용 + 첫달 월세/일할)
+- IM 정의 2개 제공:
+  - `IM_contract_only`, `IM_movein_total`
+- UI/리포트에서 “어떤 정의로 계산했는지”를 고정 표기.
+예상 변경 위치: `backend/src/evaluate.py`, `frontend/src/ui/resultView.js` (+ 입력 스키마 확장 여부 결정).
+
+### PR-5 — 매칭/완화 정책 고정 + 표본 집계 규칙
+Status: DONE (2026-02-22)
+
+Implemented
+- Station 정규화/alias 공통 유틸 추가: `backend/src/station_utils.py` (난바: `難波` ↔ `なんば`, substring 기반 유사도).
+- CHINTAI/HOMES/SUUMO station 매칭을 정규화+alias 기반 `any-match`로 통일(히라가나/한자 변형에 덜 취약).
+- CHINTAI/HOMES relaxation 정책을 “방향 → 욕실분리 → 구조/건물종류” 순서로 정렬:
+  - step0: direction+structure+building_type+bath strict
+  - step1: direction relax
+  - step2: bath relax(해제)
+  - step3: structure/building_type relax(해제)
+  - URL 파라미터에도 동일 정책 반영(예: CHINTAI에서 bath-toilet 필터는 step1까지만).
+- 표본 집계 규칙은 `backend/src/live_aggregate.py`의 정책( n==2 mean / n>=3 midrange / ratio 크면 median fallback )을 유지.
+- Tests: `backend/tests/test_station_utils.py` 추가, 전체 `pytest` 통과.
+
+Notes
+- PR 계획의 L4(building_type 단독 완화)는 기본 `max_relaxation_steps=3` 범위 안에서 step3에 structure와 함께 완화하는 형태로 합쳤습니다(요청 수/대기시간을 과도하게 늘리지 않기 위한 절충).
+목표: “조건 최대 반영 → 부족하면 단계적 완화 → 2개 이상이면 채택” 정책화.
+- (관측된 실제 실패 케이스) `なんば`(ひらがな) vs `難波`(漢字)처럼 표기 차이로 station 매칭이 0건이 되는 문제가 있어, station 정규화/alias 테이블 + “복수 역 any-match”를 포함해야 함.
+- 완화 레벨 테이블(예):
+  - L0: station/walk/layout/area/age/structure/building_type/bath/direction
+  - L1: direction 제거
+  - L2: bath 제거(또는 unknown 허용)
+  - L3: structure 제거
+  - L4: building_type 제거
+  - 이후 age/walk 버킷 완화
+- 채택 규칙:
+  - 최초로 `matched >= 2`가 되는 레벨에서 시세 확정.
+  - `matched == 2`이면 confidence 강제 감점.
+- 집계 규칙:
+  - n==2: mean
+  - n>=3: (min+max)/2 (midrange)
+  - 안전벨트: `max/min` 폭이 비정상적으로 크면 median fallback.
+- 진단 강화:
+  - reject histogram + coverage warning 출력 고도화.
+예상 변경 위치: `backend/src/live_aggregate.py`, provider scrapers, `backend/src/evaluate.py`, 프론트 벤치마크 표시.

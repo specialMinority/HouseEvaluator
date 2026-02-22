@@ -15,6 +15,7 @@ from __future__ import annotations
 import html as html_lib
 import unicodedata
 from collections import Counter
+from datetime import date
 import re
 import time
 import urllib.error
@@ -24,6 +25,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from backend.src.live_aggregate import aggregate_benchmark
+from backend.src.live_quality import dedupe_listings, filter_outlier_listings_iqr, filter_stale_listings
+from backend.src.station_utils import normalize_station_name, station_similar
 from backend.src.suumo_scraper import ComparisonResult, SuumoListing
 
 
@@ -101,6 +104,34 @@ def _strip_tags(html: str) -> str:
     # Unescape yields NBSP; normalize it to a regular space so regexes using \s work.
     s = s.replace("\u00a0", " ")
     return re.sub(r"\s+", " ", s).strip()
+
+
+def _parse_info_updated_at_iso(text: str) -> str | None:
+    """
+    Best-effort parse for provider "update date" (情報更新日 etc).
+
+    We intentionally rely on a generic full-date pattern (YYYY年M月D日 or YYYY/MM/DD)
+    to avoid depending on fragile label strings that may change.
+    """
+    t = unicodedata.normalize("NFKC", str(text or ""))
+    patterns = [
+        # 2026年2月22日
+        r"(\d{4})\s*\u5e74\s*(\d{1,2})\s*\u6708\s*(\d{1,2})\s*\u65e5",
+        # 2026/02/22 or 2026-02-22 or 2026.02.22
+        r"(\d{4})\s*[./-]\s*(\d{1,2})\s*[./-]\s*(\d{1,2})",
+    ]
+    for pat in patterns:
+        m = re.search(pat, t)
+        if not m:
+            continue
+        try:
+            y = int(m.group(1))
+            mo = int(m.group(2))
+            d = int(m.group(3))
+            return date(y, mo, d).isoformat()
+        except Exception:
+            continue
+    return None
 
 
 def _parse_int(text: str) -> int | None:
@@ -313,41 +344,11 @@ def _structure_code_to_chintai_kz(structure: str) -> str | None:
 
 
 def _normalize_station(st: str) -> str:
-    t = unicodedata.normalize("NFKC", str(st or ""))
-    t = re.sub(r"\s+", "", t)
-    t = t.replace("駅", "")
-    return t
-
-
-_STATION_ALIASES: dict[str, set[str]] = {
-    # Minimal alias set for common kana/kanji variants.
-    "難波": {"なんば"},
-    "なんば": {"難波"},
-}
-
-
-def _station_variants(st: str) -> set[str]:
-    base = _normalize_station(st)
-    if not base:
-        return set()
-    out: set[str] = {base}
-    for alt in _STATION_ALIASES.get(base, set()):
-        alt_norm = _normalize_station(alt)
-        if alt_norm:
-            out.add(alt_norm)
-    return out
+    return normalize_station_name(st)
 
 
 def _station_similar(a: str, b: str) -> bool:
-    if not a or not b:
-        return False
-    a_vars = _station_variants(a)
-    b_vars = _station_variants(b)
-    for av in a_vars:
-        for bv in b_vars:
-            if (av in bv) or (bv in av):
-                return True
-    return False
+    return station_similar(a, b)
 
 
 def _parse_station_accesses(text: str) -> list[tuple[str, int]]:
@@ -766,6 +767,8 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str |
     for i, start in enumerate(starts):
         end = starts[i + 1] if (i + 1) < len(starts) else len(html)
         section = html[start:end]
+        section_text = _strip_tags(section)
+        info_updated_at = _parse_info_updated_at_iso(section_text)
 
         building_type = None
         m_type = re.search(r'<span[^>]*class="icn_typeB"[^>]*>\s*賃貸([^<]+?)\s*</span>', section)
@@ -880,14 +883,19 @@ def fetch_chintai_listings(url: str, *, timeout: int = 12, target_station: str |
                     bathroom_toilet_separate=True if assume_bath_sep_true else None,
                     building_type=building_type,
                     detail_url=detail_url,
+                    info_updated_at=info_updated_at,
                 )
             )
 
-    # Deduplicate by (rent+admin+area+layout) to reduce repeated blocks.
+    # Deduplicate: prefer detail URL (provider listing id surrogate); fallback to a small fingerprint.
     seen: set[tuple[Any, ...]] = set()
     unique: list[SuumoListing] = []
     for lst in listings:
-        key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm, lst.layout)
+        if lst.detail_url:
+            key = ("url", str(lst.detail_url).split("#", 1)[0].split("?", 1)[0].rstrip("/"))
+        else:
+            area_b = round(float(lst.area_sqm), 1) if lst.area_sqm is not None else None
+            key = ("fp", lst.rent_yen, lst.admin_fee_yen, area_b, (lst.layout or "").strip().upper() or None)
         if key in seen:
             continue
         seen.add(key)
@@ -929,10 +937,10 @@ def search_comparable_listings(  # noqa: PLR0913
     Search CHINTAI for comparable listings and compute a median monthly total (rent+admin).
 
     Filtering is primarily done post-fetch (HTML list pages), with relaxation steps:
-      0: strict (layout + area + age + walk + station + orientation + structure + bath)
+      0: strict (layout + area + age + walk + station + orientation + structure + building_type + bath)
       1: drop orientation strictness
-      2: drop structure strictness
-      3: drop bath strictness
+      2: drop bath strictness (still keep structure/building_type)
+      3: drop structure/building_type strictness (station + core numeric filters remain)
     """
     layout_type_u = str(layout_type).upper()
     if layout_type_u not in _LAYOUT_TO_M:
@@ -1066,7 +1074,7 @@ def search_comparable_listings(  # noqa: PLR0913
 
         needs: set[str] = set()
 
-        if step_idx <= 1 and desired_building_type:
+        if step_idx <= 2 and desired_building_type:
             if listing.building_type and str(listing.building_type).lower().strip() != str(desired_building_type).lower().strip():
                 return False, needs, "building_type"
 
@@ -1076,13 +1084,13 @@ def search_comparable_listings(  # noqa: PLR0913
             elif not orientation_matches(listing, step_idx=step_idx):
                 return False, needs, "orientation"
 
-        if step_idx <= 1 and building_structure and str(building_structure).lower() not in ("other", "all"):
+        if step_idx <= 2 and building_structure and str(building_structure).lower() not in ("other", "all"):
             if listing.building_structure is None:
                 needs.add("structure")
             elif not structure_matches(listing):
                 return False, needs, "structure"
 
-        if step_idx <= 2 and bathroom_toilet_separate is not None:
+        if step_idx <= 1 and bathroom_toilet_separate is not None:
             if listing.bathroom_toilet_separate is None:
                 needs.add("bath")
             elif not bath_matches(listing):
@@ -1096,6 +1104,7 @@ def search_comparable_listings(  # noqa: PLR0913
 
     for step_idx in range(0, max_relaxation_steps + 1):
         matched_all: list[SuumoListing] = []
+        dedupe_removed_total = 0
         detail_fetch_budget_step = max(12, int(min_listings) * 8)  # e.g., min_listings=3 -> 24
         detail_fetch_n_step = 0
         for page in range(1, int(max_pages) + 1):
@@ -1112,8 +1121,8 @@ def search_comparable_listings(  # noqa: PLR0913
                 area_max_sqm=hi_area,
                 walk_max_min=wmax,
                 age_max_years=amax,
-                building_structure=building_structure if step_idx <= 1 else None,
-                bathroom_toilet_separate=bathroom_toilet_separate if step_idx <= 2 else None,
+                building_structure=building_structure if step_idx <= 2 else None,
+                bathroom_toilet_separate=bathroom_toilet_separate if step_idx <= 1 else None,
             )
             last_url = url or last_url
             if not url:
@@ -1153,15 +1162,8 @@ def search_comparable_listings(  # noqa: PLR0913
 
             matched_all.extend(matched_page)
             if matched_all:
-                seen: set[tuple[Any, ...]] = set()
-                deduped: list[SuumoListing] = []
-                for lst in matched_all:
-                    key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm, lst.layout)
-                    if key in seen:
-                        continue
-                    seen.add(key)
-                    deduped.append(lst)
-                matched_all = deduped
+                matched_all, dstats = dedupe_listings(matched_all, provider="chintai")
+                dedupe_removed_total += int(dstats.get("removed") or 0)
 
             # Enrich from detail pages only for candidates that pass list-page filters but are
             # missing required fields (bath/orientation/structure). This avoids expensive detail
@@ -1200,15 +1202,8 @@ def search_comparable_listings(  # noqa: PLR0913
                     enriched_matched_n += 1
 
                 if enriched_matched_n:
-                    seen: set[tuple[Any, ...]] = set()
-                    deduped: list[SuumoListing] = []
-                    for lst in matched_all:
-                        key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm, lst.layout)
-                        if key in seen:
-                            continue
-                        seen.add(key)
-                        deduped.append(lst)
-                    matched_all = deduped
+                    matched_all, dstats2 = dedupe_listings(matched_all, provider="chintai")
+                    dedupe_removed_total += int(dstats2.get("removed") or 0)
 
             coverage = {
                 "area": sum(1 for lst in listings if lst.area_sqm is not None),
@@ -1238,20 +1233,47 @@ def search_comparable_listings(  # noqa: PLR0913
             )
 
             if len(matched_all) >= int(min_listings):
-                totals = [lst.monthly_total_yen for lst in matched_all]
-                rents = [lst.rent_yen for lst in matched_all]
+                # Data quality defenses (PR-2): stale filtering + robust outlier removal.
+                quality: dict[str, Any] = {
+                    "matched_raw_n": int(len(matched_all) + int(dedupe_removed_total)),
+                    "deduped_n": int(len(matched_all)),
+                    "dedupe_removed_n": int(dedupe_removed_total),
+                }
+                usable = list(matched_all)
+                usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
+                usable_after_out, out_stats = filter_outlier_listings_iqr(
+                    usable_after_stale,
+                    value_attr="monthly_total_yen",
+                    min_keep=int(min_listings),
+                )
+
+                # If filters would result in too few samples, fall back to the unfiltered deduped set.
+                usable_final = usable_after_out if len(usable_after_out) >= int(min_listings) else usable
+                quality.update(
+                    {
+                        "stale": stale_stats,
+                        "outlier": out_stats,
+                        "after_stale_n": int(len(usable_after_stale)),
+                        "after_outlier_n": int(len(usable_after_out)),
+                        "used_n": int(len(usable_final)),
+                        "used_fallback_unfiltered": bool(usable_final is usable),
+                    }
+                )
+
+                totals = [lst.monthly_total_yen for lst in usable_final]
+                rents = [lst.rent_yen for lst in usable_final]
                 bench_total, method_total, stats_total = aggregate_benchmark(totals)
                 bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
-                conf = _confidence_from_count(len(matched_all), step_idx)
+                conf = _confidence_from_count(len(usable_final), step_idx)
                 level = "chintai_live" if step_idx == 0 else "chintai_relaxed"
                 return ComparisonResult(
                     benchmark_rent_yen=int(bench_total),
                     benchmark_rent_yen_raw=int(bench_rent),
-                    benchmark_n_sources=len(matched_all),
+                    benchmark_n_sources=len(usable_final),
                     benchmark_confidence=conf,
                     matched_level=level,
                     relaxation_applied=step_idx,
-                    listings=matched_all,
+                    listings=usable_final,
                     search_url=url,
                     adjustments_applied={
                         "provider": "chintai",
@@ -1271,6 +1293,7 @@ def search_comparable_listings(  # noqa: PLR0913
                             "bathroom_toilet_separate": bathroom_toilet_separate,
                             "building_type": desired_building_type,
                         },
+                        "quality": quality,
                         "aggregation": {
                             "total": {"method": method_total, **stats_total},
                             "rent": {"method": method_rent, **stats_rent},

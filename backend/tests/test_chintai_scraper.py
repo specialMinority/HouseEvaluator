@@ -69,6 +69,8 @@ def test_fetch_chintai_listings_parses_build_table_rows(monkeypatch):
     <html><body>
       <section class="cassette_item build">
         <div class="bukken_information">
+          <span class="icn_typeB">賃貸マンション</span>
+          <div class="update">情報更新日：2026年2月1日</div>
           <table class="l-table">
             <tr><th>築年</th><td>2004年03月（築21年）</td></tr>
             <tr><th>構造</th><td>ＲＣ造</td></tr>
@@ -108,8 +110,10 @@ def test_fetch_chintai_listings_parses_build_table_rows(monkeypatch):
     assert lst.walk_min == 12
     assert lst.building_age_years == 21
     assert lst.building_structure == "rc"
+    assert lst.building_type == "mansion"
     assert lst.station_names == ["小岩"]
     assert lst.detail_url == "https://www.chintai.net/detail/bk-TEST/"
+    assert lst.info_updated_at == "2026-02-01"
 
 
 def test_fetch_chintai_detail_fields_parses_orientation_and_bath_sep(monkeypatch):

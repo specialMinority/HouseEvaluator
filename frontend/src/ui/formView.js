@@ -355,7 +355,7 @@ function renderGuideBanner() {
   return banner;
 }
 
-export function renderFormView({ spec, input, fixtures, loading, onSubmit, onReset }) {
+export function renderFormView({ spec, input, loading, onSubmit, onReset }) {
   const s1 = spec.s1;
   const fields = s1.fields || [];
   const fieldsByKey = new Map(fields.map((f) => [f.key, f]));
@@ -447,38 +447,6 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
     const req = buildRequest(fields, values);
     onSubmit(req);
   }
-
-  const fixtureOptions = Array.isArray(fixtures?.cases) ? fixtures.cases : Array.isArray(fixtures) ? fixtures : [];
-
-  const fixtureSelect = h(
-    "select",
-    {
-      onChange: (e) => {
-        const id = e.target.value;
-        const sel = fixtureOptions.find((c) => c.id === id);
-        if (!sel) return;
-        for (const f of fields) values[f.key] = sel.input?.[f.key];
-        for (const f of fields) {
-          if (f.type === "boolean" && f.required === true && (values[f.key] === undefined || values[f.key] === null)) {
-            values[f.key] = true;
-          }
-        }
-        for (const f of fields) touched[f.key] = false;
-        updateVisibility();
-        // update DOM inputs
-        for (const f of fields) {
-          const el = document.getElementById(`f_${f.key}`);
-          if (!el) continue;
-          const v = values[f.key];
-          if (el.type === "checkbox") el.checked = Boolean(v);
-          else if (el.tagName === "SELECT") el.value = v ?? "";
-          else el.value = v ?? "";
-        }
-        updateErrors();
-      },
-    },
-    [h("option", { value: "", text: "예시 불러오기…" }), ...fixtureOptions.map((c) => h("option", { value: c.id, text: c.label || c.id }))]
-  );
 
   const basicFilter = (f) => mvp.has(f.key) || (f.depends_on && !(f.ui || {}).advanced);
   const advancedFilter = (f) => (f.ui || {}).advanced === true;
@@ -654,13 +622,6 @@ export function renderFormView({ spec, input, fixtures, loading, onSubmit, onRes
               })(),
             ]),
           ]),
-          h("div", { class: "divider" }),
-          h("div", { class: "card" }, [
-            h("h3", { text: "예시" }),
-            h("div", { class: "row" }, [fixtureSelect]),
-            h("div", { class: "hint", text: "예시 입력을 불러올 수 있어요." }),
-          ]),
-
 
           renderGroup("location", (f) => basicFilter(f) && !(f.ui || {}).advanced),
           renderGroup("condition", (f) => basicFilter(f) && !(f.ui || {}).advanced),

@@ -21,6 +21,46 @@ const MASCOT = {
   error: resolveRootAsset("image/Error.png"),
 };
 
+// Keep references to prevent GC from cancelling in-flight preloads on some browsers.
+const _MASCOT_PRELOAD_CACHE = [];
+let _MASCOT_PRELOAD_STARTED = false;
+
+function warmMascotPreload() {
+  if (_MASCOT_PRELOAD_STARTED) return;
+  _MASCOT_PRELOAD_STARTED = true;
+
+  const queue = [
+    { src: MASCOT.searching, priority: "high" },
+    { src: MASCOT.analyzing, priority: "low" },
+    { src: MASCOT.success, priority: "low" },
+    { src: MASCOT.error, priority: "low" },
+  ].filter((x) => Boolean(x && x.src));
+
+  const startLoad = (src, priority) => {
+    const img = new Image();
+    img.decoding = "async";
+    try {
+      img.setAttribute("fetchpriority", String(priority || "auto"));
+    } catch {
+      // ignore
+    }
+    img.src = String(src);
+    _MASCOT_PRELOAD_CACHE.push(img);
+  };
+
+  // Load the first mascot ASAP, then warm up the rest when idle.
+  const first = queue.shift();
+  if (first) startLoad(first.src, first.priority);
+
+  const loadRest = () => {
+    for (const item of queue) startLoad(item.src, item.priority);
+  };
+  if (queue.length) {
+    if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(loadRest, { timeout: 2000 });
+    else setTimeout(loadRest, 0);
+  }
+}
+
 const DEFAULT_STEPS = [
   { id: "normalize", label: "검색 조건 정리" },
   { id: "suumo_fetch", label: "SUUMO에서 매물 수집" },
@@ -48,6 +88,9 @@ function iconFor(status) {
 }
 
 export function createLoadingOverlay({ showDebug = false } = {}) {
+  // Start warming the mascot cache at app init (not at evaluation time).
+  warmMascotPreload();
+
   let mounted = false;
   let root = null;
   let modal = null;
@@ -102,6 +145,10 @@ export function createLoadingOverlay({ showDebug = false } = {}) {
       src: MASCOT.searching,
       alt: "진행 중 캐릭터",
       decoding: "async",
+      loading: "eager",
+      fetchpriority: "high",
+      width: "240",
+      height: "240",
     });
     bubbleEl = h("div", { class: "loading__bubble", text: ROTATION_MESSAGES[0] });
 
@@ -205,12 +252,7 @@ export function createLoadingOverlay({ showDebug = false } = {}) {
   }
 
   function preload() {
-    // Do not block initial render; best-effort warm up.
-    for (const src of Object.values(MASCOT)) {
-      const img = new Image();
-      img.decoding = "async";
-      img.src = src;
-    }
+    warmMascotPreload();
   }
 
   function addLog(line) {

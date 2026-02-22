@@ -21,6 +21,8 @@ INCLUDE_FILES = [
 INCLUDE_DIRS = [
     "backend",
     "frontend",
+    "image",
+    "error_image",
     "spec_bundle_v0.1.2",
     "spec_bundle_v0.1.1",
     "agents/agent_D_benchmark_data/out",

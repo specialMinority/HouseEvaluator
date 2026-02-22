@@ -15,6 +15,39 @@ function normalizeList(value) {
   return [];
 }
 
+function formatSignedYenDelta(deltaYen) {
+  const n = toNumberOrNull(deltaYen);
+  if (n === null) return null;
+  const sign = n >= 0 ? "+" : "-";
+  return `${sign}${formatYen(Math.abs(n))}`;
+}
+
+function formatDeltaSummary({ deltaRatio, subjectYen, benchmarkYen, bandPct = 1.0, decimals = 1 }) {
+  const d = toNumberOrNull(deltaRatio);
+  const bench = toNumberOrNull(benchmarkYen);
+  if (d === null || bench === null || bench <= 0) return null;
+
+  const subj = toNumberOrNull(subjectYen);
+  const deltaYen = subj !== null ? subj - bench : Math.round(bench * d);
+  const deltaText = formatSignedYenDelta(deltaYen);
+  const absPct = Math.abs(d) * 100;
+
+  if (absPct < bandPct) {
+    return {
+      kind: "band",
+      text: `시세 범위 내(±${bandPct.toFixed(1)}%, Δ ${deltaText || "N/A"})`,
+      absPct,
+      deltaYen,
+    };
+  }
+  return {
+    kind: "value",
+    text: `Δ ${deltaText || "N/A"} (약 ${absPct.toFixed(decimals)}%) ${d < 0 ? "저렴" : "비쌈"}`,
+    absPct,
+    deltaYen,
+  };
+}
+
 function computeWhatIfInput(baseInput, mode, whatIfState) {
   const base = isObject(baseInput) ? baseInput : {};
   const next = { ...base };
@@ -67,9 +100,19 @@ export function renderResultView({
   const negKo = pick(response, ["report.negotiation_suggestions.ko", "negotiation_suggestions.ko"]);
   const negJa = pick(response, ["report.negotiation_suggestions.ja", "negotiation_suggestions.ja"]);
   const altJa = pick(response, ["report.alternative_search_queries_ja", "alternative_search_queries_ja"]);
-  const derivedMonthlyTotal = pick(response, ["derived.monthly_fixed_cost_yen", "monthly_fixed_cost_yen"]);
+  const derivedMonthlyBase = pick(response, [
+    "derived.monthly_base_cost_yen",
+    "derived.monthly_fixed_cost_yen",
+    "monthly_fixed_cost_yen",
+  ]);
+  const derivedMonthlyExtra = pick(response, ["derived.monthly_extra_cost_yen"]);
+  const derivedMonthlyAllIn = pick(response, ["derived.monthly_all_in_cost_yen"]);
   const derivedAgeYears = pick(response, ["derived.building_age_years", "building_age_years"]);
   const derivedInitialMultiple = pick(response, ["derived.initial_multiple", "initial_multiple"]);
+  const derivedInitialMultipleMoveIn = pick(response, ["derived.initial_multiple_move_in_total"]);
+  const derivedInitialContractOnly = pick(response, ["derived.initial_cost_contract_only_yen"]);
+  const derivedMoveInTotal = pick(response, ["derived.move_in_total_yen"]);
+  const derivedInitialIncludesFirstMonth = pick(response, ["derived.initial_cost_includes_first_month_rent"]);
   const derivedBenchmarkTotal = pick(response, [
     "derived.benchmark_total_yen",
     "derived.benchmark_monthly_fixed_cost_yen",
@@ -106,10 +149,16 @@ export function renderResultView({
     const loc = toNumberOrNull(scores.location);
     const cond = toNumberOrNull(scores.condition);
     const cost = toNumberOrNull(scores.cost);
-    const monthlyTotal = toNumberOrNull(derivedMonthlyTotal);
+    const monthlyBase = toNumberOrNull(derivedMonthlyBase);
+    const monthlyExtra = toNumberOrNull(derivedMonthlyExtra);
+    const monthlyAllIn = toNumberOrNull(derivedMonthlyAllIn);
     const walk = toNumberOrNull(input?.station_walk_min);
-    const initialTotal = toNumberOrNull(input?.initial_cost_total_yen);
+    const initialTotalInput = toNumberOrNull(input?.initial_cost_total_yen);
+    const initialContractOnly = toNumberOrNull(derivedInitialContractOnly) ?? initialTotalInput;
+    const moveInTotal = toNumberOrNull(derivedMoveInTotal);
     const initialMultiple = toNumberOrNull(derivedInitialMultiple);
+    const initialMultipleMoveIn = toNumberOrNull(derivedInitialMultipleMoveIn);
+    const includesFirstMonth = Boolean(derivedInitialIncludesFirstMonth);
     const rentDeltaTotal = toNumberOrNull(derivedRentDeltaTotal);
     const rentDeltaRentOnly = toNumberOrNull(derivedRentDeltaRentOnly);
     const confText = benchmarkConfidenceTextKo(derivedBenchmarkConf);
@@ -123,12 +172,18 @@ export function renderResultView({
       else out.push("입지·집 상태·비용이 비교적 균형 잡힌 편이에요.");
     }
 
-    if (monthlyTotal !== null) out.push(`매달 내는 돈(월세+관리비)은 ${formatYen(monthlyTotal)}예요.`);
+    if (monthlyBase !== null) {
+      out.push(`매달 내는 돈(기본: 월세+관리비)은 ${formatYen(monthlyBase)}예요.`);
+      if (monthlyExtra !== null && monthlyExtra > 0) {
+        const allIn = monthlyAllIn !== null ? monthlyAllIn : monthlyBase + monthlyExtra;
+        out.push(`월 추가 고정비(옵션)는 ${formatYen(monthlyExtra)}이고, 합계는 ${formatYen(allIn)}예요.`);
+      }
+    }
 
     const walkTier = stationWalkRiskTier(walk);
     if (walkTier) out.push(walkTier.summary);
 
-    if (initialTotal !== null && initialMultiple !== null) {
+    if (initialContractOnly !== null && initialMultiple !== null) {
       const imAvg = toNumberOrNull(derivedImMarketAvg);
       const imLevelText = derivedImAssessment ? ` (수준: ${derivedImAssessment})` : "";
       const imForeignText =
@@ -136,8 +191,20 @@ export function renderResultView({
           ? ` / 외국인 기준: ${derivedImAssessmentForeigner}`
           : "";
       const avgHint = imAvg !== null ? ` [이 지역 시장 평균: 약 ${formatCompactNumber(imAvg)}개월치]` : "";
+      const defNote = includesFirstMonth ? " (입력 초기비용에 1개월치 월세 포함으로 처리)" : "";
+
       out.push(
-        `처음에 내야 하는 돈은 ${formatYen(initialTotal)}이고, 이는 매달 내는 돈의 약 ${formatCompactNumber(initialMultiple)}개월치예요.${imLevelText}${imForeignText}${avgHint}`
+        `계약 초기비용(월세 제외)은 ${formatYen(initialContractOnly)}이고, 월 고정비(기본) 기준 약 ${formatCompactNumber(
+          initialMultiple
+        )}개월치예요.${imLevelText}${imForeignText}${avgHint}${defNote}`
+      );
+    }
+    if (moveInTotal !== null && initialMultipleMoveIn !== null) {
+      const extraHint = monthlyExtra !== null && monthlyExtra > 0 ? ` (월 추가 고정비 ${formatYen(monthlyExtra)} 포함)` : "";
+      out.push(
+        `입주 시점 총 납부액(가정: 1개월치 월 고정비 포함)은 ${formatYen(moveInTotal)}이고, 월 고정비(기본) 기준 약 ${formatCompactNumber(
+          initialMultipleMoveIn
+        )}개월치예요.${extraHint}`
       );
     }
 
@@ -146,22 +213,34 @@ export function renderResultView({
     } else if (String(derivedBenchmarkConf || "none") === "none") {
       out.push("이 지역은 시세 비교 데이터가 부족해서, 가격 비교는 정확하지 않을 수 있어요.");
     } else if (rentDeltaTotal !== null) {
-      const abs = Math.abs(rentDeltaTotal);
-      const pct = Math.round(abs * 100);
-      if (pct <= 1) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 비슷한 편이에요. (신뢰도: ${confText})`);
-      else if (rentDeltaTotal > 0) {
-        if (rentDeltaTotal >= 0.5) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)가 많이 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
-        else if (rentDeltaTotal >= 0.25) out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)가 꽤 비싼 편이에요. (약 ${pct}%, 신뢰도: ${confText})`);
-        else out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 약 ${pct}% 비싼 편이에요. (신뢰도: ${confText})`);
+      const benchTotal = toNumberOrNull(derivedBenchmarkTotal);
+      const subjectTotal = monthlyBase;
+      const totalSummary =
+        benchTotal !== null
+          ? formatDeltaSummary({ deltaRatio: rentDeltaTotal, subjectYen: subjectTotal, benchmarkYen: benchTotal, bandPct: 1.0, decimals: 1 })
+          : null;
+      if (totalSummary) {
+        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 ${totalSummary.text}. (신뢰도: ${confText})`);
       } else {
-        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 약 ${pct}% 저렴한 편이에요. (신뢰도: ${confText})`);
+        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비) 비교를 계산하지 못했어요. (신뢰도: ${confText})`);
       }
 
-      if (rentDeltaRentOnly !== null) {
-        const absR = Math.abs(rentDeltaRentOnly);
-        const pctR = Math.round(absR * 100);
-        if (pctR > 1) {
-          out.push(`(참고) 월세(관리비 제외) 기준으로는 약 ${pctR}% ${rentDeltaRentOnly > 0 ? "비싼" : "저렴한"} 편이에요.`);
+      const benchRentOnly = toNumberOrNull(derivedBenchmarkRentOnly);
+      const subjectRentOnly = toNumberOrNull(input?.rent_yen);
+      if (benchRentOnly !== null && subjectRentOnly !== null) {
+        const rentOnlyRatio =
+          rentDeltaRentOnly !== null && Number.isFinite(rentDeltaRentOnly)
+            ? rentDeltaRentOnly
+            : (subjectRentOnly - benchRentOnly) / benchRentOnly;
+        const rentOnlySummary = formatDeltaSummary({
+          deltaRatio: rentOnlyRatio,
+          subjectYen: subjectRentOnly,
+          benchmarkYen: benchRentOnly,
+          bandPct: 1.0,
+          decimals: 1,
+        });
+        if (rentOnlySummary && rentOnlySummary.absPct >= 1.0) {
+          out.push(`(참고) 월세(관리비 제외) 기준: ${rentOnlySummary.text}.`);
         }
       }
     }
@@ -193,13 +272,24 @@ export function renderResultView({
     if (rentOnly !== null) bullets.push(`월세(관리비 제외): ${formatYen(rentOnly)}`);
     const mgmt = toNumberOrNull(input?.mgmt_fee_yen);
     if (mgmt !== null) bullets.push(`관리비: ${formatYen(mgmt)}`);
-    const monthlyTotal = toNumberOrNull(derivedMonthlyTotal);
-    if (monthlyTotal !== null) bullets.push(`매달 내는 돈(월세+관리비): ${formatYen(monthlyTotal)}`);
+    const monthlyBase = toNumberOrNull(derivedMonthlyBase);
+    if (monthlyBase !== null) bullets.push(`매달 내는 돈(기본: 월세+관리비): ${formatYen(monthlyBase)}`);
+    const monthlyExtra = toNumberOrNull(derivedMonthlyExtra);
+    if (monthlyExtra !== null && monthlyExtra > 0) bullets.push(`월 추가 고정비(옵션): ${formatYen(monthlyExtra)}`);
+    const monthlyAllIn = toNumberOrNull(derivedMonthlyAllIn);
+    if (monthlyAllIn !== null && monthlyExtra !== null && monthlyExtra > 0) {
+      bullets.push(`월 고정비 합계(기본+옵션): ${formatYen(monthlyAllIn)}`);
+    }
 
-    const initialTotal = toNumberOrNull(input?.initial_cost_total_yen);
+    const initialContractOnly = toNumberOrNull(derivedInitialContractOnly) ?? toNumberOrNull(input?.initial_cost_total_yen);
     const initialMultiple = toNumberOrNull(derivedInitialMultiple);
-    if (initialTotal !== null && initialMultiple !== null) {
-      bullets.push(`처음에 내야 하는 돈(초기비용 합계): ${formatYen(initialTotal)} (약 ${formatCompactNumber(initialMultiple)}개월치)`);
+    if (initialContractOnly !== null && initialMultiple !== null) {
+      bullets.push(`계약 초기비용(월세 제외): ${formatYen(initialContractOnly)} (약 ${formatCompactNumber(initialMultiple)}개월치)`);
+    }
+    const moveInTotal = toNumberOrNull(derivedMoveInTotal);
+    const initialMultipleMoveIn = toNumberOrNull(derivedInitialMultipleMoveIn);
+    if (moveInTotal !== null && initialMultipleMoveIn !== null) {
+      bullets.push(`입주 총 납부액(가정): ${formatYen(moveInTotal)} (약 ${formatCompactNumber(initialMultipleMoveIn)}개월치)`);
     }
     const imAvg = toNumberOrNull(derivedImMarketAvg);
     if (derivedImAssessment) {
@@ -218,10 +308,33 @@ export function renderResultView({
     const rentDeltaTotal = toNumberOrNull(derivedRentDeltaTotal);
     const conf = String(derivedBenchmarkConf || "none");
     if (!sanitySuspect && conf !== "none" && benchTotal !== null && rentDeltaTotal !== null) {
-      const pct = Math.round(Math.abs(rentDeltaTotal) * 100);
-      bullets.push(
-        `시세(월 고정비 기준): ${formatYen(benchTotal)} · 지금 월 고정비는 시세보다 약 ${pct}% ${rentDeltaTotal < 0 ? "저렴" : "비쌈"} (신뢰도: ${benchmarkConfidenceTextKo(conf)})`
-      );
+      const subjectTotal = toNumberOrNull(derivedMonthlyBase);
+      const totalSummary = formatDeltaSummary({
+        deltaRatio: rentDeltaTotal,
+        subjectYen: subjectTotal,
+        benchmarkYen: benchTotal,
+        bandPct: 1.0,
+        decimals: 1,
+      });
+      if (totalSummary) {
+        bullets.push(`시세(월 고정비 기준): ${formatYen(benchTotal)} · ${totalSummary.text} (신뢰도: ${benchmarkConfidenceTextKo(conf)})`);
+      }
+
+      const benchRentOnly = toNumberOrNull(derivedBenchmarkRentOnly);
+      const subjectRentOnly = toNumberOrNull(input?.rent_yen);
+      const rentDeltaRentOnly = toNumberOrNull(derivedRentDeltaRentOnly);
+      if (benchRentOnly !== null && subjectRentOnly !== null) {
+        const rentOnlySummary = formatDeltaSummary({
+          deltaRatio: rentDeltaRentOnly !== null ? rentDeltaRentOnly : (subjectRentOnly - benchRentOnly) / benchRentOnly,
+          subjectYen: subjectRentOnly,
+          benchmarkYen: benchRentOnly,
+          bandPct: 1.0,
+          decimals: 1,
+        });
+        if (rentOnlySummary) {
+          bullets.push(`(참고) 시세(월세만 기준): ${formatYen(benchRentOnly)} · ${rentOnlySummary.text}`);
+        }
+      }
     }
 
     return bullets;

@@ -126,6 +126,14 @@ keys:
       min: 0
       max: 2000000
 
+    # Optional monthly extras / definitions (advanced)
+    initial_cost_includes_first_month_rent: { type: boolean, required: false }
+    monthly_support_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 50000 }
+    monthly_guarantor_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 50000 }
+    monthly_insurance_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 50000 }
+    monthly_community_fee_yen: { type: integer, unit: yen, required: false, min: 0, max: 20000 }
+    monthly_other_fees_yen: { type: integer, unit: yen, required: false, min: 0, max: 100000 }
+
     # Optional breakdown (advanced)
     shikikin_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
     reikin_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
@@ -142,9 +150,17 @@ keys:
     early_termination_penalty_yen: { type: integer, unit: yen, required: false, min: 0, max: 2000000 }
 
   derived:
+    monthly_base_cost_yen: { type: integer, unit: yen }
     monthly_fixed_cost_yen: { type: integer, unit: yen }
+    monthly_extra_cost_yen: { type: integer, unit: yen }
+    monthly_all_in_cost_yen: { type: integer, unit: yen }
     building_age_years: { type: integer, unit: year }
+    initial_cost_contract_only_yen: { type: integer, unit: yen }
+    move_in_total_yen: { type: integer, unit: yen }
     initial_multiple: { type: number, unit: ratio }
+    initial_multiple_move_in_total: { type: number, unit: ratio }
+    initial_multiple_all_in: { type: number, unit: ratio }
+    initial_multiple_move_in_total_all_in: { type: number, unit: ratio }
     rent_delta_ratio: { type: number, unit: ratio }
     area_access_score_0_100: { type: number, unit: score }
     benchmark_monthly_fixed_cost_yen: { type: integer, unit: yen }

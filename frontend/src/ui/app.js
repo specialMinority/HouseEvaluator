@@ -19,7 +19,6 @@ export function createApp(container, badgesEl) {
     view: "form", // "form" | "result"
     input: loadJson("lastInput", {}),
     response: null,
-    fixtures: null,
     loading: false,
     error: null,
   };
@@ -44,22 +43,9 @@ export function createApp(container, badgesEl) {
       return;
     }
 
-    loadFixtures();
     loadBenchmarkDatasetMeta()
       .then((m) => set({ benchmarkMeta: m }))
       .catch(() => set({ benchmarkMeta: null }));
-  }
-
-  async function loadFixtures() {
-    try {
-      const url = new URL("./fixtures/mock_inputs.json", new URL("./src/", window.location.href)).toString();
-      const res = await fetch(url, { cache: "no-store" });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      set({ fixtures: data });
-    } catch {
-      set({ fixtures: null });
-    }
   }
 
   async function onSubmit(nextInput) {
@@ -127,7 +113,6 @@ export function createApp(container, badgesEl) {
         renderFormView({
           spec: state.spec,
           input: state.input,
-          fixtures: state.fixtures,
           loading: state.loading,
           onSubmit,
           onReset,

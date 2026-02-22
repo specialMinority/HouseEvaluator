@@ -25,6 +25,8 @@ from html.parser import HTMLParser
 from typing import Any
 
 from backend.src.live_aggregate import aggregate_benchmark
+from backend.src.live_quality import filter_outlier_listings_iqr, filter_stale_listings
+from backend.src.station_utils import normalize_station_name, station_similar
 
 # ── Prefecture → SUUMO area/ta codes ─────────────────────────────────────────
 
@@ -159,6 +161,7 @@ class SuumoListing:
     building_structure: str | None = None       # wood|light_steel|steel|rc|src
     bathroom_toilet_separate: bool | None = None
     detail_url: str | None = None
+    info_updated_at: str | None = None          # ISO date "YYYY-MM-DD" when provider exposes update date
 
 
 @dataclass
@@ -393,6 +396,22 @@ def _parse_bathroom_toilet_separate(text: str) -> bool | None:
     return None
 
 
+def _parse_building_type_label(text: str) -> str | None:
+    if not text:
+        return None
+    t = re.sub(r"\s+", "", str(text))
+    if not t:
+        return None
+    # Provider-normalized: apartment|mansion|house
+    if "マンション" in t:
+        return "mansion"
+    if ("アパート" in t) or ("ハイツ" in t) or ("コーポ" in t):
+        return "apartment"
+    if ("一戸建て" in t) or ("テラス" in t) or ("戸建" in t):
+        return "house"
+    return None
+
+
 def _extract_listings_from_block(block: str, *, layout_hint: str | None = None) -> list[SuumoListing]:
     """Extract one or more SuumoListing from a raw cassette text block."""
     # Normalize fullwidth chars (１ＤＫ→1DK, ８.７万円→8.7万円, ３階→3階 etc.)
@@ -413,6 +432,7 @@ def _extract_listings_from_block(block: str, *, layout_hint: str | None = None) 
     station_names = _parse_station_names(block)
     structure_code = _parse_building_structure_code(block)
     bath_sep = _parse_bathroom_toilet_separate(block)
+    building_type = _parse_building_type_label(block)
     # Some SUUMO result modes only show layout once at the building level.
     # If the block contains exactly one layout token, use it as a fallback for
     # per-room rows that omit the layout column.
@@ -454,6 +474,7 @@ def _extract_listings_from_block(block: str, *, layout_hint: str | None = None) 
             orientation=orient,
             building_structure=structure_code,
             bathroom_toilet_separate=bath_sep,
+            building_type=building_type,
         ))
 
     return listings
@@ -600,11 +621,11 @@ def fetch_suumo_listings(url: str, *, timeout: int = 12, layout_hint: str | None
         sample = next((b for b in parser.raw_blocks if b and str(b).strip()), parser.raw_blocks[0])
         print(f"[debug-block-sample] {str(sample)[:400]!r}", flush=True)
 
-    # Deduplicate: same rent+admin+area combination
+    # Deduplicate: same rent+admin+area+layout combination
     seen: set[tuple] = set()
     unique: list[SuumoListing] = []
     for lst in all_listings:
-        key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm)
+        key = (lst.rent_yen, lst.admin_fee_yen, lst.area_sqm, (lst.layout or "").strip().upper() or None)
         if key not in seen:
             seen.add(key)
             unique.append(lst)
@@ -653,6 +674,13 @@ def search_comparable_listings(
     Returns ComparisonResult. If no listings found after all steps,
     benchmark_confidence='none' (caller should fall back to CSV index).
     """
+    desired_building_type = None
+    bs = str(building_structure or "").lower().strip()
+    if bs in ("rc", "src", "steel"):
+        desired_building_type = "mansion"
+    elif bs in ("wood", "light_steel"):
+        desired_building_type = "apartment"
+
     def area_range_for_step(step_idx: int) -> tuple[int | None, int | None]:
         if area_sqm is None:
             return None, None
@@ -685,10 +713,10 @@ def search_comparable_listings(
             return True
         if not listing.station_names:
             return False
-        target = str(nearest_station_name).strip()
+        target = normalize_station_name(str(nearest_station_name))
         if not target:
             return True
-        return any((target in s) or (s in target) for s in listing.station_names)
+        return any(station_similar(target, s) for s in listing.station_names)
 
     def orientation_matches(listing: SuumoListing) -> bool:
         if not orientation or str(orientation).upper() == "UNKNOWN":
@@ -710,6 +738,14 @@ def search_comparable_listings(
         if listing.bathroom_toilet_separate is None:
             return False
         return bool(listing.bathroom_toilet_separate) == bool(bathroom_toilet_separate)
+
+    def building_type_matches(listing: SuumoListing) -> bool:
+        if not desired_building_type:
+            return True
+        if not listing.building_type:
+            # Soft filter: don't reject when the provider doesn't expose it in list pages.
+            return True
+        return str(listing.building_type).lower().strip() == str(desired_building_type).lower().strip()
 
     def matches_for_step(listing: SuumoListing, step_idx: int) -> bool:
         # Layout is always strict (SUUMO md filter isn't perfect; enforce anyway).
@@ -749,6 +785,8 @@ def search_comparable_listings(
         if step_idx <= 1 and not station_matches(listing):
             return False
         if step_idx == 0 and not orientation_matches(listing):
+            return False
+        if step_idx <= 1 and not building_type_matches(listing):
             return False
         if step_idx <= 1 and not structure_matches(listing):
             return False
@@ -865,6 +903,7 @@ def search_comparable_listings(
                 "structure": sum(1 for lst in listings if lst.building_structure is not None),
                 "bath": sum(1 for lst in listings if lst.bathroom_toilet_separate is not None),
                 "station": sum(1 for lst in listings if lst.station_names),
+                "building_type": sum(1 for lst in listings if lst.building_type is not None),
             }
             if len(matched) == 0 and listings:
                 print(
@@ -886,21 +925,45 @@ def search_comparable_listings(
                 }
             )
             if len(matched) >= min_listings:
-                rents = [lst.rent_yen for lst in matched]
-                totals = [lst.monthly_total_yen for lst in matched]
+                quality: dict[str, Any] = {
+                    "matched_raw_n": int(len(matched)),
+                    "deduped_n": int(len(matched)),
+                    "dedupe_removed_n": 0,
+                }
+                usable = list(matched)
+                usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
+                usable_after_out, out_stats = filter_outlier_listings_iqr(
+                    usable_after_stale,
+                    value_attr="monthly_total_yen",
+                    min_keep=int(min_listings),
+                )
+                usable_final = usable_after_out if len(usable_after_out) >= int(min_listings) else usable
+                quality.update(
+                    {
+                        "stale": stale_stats,
+                        "outlier": out_stats,
+                        "after_stale_n": int(len(usable_after_stale)),
+                        "after_outlier_n": int(len(usable_after_out)),
+                        "used_n": int(len(usable_final)),
+                        "used_fallback_unfiltered": bool(usable_final is usable),
+                    }
+                )
+
+                rents = [lst.rent_yen for lst in usable_final]
+                totals = [lst.monthly_total_yen for lst in usable_final]
                 bench_total, method_total, stats_total = aggregate_benchmark(totals)
                 bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
-                confidence = _confidence_from_count(len(matched), step_idx)
+                confidence = _confidence_from_count(len(usable_final), step_idx)
                 level = "suumo_live" if step_idx == 0 else "suumo_relaxed"
 
                 return ComparisonResult(
                     benchmark_rent_yen=int(bench_total),
                     benchmark_rent_yen_raw=int(bench_rent),
-                    benchmark_n_sources=len(matched),
+                    benchmark_n_sources=len(usable_final),
                     benchmark_confidence=confidence,
                     matched_level=level,
                     relaxation_applied=step_idx,
-                    listings=matched,
+                    listings=usable_final,
                     search_url=url,
                     adjustments_applied={
                         "filters": {
@@ -916,9 +979,11 @@ def search_comparable_listings(
                             "age_max_years": age_max,
                             "nearest_station_name": nearest_station_name,
                             "orientation": orientation,
+                            "building_type": desired_building_type,
                             "building_structure": building_structure,
                             "bathroom_toilet_separate": bathroom_toilet_separate,
                         },
+                        "quality": quality,
                         "aggregation": {
                             "total": {"method": method_total, **stats_total},
                             "rent": {"method": method_rent, **stats_rent},
