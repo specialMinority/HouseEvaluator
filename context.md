@@ -431,3 +431,116 @@ Tests
   - resolver cache 동작
   - `build_chintai_list_url(... benchmark_index=None)` dynamic fallback 동작
   - `python -m pytest backend/tests -q` (54 passed)
+
+---
+
+## 5) Next Work Plan (Task1~Task5, 리라이트 보류)
+Goal: live 시세 비교 성공률/정확도/UX 신뢰도 개선 (핫픽스 범위)
+
+### Task 1 - municipality 미입력 라이브 실패 UX/방어 + 선택 UI
+Status: TODO
+- Backend: `SUUMO_LIVE=1`인데 municipality 없으면 live를 스킵하고 `live.error`로 "municipality required"를 명확히 노출(offline 평가는 계속).
+- Server: 가능하면 `GET /api/municipalities?prefecture=tokyo` 제공(리졸버 캐시 기반 list 반환).
+- Frontend: municipality를 기본 입력 화면에 노출(advanced -> basic) + 자동완성(datalist) + 안내 문구.
+
+### Task 2 - building_type 입력 추가 + 매칭/완화에 반영
+Status: TODO
+- Spec(S1): `building_type` enum(`apartment|mansion|house|unknown`) 추가(기본 unknown).
+- Backend: evaluate -> live_benchmark -> provider scrapers로 전달.
+- Matching: user building_type가 있으면 step0~2 타이트 조건으로 우선 적용, 완화 단계에서 drop 가능(정책 테이블 유지).
+
+### Task 3 - SUUMO 안정화(커버리지/차단 대응) + 투명화
+Status: TODO
+- SUUMO sc 코드: benchmark_index sources URL에서 sc/area code 추출해 `build_suumo_search_url`에 반영(하드코딩 `_MUNI_TO_SC` 의존 감소).
+- WAF/JS 차단 감지 시 일정 시간 SUUMO 자동 skip(cooldown) + attempts에 "skipped" 기록.
+
+### Task 4 - 샘플링 목표치(10~30) + 시간 예산 도입
+Status: TODO
+- live provider 공통 파라미터 도입: `target_listings`, `max_listings`, `time_budget_sec`.
+- 기존: `min_listings` 만족 시 즉시 return -> 변경: 시간 예산 내 target까지 더 수집(단 relax step 상승은 막기), max 초과 시 downsample.
+- 집계 정책은 현행 유지: n==2 mean / n>=3 midrange / 안전벨트 median fallback.
+
+### Task 5 - 상세비용 입력 의미(시장 비교 기준 분리) UX 정리
+Status: TODO
+- UI/Report: "시세 비교 기준 = 월세+관리비"를 고정 표기 + 추가 월고정비(사용자 입력)는 "시장 비교 제외"로 분리 표기.
+- Scoring은 벤치마크 없는 비용은 직접 반영하지 않고, 설명/리스크 섹션에서만 사용.
+
+---
+
+## 6) Task1~Task5 Execution Log (2026-02-22)
+Scope
+- Agent prompt Task1~Task5 실행 (리라이트/대공사 보류, 현 hotfix 구조 유지).
+
+Plan (compact)
+- Task1: `/api/municipalities` + municipality 기본 입력/자동완성 + municipality 미입력 시 live 명확히 실패.
+- Task2: `building_type` 입력 추가 + evaluate→live_benchmark→provider 전달 + step0~2 strict 적용.
+- Task3: SUUMO sc 리졸빙(하드코딩 의존 감소) + WAF 차단 cooldown/skip + attempts 투명화.
+- Task4: `target_listings/max_listings/time_budget_sec`로 “2개면 즉시 종료” 변동성 완화(가능하면 10~30개).
+- Task5: “시장 비교(월세+관리비)” vs “추가 월고정비(시장 비교 제외)” UX/문구 분리.
+
+Log
+- 2026-02-22: Task1~Task5 작업 시작(계획 기록).
+- 2026-02-22: Task1 진행: `GET /api/municipalities?prefecture=...` 추가 + municipality 입력을 기본 화면으로 이동 + datalist 자동완성(프론트) 연결.
+- 2026-02-22: Task2 진행: S1에 `building_type`(unknown/apartment/mansion/house) 추가 + 프론트 기본 입력에 노출 + evaluate→live_benchmark→provider로 전달.
+- 2026-02-22: Task3 진행: SUUMO `sc` 코드를 CHINTAI area-code 리졸버(캐시 포함)로 보강 + WAF/JS 차단 감지 시 cooldown/skip(과도한 재시도 방지) 추가.
+- 2026-02-22: Task4 진행: live 비교에 `target_listings/max_listings/time_budget_sec` 도입(가능하면 10~30개) + max 초과 시 분포 보존형 downsample + 시간 예산 초과 시 조기 종료/폴백.
+- 2026-02-22: Task5 진행: UI/리포트에서 “시장 비교 기준(월세+관리비)” vs “추가 월 고정비(사용자 입력, 시장 비교 제외)”를 명확히 분리 표기.
+- 2026-02-22: `python -m pytest backend/tests -q` → 54 passed (PytestCacheWarning 1).
+
+---
+
+## 7) Regression Fixes (2026-02-22)
+
+### 7.1 `/api/evaluate` 400 when selecting `building_type`
+Symptom
+- 프론트에서 건물 종류(아파트/맨션 등) 선택 후 평가 시 `POST /api/evaluate`가 `400 Bad Request`.
+
+Root Cause
+- 백엔드는 spec 로딩 시 `spec_bundle_v0.1.2/spec_bundle.json`을 우선 사용.
+- `S1_InputSchema.json`에는 `building_type`을 추가했지만, `spec_bundle.json`의 embedded S1에는 `building_type`이 없어 `_validate_input()`에서 `Unknown input keys`로 거부됨.
+
+Fix
+- `backend/src/evaluate.py`의 `_load_spec_bundle()`에서 `spec_bundle.json`을 읽은 뒤, 같은 디렉토리에 개별 spec 파일이 있으면(S1/S2/C1/D1) 해당 파일로 override 하도록 변경.
+- `backend/tests/e2e_smoke.py`에 S1(v0.1.2)에 `building_type` 필드가 존재하는지 + 실제 `POST /api/evaluate` payload에 `building_type` 포함 시 200 OK인지 검증 추가.
+
+Notes
+- 이 변경은 서버 프로세스가 spec를 캐시하므로, 로컬 서버 실행 중이라면 재시작이 필요함.
+
+### 7.2 결과 화면 비용 요약 문구 개선(무엇이? 누락)
+Symptom
+- 비용 카드 설명이 `시세 수준, 매우 낮음`처럼 나와 “무엇이 시세 수준인지”가 불명확.
+
+Fix
+- `frontend/src/ui/scoreComponents.js`의 `makeCostDesc()`를 수정하여:
+  - `월 고정비: ...`
+  - `초기 비용: ...`
+  형태로 명시적으로 라벨링.
+
+Verification
+- `python -m pytest backend/tests -q` → 54 passed.
+
+### 7.3 Loading overlay a11y console warning 정리
+Symptom
+- 로딩 오버레이가 닫힐 때 `aria-hidden` 관련 경고가 콘솔에 출력됨(숨겨진 엘리먼트 내부에 focus가 남아있음).
+
+Fix
+- `frontend/src/ui/loadingOverlay.js`의 `hide()`에서 `aria-hidden=true`를 설정하기 전에 `lastActiveEl.focus()`를 먼저 실행하도록 순서 변경.
+
+### 7.4 Test artifact cleanup
+Problem
+- `backend/tests/test_url_resolver.py`가 `.cache/url_resolver_test_cache_*.json`을 생성하고 삭제하지 않아 워크스페이스에 untracked 파일이 누적됨.
+
+Fix
+- 테스트 종료 시 cache 파일을 `unlink(missing_ok=True)`로 정리하도록 `try/finally` cleanup 추가.
+
+---
+
+## 8) Config Tweaks (2026-02-22)
+
+### 8.1 Osaka IM market average tuning
+Change
+- 오사카 `initial_multiple_market_avg`를 5.0 → 3.5로 조정.
+
+Files
+- `backend/src/evaluate.py`: `_IM_MARKET_AVG_BY_PREF["osaka"] = 3.5`
+- `backend/tests/golden_regression.py`: 오사카 케이스 기대값 업데이트

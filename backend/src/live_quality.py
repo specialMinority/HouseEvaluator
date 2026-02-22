@@ -296,3 +296,68 @@ def filter_outlier_listings_iqr(
 
     return out, {**stats, "n_out": len(out), "removed": len(listings) - len(out), "removed_fraction": removed_fraction}
 
+
+def downsample_listings_evenly(
+    listings: Sequence[T],
+    *,
+    value_attr: str = "monthly_total_yen",
+    max_keep: int = 30,
+    min_keep: int = 2,
+) -> tuple[list[T], dict[str, Any]]:
+    """
+    Downsample a listing set while roughly preserving distribution.
+
+    Strategy: sort by `value_attr` and take evenly spaced samples including extremes.
+    This is useful when providers return hundreds of results and we want a stable
+    benchmark without carrying too many samples through the pipeline.
+    """
+    max_keep_i = max(int(min_keep), int(max_keep))
+    out_stats: dict[str, Any] = {
+        "value_attr": value_attr,
+        "max_keep": max_keep_i,
+        "min_keep": int(min_keep),
+        "n_in": int(len(listings)),
+        "n_out": int(len(listings)),
+        "removed": 0,
+        "method": "evenly_spaced_by_value",
+    }
+    if len(listings) <= max_keep_i:
+        return list(listings), out_stats
+
+    def _value(lst: T) -> int:
+        v = getattr(lst, value_attr, None)
+        try:
+            iv = int(v)  # type: ignore[arg-type]
+        except Exception:
+            iv = 0
+        return iv
+
+    sorted_list = sorted(list(listings), key=_value)
+    n = len(sorted_list)
+
+    # Evenly spaced indices across [0, n-1]
+    if max_keep_i <= 1:
+        picked = [sorted_list[n // 2]]
+    else:
+        raw_idxs = [int(round(i * (n - 1) / float(max_keep_i - 1))) for i in range(max_keep_i)]
+        # Deduplicate indices while keeping order, then fill gaps if needed.
+        seen_idx: set[int] = set()
+        idxs: list[int] = []
+        for ix in raw_idxs:
+            ix = max(0, min(n - 1, int(ix)))
+            if ix in seen_idx:
+                continue
+            seen_idx.add(ix)
+            idxs.append(ix)
+        if len(idxs) < max_keep_i:
+            for ix in range(n):
+                if ix in seen_idx:
+                    continue
+                seen_idx.add(ix)
+                idxs.append(ix)
+                if len(idxs) >= max_keep_i:
+                    break
+        picked = [sorted_list[ix] for ix in idxs[:max_keep_i]]
+
+    out_stats.update({"n_out": int(len(picked)), "removed": int(len(listings) - len(picked))})
+    return picked, out_stats

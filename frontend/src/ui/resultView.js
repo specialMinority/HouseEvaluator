@@ -177,6 +177,7 @@ export function renderResultView({
       if (monthlyExtra !== null && monthlyExtra > 0) {
         const allIn = monthlyAllIn !== null ? monthlyAllIn : monthlyBase + monthlyExtra;
         out.push(`월 추가 고정비(옵션)는 ${formatYen(monthlyExtra)}이고, 합계는 ${formatYen(allIn)}예요.`);
+        out.push("참고: 시세 비교(벤치마크)는 기본 월 고정비(월세+관리비) 기준이며, 추가 월 고정비는 시장 비교에서 제외돼요.");
       }
     }
 
@@ -220,7 +221,8 @@ export function renderResultView({
           ? formatDeltaSummary({ deltaRatio: rentDeltaTotal, subjectYen: subjectTotal, benchmarkYen: benchTotal, bandPct: 1.0, decimals: 1 })
           : null;
       if (totalSummary) {
-        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 ${totalSummary.text}. (신뢰도: ${confText})`);
+        const extraNote = monthlyExtra !== null && monthlyExtra > 0 ? " (추가 월 고정비는 시장 비교 제외)" : "";
+        out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비)는 ${totalSummary.text}.${extraNote} (신뢰도: ${confText})`);
       } else {
         out.push(`비슷한 집 시세와 비교하면, 월 고정비(월세+관리비) 비교를 계산하지 못했어요. (신뢰도: ${confText})`);
       }
@@ -487,7 +489,7 @@ export function renderResultView({
       h("li", { text: "총점: 입지/교통 35% + 집 컨디션 25% + 비용 40%" }),
       h("li", { text: "입지/교통: 역까지 도보 시간(분) 중심" }),
       h("li", { text: "집 컨디션: 면적, 연식, 구조, 방향, 욕실/화장실 분리 여부" }),
-      h("li", { text: "비용: 시세 대비 월 고정비(월세+관리비) + 초기비용(IM). 초기비용이 시장 평균보다 높을수록 비용 점수가 내려가요." }),
+      h("li", { text: "비용: (시장 비교 기준) 월세+관리비 + 초기비용(IM). 추가 월 고정비(사용자 입력)는 시장 비교에서 제외되며, 별도로 부담으로만 반영돼요." }),
     ]),
     h("div", { class: "hint", text: "시세 비교 데이터가 부족하면(신뢰도 없음) 비용 평가는 중립적으로 나올 수 있어요." }),
     h("div", { class: "hint", text: "등급 기준: A(85+) / B(70+) / C(55+) / D(0+)" }),

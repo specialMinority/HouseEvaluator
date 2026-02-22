@@ -24,7 +24,7 @@ from typing import Any
 
 from backend.src.age_proximity import select_by_age_proximity, target_age_candidates
 from backend.src.live_aggregate import aggregate_benchmark
-from backend.src.live_quality import dedupe_listings, filter_outlier_listings_iqr, filter_stale_listings
+from backend.src.live_quality import dedupe_listings, downsample_listings_evenly, filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
 from backend.src.suumo_scraper import ComparisonResult, SuumoListing
 
@@ -661,9 +661,13 @@ def search_comparable_listings(
     building_age_years: int | None = None,
     nearest_station_name: str | None = None,
     orientation: str | None = None,
+    building_type: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
     min_listings: int = 2,
+    target_listings: int = 12,
+    max_listings: int = 30,
+    time_budget_sec: float = 12.0,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
     max_pages: int = 10,
@@ -692,10 +696,14 @@ def search_comparable_listings(
         )
 
     desired_building_type = None
+    bt = str(building_type or "").lower().strip()
+    if bt and bt not in ("unknown", "none", "all"):
+        if bt in ("apartment", "mansion", "house"):
+            desired_building_type = bt
     bs = str(building_structure or "").lower().strip()
-    if bs in ("rc", "src", "steel"):
+    if (not desired_building_type) and bs in ("rc", "src", "steel"):
         desired_building_type = "mansion"
-    elif bs in ("wood", "light_steel"):
+    elif (not desired_building_type) and bs in ("wood", "light_steel"):
         desired_building_type = "apartment"
 
     age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
@@ -820,6 +828,11 @@ def search_comparable_listings(
     attempts: list[dict[str, Any]] = []
     last_error: str | None = None
     last_url: str | None = None
+    started_at = time.monotonic()
+    target_n = max(int(min_listings), int(target_listings))
+    max_keep_n = max(int(target_n), int(max_listings))
+    time_budget_s = max(0.0, float(time_budget_sec))
+    stop_all_steps = False
 
     for step_idx in range(0, max_relaxation_steps + 1):
         matched_all: list[SuumoListing] = []
@@ -890,13 +903,31 @@ def search_comparable_listings(
                 }
             )
 
+            elapsed_s = float(time.monotonic() - started_at)
+            time_exceeded = bool(time_budget_s > 0.0 and elapsed_s >= float(time_budget_s))
+
+            if time_exceeded and len(age_selected) < int(min_listings):
+                last_error = f"time_budget_exceeded (elapsed_s={elapsed_s:.1f}, min_listings={int(min_listings)})"
+                stop_all_steps = True
+                break
+
             if len(age_selected) >= int(min_listings):
+                if (len(age_selected) < int(target_n)) and (page < int(max_pages)) and (not time_exceeded):
+                    continue
                 quality: dict[str, Any] = {
                     "matched_raw_n": int(len(matched_all) + int(dedupe_removed_total)),
                     "deduped_n": int(len(matched_all)),
                     "dedupe_removed_n": int(dedupe_removed_total),
                     "age_selected_raw_n": int(len(age_selected)),
                     "age_proximity": age_meta,
+                    "sampling": {
+                        "min_listings": int(min_listings),
+                        "target_listings": int(target_n),
+                        "max_listings": int(max_keep_n),
+                        "time_budget_sec": float(time_budget_s),
+                        "elapsed_sec": float(round(elapsed_s, 3)),
+                        "stop_reason": "target_reached" if len(age_selected) >= int(target_n) else ("time_budget" if time_exceeded else "max_pages"),
+                    },
                 }
                 usable = list(age_selected)
                 usable_after_stale, stale_stats = filter_stale_listings(usable, min_keep=int(min_listings))
@@ -906,31 +937,39 @@ def search_comparable_listings(
                     min_keep=int(min_listings),
                 )
                 usable_final = usable_after_out if len(usable_after_out) >= int(min_listings) else usable
+                usable_down, down_stats = downsample_listings_evenly(
+                    usable_final,
+                    value_attr="monthly_total_yen",
+                    max_keep=int(max_keep_n),
+                    min_keep=int(min_listings),
+                )
+                usable_final2 = usable_down if len(usable_down) >= int(min_listings) else usable_final
                 quality.update(
                     {
                         "stale": stale_stats,
                         "outlier": out_stats,
                         "after_stale_n": int(len(usable_after_stale)),
                         "after_outlier_n": int(len(usable_after_out)),
-                        "used_n": int(len(usable_final)),
+                        "downsample": down_stats,
+                        "used_n": int(len(usable_final2)),
                         "used_fallback_unfiltered": bool(usable_final is usable),
                     }
                 )
 
-                totals = [lst.monthly_total_yen for lst in usable_final]
-                rents = [lst.rent_yen for lst in usable_final]
+                totals = [lst.monthly_total_yen for lst in usable_final2]
+                rents = [lst.rent_yen for lst in usable_final2]
                 bench_total, method_total, stats_total = aggregate_benchmark(totals)
                 bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
-                conf = _confidence_from_count(len(usable_final), step_idx)
+                conf = _confidence_from_count(len(usable_final2), step_idx)
                 level = "homes_live" if step_idx == 0 else "homes_relaxed"
                 return ComparisonResult(
                     benchmark_rent_yen=int(bench_total),
                     benchmark_rent_yen_raw=int(bench_rent),
-                    benchmark_n_sources=len(usable_final),
+                    benchmark_n_sources=len(usable_final2),
                     benchmark_confidence=conf,
                     matched_level=level,
                     relaxation_applied=step_idx,
-                    listings=usable_final,
+                    listings=usable_final2,
                     search_url=url,
                     adjustments_applied={
                         "provider": "homes",
@@ -964,6 +1003,9 @@ def search_comparable_listings(
                         "attempts": attempts,
                     },
                 )
+
+        if stop_all_steps:
+            break
 
     return ComparisonResult(
         benchmark_rent_yen=None,

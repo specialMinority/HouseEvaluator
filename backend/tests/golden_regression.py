@@ -201,7 +201,7 @@ class GoldenRegressionTest(unittest.TestCase):
         derived = out["derived"]
         self.assertEqual(derived["benchmark_confidence"], "high")
         self.assertIn("im_assessment", derived)
-        self.assertEqual(derived["initial_multiple_market_avg"], 5.0)
+        self.assertEqual(derived["initial_multiple_market_avg"], 3.5)
 
     def test_osaka_1r_evaluates(self) -> None:
         """Osaka 1R with municipality produces high benchmark confidence."""

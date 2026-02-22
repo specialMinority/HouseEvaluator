@@ -182,6 +182,30 @@
       }
     },
     {
+      "key": "building_type",
+      "type": "enum",
+      "required": false,
+      "label_ko": "건물 종류(선택)",
+      "label_ja": "建物種別(任意)",
+      "unit": "none",
+      "constraints": {
+        "enum_values": [
+          "unknown",
+          "apartment",
+          "mansion",
+          "house"
+        ]
+      },
+      "ui": {
+        "group": "condition",
+        "control": "select",
+        "placeholder_ko": "예: mansion",
+        "help_text_ko": "아파트/맨션/단독 여부를 알면 실시간 비교(라이브) 매칭 정확도가 올라갑니다. 모르면 unknown.",
+        "help_text_ja": "アパート/マンション/一戸建てが分かると精度が上がります。不明ならunknown。",
+        "advanced": false
+      }
+    },
+    {
       "key": "area_sqm",
       "type": "number",
       "required": true,
@@ -341,9 +365,9 @@
         "group": "location",
         "control": "text",
         "placeholder_ko": "예: 新宿区",
-        "help_text_ko": "정밀 비교용(선택).",
+        "help_text_ko": "실시간 시세 비교(라이브)를 쓰려면 입력을 권장합니다(예: 新宿区).",
         "help_text_ja": "精密比較用（任意）。",
-        "advanced": true
+        "advanced": false
       }
     },
     {

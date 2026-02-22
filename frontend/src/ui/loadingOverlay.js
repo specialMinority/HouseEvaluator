@@ -346,11 +346,8 @@ export function createLoadingOverlay({ showDebug = false } = {}) {
 
   function hide({ keepChip = false } = {}) {
     if (!root) return;
-    root.classList.add("hidden");
-    root.setAttribute("aria-hidden", "true");
-    document.body.classList.remove("noScroll");
-    if (keepChip && chip) chip.classList.remove("hidden");
-    else if (chip) chip.classList.add("hidden");
+    // Avoid setting aria-hidden on a container that currently contains focus.
+    // Restore focus first to prevent a11y console warnings and improve keyboard UX.
     if (lastActiveEl && typeof lastActiveEl.focus === "function") {
       try {
         lastActiveEl.focus();
@@ -358,6 +355,11 @@ export function createLoadingOverlay({ showDebug = false } = {}) {
         // ignore
       }
     }
+    root.classList.add("hidden");
+    root.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("noScroll");
+    if (keepChip && chip) chip.classList.remove("hidden");
+    else if (chip) chip.classList.add("hidden");
     lastActiveEl = null;
   }
 

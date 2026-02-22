@@ -15,6 +15,7 @@ Design principles:
 from __future__ import annotations
 
 import math
+import os
 import re
 import time
 import unicodedata
@@ -26,7 +27,7 @@ from typing import Any
 
 from backend.src.age_proximity import select_by_age_proximity, target_age_candidates
 from backend.src.live_aggregate import aggregate_benchmark
-from backend.src.live_quality import filter_outlier_listings_iqr, filter_stale_listings
+from backend.src.live_quality import downsample_listings_evenly, filter_outlier_listings_iqr, filter_stale_listings
 from backend.src.station_utils import normalize_station_name, station_similar
 
 # ── Prefecture → SUUMO area/ta codes ─────────────────────────────────────────
@@ -500,6 +501,7 @@ def build_suumo_search_url(
     *,
     layout_md_map: dict[str, str] | None = None,
     include_md: bool = True,
+    sc_code: str | None = None,
     rent_min_man: float | None = None,
     rent_max_man: float | None = None,
     area_min: float | None = None,
@@ -526,7 +528,13 @@ def build_suumo_search_url(
         if md is None:
             return None
 
-    sc = _municipality_to_sc(pref_lower, municipality)
+    sc = None
+    if sc_code is not None:
+        sc_candidate = str(sc_code).strip()
+        if re.fullmatch(r"\d{5}", sc_candidate):
+            sc = sc_candidate
+    if not sc:
+        sc = _municipality_to_sc(pref_lower, municipality)
 
     params: dict[str, str] = {
         "ar": ar,
@@ -591,6 +599,25 @@ _FETCH_HEADERS = {
     "Accept-Language": "ja,en;q=0.9",
     "Accept": "text/html,application/xhtml+xml",
 }
+
+_SUUMO_COOLDOWN_UNTIL_TS: float = 0.0
+_SUUMO_COOLDOWN_REASON: str | None = None
+
+
+def _suumo_in_cooldown() -> tuple[bool, int]:
+    remaining = int(round(_SUUMO_COOLDOWN_UNTIL_TS - time.time()))
+    return (remaining > 0), max(0, remaining)
+
+
+def _suumo_mark_cooldown(reason: str) -> None:
+    global _SUUMO_COOLDOWN_UNTIL_TS, _SUUMO_COOLDOWN_REASON
+    try:
+        cooldown_sec = int(float(os.getenv("SUUMO_COOLDOWN_SEC", "600")))
+    except Exception:
+        cooldown_sec = 600
+    cooldown_sec = max(60, min(cooldown_sec, 3600))
+    _SUUMO_COOLDOWN_UNTIL_TS = max(_SUUMO_COOLDOWN_UNTIL_TS, time.time() + float(cooldown_sec))
+    _SUUMO_COOLDOWN_REASON = str(reason or "blocked")
 
 
 def fetch_suumo_listings(url: str, *, timeout: int = 12, layout_hint: str | None = None) -> list[SuumoListing]:
@@ -657,9 +684,11 @@ def search_comparable_listings(
     building_age_years: int | None = None,
     nearest_station_name: str | None = None,
     orientation: str | None = None,
+    building_type: str | None = None,
     building_structure: str | None = None,
     bathroom_toilet_separate: bool | None = None,
     min_listings: int = 2,
+    max_listings: int = 30,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
 ) -> ComparisonResult:
@@ -675,12 +704,50 @@ def search_comparable_listings(
     Returns ComparisonResult. If no listings found after all steps,
     benchmark_confidence='none' (caller should fall back to CSV index).
     """
+    in_cd, cd_remaining = _suumo_in_cooldown()
+    if in_cd:
+        msg = f"SUUMO skipped (cooldown active, remaining={cd_remaining}s)"
+        return ComparisonResult(
+            benchmark_rent_yen=None,
+            benchmark_rent_yen_raw=None,
+            benchmark_n_sources=0,
+            benchmark_confidence="none",
+            matched_level="none",
+            search_url=None,
+            adjustments_applied={
+                "provider": "suumo",
+                "provider_name": "SUUMO",
+                "attempts": [
+                    {
+                        "provider": "suumo",
+                        "skipped": True,
+                        "cooldown_remaining_sec": int(cd_remaining),
+                        "cooldown_reason": _SUUMO_COOLDOWN_REASON,
+                    }
+                ],
+            },
+            error=msg,
+        )
+
     desired_building_type = None
+    bt = str(building_type or "").lower().strip()
+    if bt and bt not in ("unknown", "none", "all"):
+        if bt in ("apartment", "mansion", "house"):
+            desired_building_type = bt
     bs = str(building_structure or "").lower().strip()
-    if bs in ("rc", "src", "steel"):
+    if (not desired_building_type) and bs in ("rc", "src", "steel"):
         desired_building_type = "mansion"
-    elif bs in ("wood", "light_steel"):
+    elif (not desired_building_type) and bs in ("wood", "light_steel"):
         desired_building_type = "apartment"
+
+    sc_code: str | None = _municipality_to_sc(str(prefecture), municipality)
+    if (not sc_code) and municipality:
+        try:
+            from backend.src.url_resolver import resolve_chintai_area_code
+
+            sc_code = resolve_chintai_area_code(str(prefecture), [str(municipality)], timeout=int(fetch_timeout))
+        except Exception:
+            sc_code = None
 
     age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
     age_target_candidates: list[int] = (
@@ -802,7 +869,7 @@ def search_comparable_listings(
             return False
         if step_idx == 0 and not orientation_matches(listing):
             return False
-        if step_idx <= 1 and not building_type_matches(listing):
+        if step_idx <= 2 and not building_type_matches(listing):
             return False
         if step_idx <= 1 and not structure_matches(listing):
             return False
@@ -862,6 +929,7 @@ def search_comparable_listings(
                     layout_type,
                     layout_md_map=md_map,
                     include_md=include_md,
+                    sc_code=sc_code,
                     rent_min_man=rent_min_man,
                     rent_max_man=rent_max_man,
                     area_min=v["area_min"],
@@ -885,6 +953,31 @@ def search_comparable_listings(
                     break
                 except RuntimeError as e:
                     err_str = str(e)
+                    if ("AWS WAF" in err_str) or ("JS challenge" in err_str) or ("blocked scraper" in err_str):
+                        _suumo_mark_cooldown(err_str)
+                        last_error = err_str
+                        attempts.append(
+                            {"step": step_idx, "md_strategy": md_strategy, "variant": variant_name, "url": url, "error": last_error}
+                        )
+                        return ComparisonResult(
+                            benchmark_rent_yen=None,
+                            benchmark_rent_yen_raw=None,
+                            benchmark_n_sources=0,
+                            benchmark_confidence="none",
+                            matched_level="none",
+                            search_url=last_variant_url,
+                            adjustments_applied={
+                                "provider": "suumo",
+                                "provider_name": "SUUMO",
+                                "filters": {
+                                    "prefecture": prefecture,
+                                    "municipality": municipality,
+                                    "sc": sc_code,
+                                },
+                                "attempts": attempts,
+                            },
+                            error=last_error,
+                        )
                     # 502/503: rate-limit hit — back off and retry once
                     if "502" in err_str or "503" in err_str:
                         try:
@@ -969,32 +1062,41 @@ def search_comparable_listings(
                     min_keep=int(min_listings),
                 )
                 usable_final = usable_after_out if len(usable_after_out) >= int(min_listings) else usable
+                max_keep_n = max(int(min_listings), int(max_listings))
+                usable_down, down_stats = downsample_listings_evenly(
+                    usable_final,
+                    value_attr="monthly_total_yen",
+                    max_keep=int(max_keep_n),
+                    min_keep=int(min_listings),
+                )
+                usable_final2 = usable_down if len(usable_down) >= int(min_listings) else usable_final
                 quality.update(
                     {
                         "stale": stale_stats,
                         "outlier": out_stats,
                         "after_stale_n": int(len(usable_after_stale)),
                         "after_outlier_n": int(len(usable_after_out)),
-                        "used_n": int(len(usable_final)),
+                        "downsample": down_stats,
+                        "used_n": int(len(usable_final2)),
                         "used_fallback_unfiltered": bool(usable_final is usable),
                     }
                 )
 
-                rents = [lst.rent_yen for lst in usable_final]
-                totals = [lst.monthly_total_yen for lst in usable_final]
+                rents = [lst.rent_yen for lst in usable_final2]
+                totals = [lst.monthly_total_yen for lst in usable_final2]
                 bench_total, method_total, stats_total = aggregate_benchmark(totals)
                 bench_rent, method_rent, stats_rent = aggregate_benchmark(rents)
-                confidence = _confidence_from_count(len(usable_final), step_idx)
+                confidence = _confidence_from_count(len(usable_final2), step_idx)
                 level = "suumo_live" if step_idx == 0 else "suumo_relaxed"
 
                 return ComparisonResult(
                     benchmark_rent_yen=int(bench_total),
                     benchmark_rent_yen_raw=int(bench_rent),
-                    benchmark_n_sources=len(usable_final),
+                    benchmark_n_sources=len(usable_final2),
                     benchmark_confidence=confidence,
                     matched_level=level,
                     relaxation_applied=step_idx,
-                    listings=usable_final,
+                    listings=usable_final2,
                     search_url=url,
                     adjustments_applied={
                         "filters": {

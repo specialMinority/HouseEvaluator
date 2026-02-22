@@ -32,14 +32,15 @@ BACKEND_DIR: Final[Path] = Path(__file__).resolve().parents[1]
 # ---------------------------------------------------------------------------
 # Initial multiple (IM) market benchmark by prefecture
 # Based on 2025/2026 JP rental market research:
-#   Tokyo/Osaka: shikikin ~1M + reikin ~1M + brokerage ~1M + other fees ~2M ≈ 5.0M
+#   Tokyo: shikikin ~1M + reikin ~1M + brokerage ~1M + other fees ~2M ≈ 5.0M
+#   Osaka: comparatively lower initial cost pressure ≈ 3.5M
 #   Saitama/Chiba/Kanagawa: slightly lower demand pressure ≈ 4.5M
 #   Foreigner premium: +0.5–1.0M (mandatory guarantee company replaces personal guarantor)
 #   → S2 foreign_im_shift_months = 1.0 used as the foreigner-adjusted shift
 # ---------------------------------------------------------------------------
 _IM_MARKET_AVG_BY_PREF: Final[dict[str, float]] = {
     "tokyo": 5.0,
-    "osaka": 5.0,
+    "osaka": 3.5,
     "saitama": 4.5,
     "chiba": 4.5,
     "kanagawa": 4.5,
@@ -240,22 +241,35 @@ def _find_spec_bundle_dir() -> Path:
 
 
 def _load_spec_bundle(spec_dir: Path) -> dict[str, Any]:
-    bundle_path = spec_dir / "spec_bundle.json"
-    if bundle_path.exists():
-        with bundle_path.open("r", encoding="utf-8") as f:
-            bundle = json.load(f)
-        # Expected shape: {"S1": {...}, "S2": {...}, "C1": {...}, "D1": {...}}
-        for k in ("S1", "S2", "C1", "D1"):
-            if k not in bundle:
-                raise SpecError(f"spec_bundle.json missing key: {k}")
-        return bundle
-
-    # Fallback: load individual spec JSON files.
     def load_json(name: str) -> dict[str, Any]:
         p = spec_dir / name
         with p.open("r", encoding="utf-8") as f:
             return json.load(f)
 
+    bundle_path = spec_dir / "spec_bundle.json"
+    if bundle_path.exists():
+        bundle = load_json("spec_bundle.json")
+        # Expected shape: {"S1": {...}, "S2": {...}, "C1": {...}, "D1": {...}}
+        for k in ("S1", "S2", "C1", "D1"):
+            if k not in bundle:
+                raise SpecError(f"spec_bundle.json missing key: {k}")
+
+        # Allow individual spec files to override the bundled specs when present.
+        # This prevents a common dev-time footgun where spec_bundle.json is stale
+        # relative to S1_InputSchema.json / S2_ScoringSpec.json etc.
+        overrides = {
+            "S1": "S1_InputSchema.json",
+            "S2": "S2_ScoringSpec.json",
+            "C1": "C1_ReportTemplates.json",
+            "D1": "D1_BenchmarkSpec.json",
+        }
+        for k, filename in overrides.items():
+            override_path = spec_dir / filename
+            if override_path.exists():
+                bundle[k] = load_json(filename)
+        return bundle
+
+    # Fallback: load individual spec JSON files.
     return {
         "version": "unknown",
         "generated_at": "unknown",
@@ -456,65 +470,71 @@ def evaluate(payload: dict[str, Any], *, runtime: Runtime | None = None, benchma
     elif not _LIVE_BENCHMARK_AVAILABLE:
         live_benchmark["error"] = "unavailable (live benchmark module import failed)"
     if use_live:
-        try:
+        municipality = str(payload.get("municipality")).strip() if payload.get("municipality") else None
+        if not municipality:
             live_benchmark["attempted"] = True
-            _live_result = search_comparable_listings(
-                prefecture=str(payload["prefecture"]),
-                municipality=str(payload.get("municipality")) if payload.get("municipality") else None,
-                layout_type=str(payload["layout_type"]),
-                benchmark_index=benchmark_index_override if benchmark_index_override is not None else rt.benchmark_index,
-                rent_yen=int(payload["rent_yen"]),
-                area_sqm=float(payload["area_sqm"]) if payload.get("area_sqm") is not None else None,
-                walk_min=int(payload["station_walk_min"]) if payload.get("station_walk_min") is not None else None,
-                building_age_years=building_age_years,
-                nearest_station_name=str(payload.get("nearest_station_name")) if payload.get("nearest_station_name") else None,
-                orientation=str(payload.get("orientation")) if payload.get("orientation") else None,
-                building_structure=str(payload.get("building_structure")) if payload.get("building_structure") else None,
-                bathroom_toilet_separate=bool(payload.get("bathroom_toilet_separate")) if payload.get("bathroom_toilet_separate") is not None else None,
-            )
-            if _live_result is not None:
-                live_filters = None
-                live_attempts = None
-                live_provider = None
-                live_provider_name = None
-                live_quality = None
-                if isinstance(getattr(_live_result, "adjustments_applied", None), dict):
-                    lf = _live_result.adjustments_applied.get("filters")
-                    if isinstance(lf, dict):
-                        live_filters = lf
-                    la = _live_result.adjustments_applied.get("attempts")
-                    if isinstance(la, list):
-                        live_attempts = la
-                    lq = _live_result.adjustments_applied.get("quality")
-                    if isinstance(lq, dict):
-                        live_quality = lq
-                    lp = _live_result.adjustments_applied.get("provider")
-                    if isinstance(lp, str) and lp:
-                        live_provider = lp
-                    lpn = _live_result.adjustments_applied.get("provider_name")
-                    if isinstance(lpn, str) and lpn:
-                        live_provider_name = lpn
-                live_benchmark.update(
-                    {
-                        "confidence": _live_result.benchmark_confidence,
-                        "n_sources": _live_result.benchmark_n_sources,
-                        "matched_level": _live_result.matched_level,
-                        "relaxation_applied": _live_result.relaxation_applied,
-                        "search_url": _live_result.search_url,
-                        "provider": live_provider,
-                        "provider_name": live_provider_name,
-                        "filters": live_filters,
-                        "attempts": live_attempts,
-                        "quality": live_quality,
-                        "error": _live_result.error,
-                    }
+            live_benchmark["error"] = "municipality required for live benchmark (시/구/군을 입력해 주세요)"
+        else:
+            try:
+                live_benchmark["attempted"] = True
+                _live_result = search_comparable_listings(
+                    prefecture=str(payload["prefecture"]),
+                    municipality=municipality,
+                    layout_type=str(payload["layout_type"]),
+                    benchmark_index=benchmark_index_override if benchmark_index_override is not None else rt.benchmark_index,
+                    rent_yen=int(payload["rent_yen"]),
+                    area_sqm=float(payload["area_sqm"]) if payload.get("area_sqm") is not None else None,
+                    walk_min=int(payload["station_walk_min"]) if payload.get("station_walk_min") is not None else None,
+                    building_age_years=building_age_years,
+                    nearest_station_name=str(payload.get("nearest_station_name")) if payload.get("nearest_station_name") else None,
+                    orientation=str(payload.get("orientation")) if payload.get("orientation") else None,
+                    building_type=str(payload.get("building_type")) if payload.get("building_type") else None,
+                    building_structure=str(payload.get("building_structure")) if payload.get("building_structure") else None,
+                    bathroom_toilet_separate=bool(payload.get("bathroom_toilet_separate")) if payload.get("bathroom_toilet_separate") is not None else None,
                 )
-            if _live_result and _live_result.benchmark_confidence != "none":
-                _live_used = True
-                live_benchmark["used"] = True
-        except Exception as e:  # noqa: BLE001
-            live_benchmark["error"] = f"exception during live benchmark fetch: {e}"
-            _live_result = None
+                if _live_result is not None:
+                    live_filters = None
+                    live_attempts = None
+                    live_provider = None
+                    live_provider_name = None
+                    live_quality = None
+                    if isinstance(getattr(_live_result, "adjustments_applied", None), dict):
+                        lf = _live_result.adjustments_applied.get("filters")
+                        if isinstance(lf, dict):
+                            live_filters = lf
+                        la = _live_result.adjustments_applied.get("attempts")
+                        if isinstance(la, list):
+                            live_attempts = la
+                        lq = _live_result.adjustments_applied.get("quality")
+                        if isinstance(lq, dict):
+                            live_quality = lq
+                        lp = _live_result.adjustments_applied.get("provider")
+                        if isinstance(lp, str) and lp:
+                            live_provider = lp
+                        lpn = _live_result.adjustments_applied.get("provider_name")
+                        if isinstance(lpn, str) and lpn:
+                            live_provider_name = lpn
+                    live_benchmark.update(
+                        {
+                            "confidence": _live_result.benchmark_confidence,
+                            "n_sources": _live_result.benchmark_n_sources,
+                            "matched_level": _live_result.matched_level,
+                            "relaxation_applied": _live_result.relaxation_applied,
+                            "search_url": _live_result.search_url,
+                            "provider": live_provider,
+                            "provider_name": live_provider_name,
+                            "filters": live_filters,
+                            "attempts": live_attempts,
+                            "quality": live_quality,
+                            "error": _live_result.error,
+                        }
+                    )
+                if _live_result and _live_result.benchmark_confidence != "none":
+                    _live_used = True
+                    live_benchmark["used"] = True
+            except Exception as e:  # noqa: BLE001
+                live_benchmark["error"] = f"exception during live benchmark fetch: {e}"
+                _live_result = None
 
     # ── CSV fallback benchmark ────────────────────────────────────────────────
     benchmark_index = benchmark_index_override if benchmark_index_override is not None else rt.benchmark_index

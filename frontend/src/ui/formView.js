@@ -1,6 +1,67 @@
 import { saveJson } from "../lib/storage.js";
 import { formatCompactNumber, h, parseQuery, safeString } from "../lib/utils.js";
 
+const _MUNI_CACHE = new Map(); // prefecture -> { items: string[], fetchedAt: number }
+const _MUNI_INFLIGHT = new Map(); // prefecture -> Promise<string[]>
+
+async function fetchMunicipalities(prefecture) {
+  const pref = String(prefecture || "").trim().toLowerCase();
+  if (!pref) return [];
+  const q = parseQuery();
+  const apiBase = q.apiBase ? String(q.apiBase).replace(/\/$/, "") : "";
+  const url = `${apiBase}/api/municipalities?prefecture=${encodeURIComponent(pref)}`;
+  const res = await fetch(url, { cache: "no-store" });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
+  const data = await res.json();
+  const items = Array.isArray(data?.municipalities) ? data.municipalities : [];
+  return items
+    .filter((x) => typeof x === "string" && x.trim().length > 0)
+    .map((x) => x.trim());
+}
+
+function populateDatalist(datalistEl, items) {
+  if (!datalistEl) return;
+  const opts = (Array.isArray(items) ? items : []).slice(0, 600).map((name) =>
+    h("option", { value: name })
+  );
+  datalistEl.replaceChildren(...opts);
+}
+
+function ensureMunicipalityDatalist(prefecture, datalistEl) {
+  const pref = String(prefecture || "").trim().toLowerCase();
+  if (!pref || !datalistEl) return;
+
+  datalistEl.dataset.prefecture = pref;
+
+  const cached = _MUNI_CACHE.get(pref);
+  if (cached?.items?.length) {
+    populateDatalist(datalistEl, cached.items);
+    return;
+  }
+
+  let inflight = _MUNI_INFLIGHT.get(pref);
+  if (!inflight) {
+    inflight = fetchMunicipalities(pref)
+      .then((items) => {
+        _MUNI_CACHE.set(pref, { items, fetchedAt: Date.now() });
+        return items;
+      })
+      .catch((err) => {
+        console.warn("[municipalities] fetch failed:", err?.message || String(err));
+        return [];
+      })
+      .finally(() => {
+        _MUNI_INFLIGHT.delete(pref);
+      });
+    _MUNI_INFLIGHT.set(pref, inflight);
+  }
+
+  inflight.then((items) => {
+    if (datalistEl.dataset.prefecture !== pref) return;
+    populateDatalist(datalistEl, items);
+  });
+}
+
 function fieldLabelText(key, field) {
   if (key === "hub_station") return "주요 이용역(자주 이용할 역)";
   if (key === "hub_station_other_name") return "기타 역명(직접 입력)";
@@ -80,6 +141,15 @@ function enumOptionText(fieldKey, value) {
       rc: "철근콘크리트(RC)",
       src: "철골철근콘크리트(SRC)",
       other: "기타/모름",
+    };
+    if (Object.prototype.hasOwnProperty.call(table, v)) return table[v];
+  }
+  if (fk === "building_type") {
+    const table = {
+      unknown: "모름(unknown)",
+      apartment: "아파트(アパート)",
+      mansion: "맨션(マンション)",
+      house: "단독/테라스(一戸建て)",
     };
     if (Object.prototype.hasOwnProperty.call(table, v)) return table[v];
   }
@@ -249,6 +319,7 @@ function renderField(field, { values, touched, onChange }) {
   const label = h("label", { for: `f_${key}`, text: fieldLabelText(key, field) });
 
   let control;
+  let datalistEl = null;
   if (field.type === "enum") {
     control = h(
       "select",
@@ -314,6 +385,12 @@ function renderField(field, { values, touched, onChange }) {
       if (showRange && c.max !== undefined) attrs.max = String(c.max);
       if (showRange && c.step !== undefined) attrs.step = String(c.step);
     }
+    if (key === "municipality" && type === "text") {
+      const listId = "municipality-options";
+      attrs.list = listId;
+      datalistEl = h("datalist", { id: listId });
+      ensureMunicipalityDatalist(values?.prefecture, datalistEl);
+    }
     control = h("input", attrs);
   }
 
@@ -321,7 +398,7 @@ function renderField(field, { values, touched, onChange }) {
   const helpText = fieldHelpTextKo(key, field);
   const helpEl = helpText ? h("div", { class: "hint", text: helpText }) : null;
 
-  return h("div", { class: "field", dataset: { key } }, [label, control, hintEl, helpEl, errorEl]);
+  return h("div", { class: "field", dataset: { key } }, [label, control, datalistEl, hintEl, helpEl, errorEl]);
 }
 
 function applyYokohamaPlaceholder(fieldsByKey, values, field) {
@@ -448,7 +525,8 @@ export function renderFormView({ spec, input, loading, onSubmit, onReset }) {
     onSubmit(req);
   }
 
-  const basicFilter = (f) => mvp.has(f.key) || (f.depends_on && !(f.ui || {}).advanced);
+  const BASIC_OPTIONAL_KEYS = new Set(["municipality", "building_type"]);
+  const basicFilter = (f) => mvp.has(f.key) || BASIC_OPTIONAL_KEYS.has(f.key) || (f.depends_on && !(f.ui || {}).advanced);
   const advancedFilter = (f) => (f.ui || {}).advanced === true;
 
   const guideBanner = renderGuideBanner();

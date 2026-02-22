@@ -82,6 +82,14 @@ class E2ESmokeTest(unittest.TestCase):
             hub_enum_012 = ((hub_field_012 or {}).get("constraints") or {}).get("enum_values") or []
             self.assertIn("osaka_station", hub_enum_012)
 
+            building_type_field_012 = next(
+                (f for f in s1_012.get("fields", []) if isinstance(f, dict) and f.get("key") == "building_type"), None
+            )
+            self.assertIsNotNone(building_type_field_012)
+            building_type_enum_012 = ((building_type_field_012 or {}).get("constraints") or {}).get("enum_values") or []
+            self.assertIn("unknown", building_type_enum_012)
+            self.assertIn("mansion", building_type_enum_012)
+
             # Real API (mock off) - Yokohama input
             yokohama = {
                 "hub_station": "other",
@@ -92,6 +100,7 @@ class E2ESmokeTest(unittest.TestCase):
                 "station_walk_min": 6,
                 "layout_type": "1K",
                 "building_structure": "rc",
+                "building_type": "mansion",
                 "area_sqm": 22,
                 "building_built_year": 2018,
                 "orientation": "S",

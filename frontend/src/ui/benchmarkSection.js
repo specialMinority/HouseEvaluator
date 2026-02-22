@@ -81,6 +81,10 @@ export function renderBenchmarkCard(response, benchmarkMeta, input) {
     if (mgmtFeeEstimate !== undefined && mgmtFeeEstimate !== null && Number(mgmtFeeEstimate) > 0) {
         notes.push(`관리비 벤치마크가 없어, 월세의 일부를 관리비로 추정해 포함했습니다. (추정 관리비: ${formatYen(mgmtFeeEstimate)})`);
     }
+    const monthlyExtra = pick(response, ["derived.monthly_extra_cost_yen"]);
+    if (monthlyExtra !== undefined && monthlyExtra !== null && Number(monthlyExtra) > 0) {
+        notes.push(`추가 월 고정비(사용자 입력) ${formatYen(monthlyExtra)}는 시장 시세 비교(벤치마크)에서 제외됩니다.`);
+    }
 
     const live = pick(response, ["derived.live_benchmark"]);
     if (live && typeof live === "object") {

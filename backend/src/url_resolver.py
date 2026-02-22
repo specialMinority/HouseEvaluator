@@ -217,3 +217,49 @@ def resolve_chintai_area_code(
                 pass
 
     return _best_match_from_mapping(mapping, muni_cands)
+
+
+def get_chintai_pref_municipality_map(
+    prefecture: str,
+    *,
+    timeout: int = 12,
+) -> tuple[dict[str, str] | None, bool]:
+    """
+    Return the full municipality->area_code mapping for a prefecture.
+
+    Returns: (mapping, cached)
+      - mapping: dict[name -> 5-digit code] or None if unavailable
+      - cached: True if served from cache, False if fetched this call
+    """
+    pref = str(prefecture).lower().strip()
+    if not pref:
+        return None, False
+
+    cache = _load_cache()
+    ch = cache.setdefault("chintai", {})
+    if isinstance(ch, dict):
+        pref_map = ch.get(pref)
+        if isinstance(pref_map, dict) and pref_map:
+            return {str(k): str(v) for (k, v) in pref_map.items()}, True
+
+    url = f"https://www.chintai.net/{pref}/area/"
+    html = _fetch_html(url, timeout=timeout)
+    if _detect_waf_or_js_challenge(html):
+        return None, False
+
+    mapping = parse_chintai_pref_area_index(html)
+    if not mapping:
+        return None, False
+
+    # Persist mapping for future calls.
+    with _CACHE_LOCK:
+        cache2 = _load_cache()
+        ch2 = cache2.setdefault("chintai", {})
+        if isinstance(ch2, dict):
+            ch2[pref] = mapping
+            try:
+                _save_cache(cache2)
+            except Exception:
+                pass
+
+    return mapping, False

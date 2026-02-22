@@ -1,5 +1,6 @@
 import urllib.parse
 import uuid
+from pathlib import Path
 
 
 def test_parse_chintai_pref_area_index_extracts_codes():
@@ -23,8 +24,9 @@ def test_resolve_chintai_area_code_uses_cache(monkeypatch):
 
     ur._CACHE = None
     # Avoid pytest tmp_path on environments where OS temp is restricted.
-    cache_path = f".cache/url_resolver_test_cache_{uuid.uuid4().hex}.json"
-    monkeypatch.setenv("URL_RESOLVER_CACHE_PATH", cache_path)
+    cache_path = Path(".cache") / f"url_resolver_test_cache_{uuid.uuid4().hex}.json"
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    monkeypatch.setenv("URL_RESOLVER_CACHE_PATH", str(cache_path))
 
     html = "<a href='/osaka/area/27128/list/'>大阪市中央区</a>"
     called = {"n": 0}
@@ -35,14 +37,17 @@ def test_resolve_chintai_area_code_uses_cache(monkeypatch):
 
     monkeypatch.setattr(ur, "_fetch_html", fake_fetch)
 
-    code1 = ur.resolve_chintai_area_code("osaka", ["大阪市中央区"])
-    assert code1 == "27128"
-    assert called["n"] == 1
+    try:
+        code1 = ur.resolve_chintai_area_code("osaka", ["大阪市中央区"])
+        assert code1 == "27128"
+        assert called["n"] == 1
 
-    # Second call should hit in-memory cache and not re-fetch.
-    code2 = ur.resolve_chintai_area_code("osaka", ["中央区", "大阪市中央区"])
-    assert code2 == "27128"
-    assert called["n"] == 1
+        # Second call should hit in-memory cache and not re-fetch.
+        code2 = ur.resolve_chintai_area_code("osaka", ["中央区", "大阪市中央区"])
+        assert code2 == "27128"
+        assert called["n"] == 1
+    finally:
+        cache_path.unlink(missing_ok=True)
 
 
 def test_build_chintai_list_url_falls_back_to_dynamic_resolver(monkeypatch):
