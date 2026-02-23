@@ -1,6 +1,7 @@
 {
   "hub_station": "shinagawa",
   "prefecture": "chiba",
+  "municipality": "??????",
   "nearest_station_name": "船橋",
   "station_walk_min": 4,
   "layout_type": "1K",
@@ -15,9 +16,9 @@
   "shikikin_yen": 0,
   "reikin_yen": 0,
   "brokerage_fee_yen": 80000,
+  "cleaning_fee_yen": 30000,
+  "other_initial_fees_yen": 0,
   "guarantor_fee_yen": 40000,
   "fire_insurance_yen": 20000,
-  "key_change_yen": 0,
-  "cleaning_fee_yen": 30000,
-  "other_initial_fees_yen": 0
+  "key_change_yen": 0
 }

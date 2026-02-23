@@ -1,6 +1,7 @@
 {
   "hub_station": "shinjuku",
   "prefecture": "tokyo",
+  "municipality": "???",
   "nearest_station_name": "中野",
   "station_walk_min": 5,
   "layout_type": "1K",

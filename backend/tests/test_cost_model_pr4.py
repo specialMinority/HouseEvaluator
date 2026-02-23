@@ -12,6 +12,7 @@ class CostModelPR4Test(unittest.TestCase):
         payload = {
             "hub_station": "shinjuku",
             "prefecture": "tokyo",
+            "municipality": "新宿区",
             "nearest_station_name": "新宿",
             "station_walk_min": 8,
             "layout_type": "1K",
@@ -48,6 +49,7 @@ class CostModelPR4Test(unittest.TestCase):
         payload = {
             "hub_station": "shinjuku",
             "prefecture": "tokyo",
+            "municipality": "新宿区",
             "nearest_station_name": "新宿",
             "station_walk_min": 8,
             "layout_type": "1K",
@@ -77,4 +79,3 @@ class CostModelPR4Test(unittest.TestCase):
         self.assertEqual(d["initial_cost_contract_only_yen"], 300000)
         # move-in total should include base + extras once.
         self.assertEqual(d["move_in_total_yen"], 411500)
-

@@ -1,6 +1,7 @@
 {
   "hub_station": "ueno",
   "prefecture": "chiba",
+  "municipality": "??????",
   "nearest_station_name": "松戸",
   "station_walk_min": 10,
   "layout_type": "1K",

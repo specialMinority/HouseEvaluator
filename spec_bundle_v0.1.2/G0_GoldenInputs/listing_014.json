@@ -1,6 +1,7 @@
 {
   "hub_station": "ueno",
   "prefecture": "saitama",
+  "municipality": "?????",
   "nearest_station_name": "架空駅テスト",
   "station_walk_min": 8,
   "layout_type": "1R",

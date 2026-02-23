@@ -1,6 +1,7 @@
 {
   "hub_station": "shinjuku",
   "prefecture": "chiba",
+  "municipality": "??????",
   "nearest_station_name": "津田沼",
   "station_walk_min": 12,
   "layout_type": "1K",

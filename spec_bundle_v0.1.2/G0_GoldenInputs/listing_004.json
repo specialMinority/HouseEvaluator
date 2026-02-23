@@ -1,6 +1,7 @@
 {
   "hub_station": "ueno",
   "prefecture": "tokyo",
+  "municipality": "???",
   "nearest_station_name": "上野",
   "station_walk_min": 7,
   "layout_type": "1K",

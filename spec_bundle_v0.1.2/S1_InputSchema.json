@@ -5,6 +5,7 @@
   "mvp_required_fields": [
     "hub_station",
     "prefecture",
+    "municipality",
     "nearest_station_name",
     "station_walk_min",
     "layout_type",
@@ -357,16 +358,16 @@
     {
       "key": "municipality",
       "type": "string",
-      "required": false,
-      "label_ko": "시/구/정/촌(선택)",
-      "label_ja": "市区町村(任意)",
+      "required": true,
+      "label_ko": "시/구/정/촌",
+      "label_ja": "市区町村",
       "unit": "none",
       "ui": {
         "group": "location",
         "control": "text",
         "placeholder_ko": "예: 新宿区",
-        "help_text_ko": "실시간 시세 비교(라이브)를 쓰려면 입력을 권장합니다(예: 新宿区).",
-        "help_text_ja": "精密比較用（任意）。",
+        "help_text_ko": "정확한 평가/실시간 시세 비교를 위해 필수입니다. (모르면 위의 SUUMO URL 자동 채우기를 강력 권장)",
+        "help_text_ja": "精密比較のため必須です。わからない場合はSUUMO URLの自動入力を推奨します。",
         "advanced": false
       }
     },

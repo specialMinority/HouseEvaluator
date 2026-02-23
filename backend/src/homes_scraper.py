@@ -700,11 +700,6 @@ def search_comparable_listings(
     if bt and bt not in ("unknown", "none", "all"):
         if bt in ("apartment", "mansion", "house"):
             desired_building_type = bt
-    bs = str(building_structure or "").lower().strip()
-    if (not desired_building_type) and bs in ("rc", "src", "steel"):
-        desired_building_type = "mansion"
-    elif (not desired_building_type) and bs in ("wood", "light_steel"):
-        desired_building_type = "apartment"
 
     age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
     age_target_candidates: list[int] = (

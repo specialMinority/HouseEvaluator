@@ -73,7 +73,7 @@ def search_comparable_listings(  # noqa: PLR0913
     min_listings: int = 2,
     target_listings: int = 12,
     max_listings: int = 30,
-    time_budget_sec: float = 12.0,
+    time_budget_sec: float = 20.0,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
 ) -> ComparisonResult:

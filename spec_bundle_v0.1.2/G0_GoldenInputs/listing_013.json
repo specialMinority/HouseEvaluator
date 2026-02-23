@@ -1,6 +1,7 @@
 {
   "hub_station": "ikebukuro",
   "prefecture": "saitama",
+  "municipality": "?????",
   "nearest_station_name": "南浦和",
   "station_walk_min": 10,
   "layout_type": "1K",

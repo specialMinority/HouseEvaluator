@@ -1,6 +1,7 @@
 {
   "hub_station": "shinagawa",
   "prefecture": "tokyo",
+  "municipality": "??",
   "nearest_station_name": "品川",
   "station_walk_min": 4,
   "layout_type": "1R",

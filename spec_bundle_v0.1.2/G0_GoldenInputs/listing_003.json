@@ -1,6 +1,7 @@
 {
   "hub_station": "ikebukuro",
   "prefecture": "tokyo",
+  "municipality": "???",
   "nearest_station_name": "池袋",
   "station_walk_min": 8,
   "layout_type": "1R",

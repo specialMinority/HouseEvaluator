@@ -1,6 +1,7 @@
 {
   "hub_station": "shinjuku",
   "prefecture": "saitama",
+  "municipality": "?????",
   "nearest_station_name": "和光市",
   "station_walk_min": 14,
   "layout_type": "1K",

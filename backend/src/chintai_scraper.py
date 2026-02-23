@@ -940,11 +940,11 @@ def search_comparable_listings(  # noqa: PLR0913
     min_listings: int = 2,
     target_listings: int = 12,
     max_listings: int = 30,
-    time_budget_sec: float = 12.0,
+    time_budget_sec: float = 20.0,
     max_relaxation_steps: int = 3,
     fetch_timeout: int = 12,
     max_pages: int = 6,
-    request_delay_s: float = 1.0,
+    request_delay_s: float = 0.5,
 ) -> ComparisonResult:
     """
     Search CHINTAI for comparable listings and compute a median monthly total (rent+admin).
@@ -974,11 +974,6 @@ def search_comparable_listings(  # noqa: PLR0913
     if bt and bt not in ("unknown", "none", "all"):
         if bt in ("apartment", "mansion", "house"):
             desired_building_type = bt
-    bs = str(building_structure or "").lower().strip()
-    if (not desired_building_type) and bs in ("rc", "src", "steel"):
-        desired_building_type = "mansion"
-    elif (not desired_building_type) and bs in ("wood", "light_steel"):
-        desired_building_type = "apartment"
 
     age_target_years: int | None = max(0, int(building_age_years)) if building_age_years is not None else None
     age_target_candidates: list[int] = (
@@ -1186,6 +1181,38 @@ def search_comparable_listings(  # noqa: PLR0913
                 last_error = str(e)
                 attempts.append({"step": step_idx, "page": page, "url": url, "error": last_error})
                 continue
+            # If a page yields zero parsed listings, further pages of this step are
+            # very likely to be empty too (end-of-results). Stop early to save
+            # time budget and move to relaxation steps.
+            if not listings:
+                attempts.append(
+                    {
+                        "step": step_idx,
+                        "page": page,
+                        "url": url,
+                        "fetched_n": 0,
+                        "matched_n": 0,
+                        "matched_total_n": len(matched_all),
+                        "age_selected_n": len(matched_all),
+                        "age_proximity": None,
+                        "coverage": {
+                            "area": 0,
+                            "walk": 0,
+                            "age": 0,
+                            "structure": 0,
+                            "bath": 0,
+                            "station": 0,
+                            "building_type": 0,
+                        },
+                        "reject_counts": {},
+                        "unknown_required_counts": {},
+                        "detail_enriched_n": 0,
+                        "detail_matched_n": 0,
+                        "detail_fetch_n": 0,
+                        "detail_error_n": 0,
+                    }
+                )
+                break
 
             reject_counts: Counter = Counter()
             unknown_required_counts: Counter = Counter()

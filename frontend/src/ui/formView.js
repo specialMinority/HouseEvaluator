@@ -550,7 +550,9 @@ export function renderFormView({ spec, input, loading, onSubmit, onReset }) {
             h("h3", { text: "🔗 SUUMO URL로 자동 채우기 (선택)" }),
             h("div", {
               class: "hint",
-              text: "SUUMOの物件詳細URL(suumo.jp/chintai/jnc_...)を貼り付けると、家賃・面積・間取りなどを自動で入力します。",
+              html:
+                "SUUMOの物件詳細URL(suumo.jp/chintai/jnc_...)を貼り付けると、家賃・面積・間取りなど을 자동으로 입력합니다.<br>" +
+                "<strong>강력 권장:</strong> 수동 입력보다 훨씬 빠르고, 오타/누락으로 인한 비교 실패를 줄일 수 있어요.",
             }),
             h("div", { class: "row url-import__row" }, [
               (() => {

@@ -544,3 +544,57 @@ Change
 Files
 - `backend/src/evaluate.py`: `_IM_MARKET_AVG_BY_PREF["osaka"] = 3.5`
 - `backend/tests/golden_regression.py`: 오사카 케이스 기대값 업데이트
+
+---
+
+## 9) UX / Validation Changes (2026-02-23)
+
+### 9.1 municipality(시/구/정/촌) 필수화
+Change
+- `municipality`를 선택 → 필수 입력으로 변경(프론트/백엔드 모두).
+
+Files
+- `spec_bundle_v0.1.2/S1_InputSchema.json`
+  - `mvp_required_fields`에 `municipality` 추가(백엔드 필수)
+  - `municipality.required = true` + 라벨에서 `(선택)` 제거(프론트 필수)
+  - 도움말 문구를 “필수 + SUUMO URL 자동 채우기 권장”으로 조정
+- `backend/tests/e2e_smoke.py`
+  - 기존 “no municipality -> pref fallback” 케이스를 “municipality mismatch -> pref fallback”로 변경(테스트 유지)
+- `spec_bundle_v0.1.2/G0_GoldenInputs/listing_*.json`
+  - 기존 golden input 중 `municipality` 누락된 파일들에 기본값을 채워 넣어(S1 필수 조건) 회귀 테스트가 통과하도록 정리
+
+Notes
+- 서버가 실행 중이면 spec/runtime 캐시 때문에 재시작 필요.
+
+### 9.2 SUUMO URL 자동 채우기 권장 문구 강화
+Change
+- URL 자동 입력 섹션 힌트에 “강력 권장: 수동 입력보다 빠르고 오타/누락을 줄임” 문구 추가.
+
+Files
+- `frontend/src/ui/formView.js`
+
+---
+
+## 10) Live Benchmark Stability Tweaks (2026-02-23)
+
+### 10.1 CHINTAI time_budget_exceeded 완화
+Problem
+- CHINTAI 라이브 비교가 `time_budget_exceeded (elapsed_s=..., min_listings=2)`로 실패하는 케이스가 발생.
+- 특히 page2~page6에서 `fetched_n=0`이 반복될 때도 끝까지 페이지를 긁어 시간 예산을 소진하는 패턴.
+
+Fix
+- 기본 시간 예산을 12s → 20s로 상향.
+  - `backend/src/live_benchmark.py`: `time_budget_sec` default 20.0
+  - `backend/src/chintai_scraper.py`: `time_budget_sec` default 20.0
+- CHINTAI page fetch 간 딜레이를 1.0s → 0.5s로 완화 (`backend/src/chintai_scraper.py`).
+- CHINTAI에서 특정 page가 `0` listings를 반환하면(=사실상 end-of-results), 해당 step의 다음 페이지 탐색을 중단하고 relaxation step으로 빠르게 넘어가도록 early-stop 추가 (`backend/src/chintai_scraper.py`).
+
+### 10.2 building_type 미입력 시 하드 필터링 제거
+User Feedback
+- 건물종류를 미입력/모름(unknown)인 경우에는 building_type으로 필터링하면 안 됨(기본값 mansion 추정 금지).
+
+Fix
+- `building_type`은 **사용자가 명시적으로 입력한 경우에만** strict filter로 적용.
+- `building_structure` 기반 building_type 추정/필터링 로직 제거.
+  - `backend/src/chintai_scraper.py`
+  - `backend/src/homes_scraper.py`

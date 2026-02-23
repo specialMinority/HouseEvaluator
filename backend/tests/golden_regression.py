@@ -156,6 +156,7 @@ class GoldenRegressionTest(unittest.TestCase):
         payload = {
             "hub_station": "shinjuku",
             "prefecture": "tokyo",
+            "municipality": "新宿区",
             "nearest_station_name": "新宿",
             "station_walk_min": 8,
             "layout_type": "1K",
@@ -412,6 +413,7 @@ class GoldenRegressionTest(unittest.TestCase):
         payload = {
             "hub_station": "shinjuku",
             "prefecture": "tokyo",
+            "municipality": "テスト区",
             "nearest_station_name": "中野",
             "station_walk_min": 8,
             "layout_type": "1K",

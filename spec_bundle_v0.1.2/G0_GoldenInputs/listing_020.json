@@ -1,6 +1,7 @@
 {
   "hub_station": "tokyo_station",
   "prefecture": "chiba",
+  "municipality": "??????",
   "nearest_station_name": "本八幡",
   "station_walk_min": 14,
   "layout_type": "1R",

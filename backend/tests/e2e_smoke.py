@@ -124,10 +124,11 @@ class E2ESmokeTest(unittest.TestCase):
             self.assertEqual(status, 200)
             self.assertLess(out2["derived"]["initial_multiple"], out1["derived"]["initial_multiple"])
 
-            # Low confidence case: no municipality -> prefecture fallback
+            # Low confidence case: municipality mismatch -> prefecture fallback
             tokyo_low = {
                 "hub_station": "shinjuku",
                 "prefecture": "tokyo",
+                "municipality": "テスト区",
                 "nearest_station_name": "中野",
                 "station_walk_min": 8,
                 "layout_type": "1K",

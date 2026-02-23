@@ -1,6 +1,7 @@
 {
   "hub_station": "ueno",
   "prefecture": "chiba",
+  "municipality": "??????",
   "nearest_station_name": "銚子",
   "station_walk_min": 18,
   "layout_type": "1R",
@@ -15,9 +16,9 @@
   "shikikin_yen": 0,
   "reikin_yen": 0,
   "brokerage_fee_yen": 50000,
+  "cleaning_fee_yen": 25000,
+  "other_initial_fees_yen": 70000,
   "guarantor_fee_yen": 30000,
   "fire_insurance_yen": 15000,
-  "key_change_yen": 10000,
-  "cleaning_fee_yen": 25000,
-  "other_initial_fees_yen": 70000
+  "key_change_yen": 10000
 }
