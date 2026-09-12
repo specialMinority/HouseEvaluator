@@ -1,0 +1,18 @@
+{
+  "schema_version": "2.0",
+  "validation_id": "REPLACE_WITH_FROZEN_PROTOCOL_ID",
+  "generated_at": "2026-09-13T12:00:00Z",
+  "protocol_frozen_at": "2026-08-12T00:00:00Z",
+  "development_cutoff": "2026-08-13T00:00:00Z",
+  "holdout_start": "2026-08-14T00:00:00Z",
+  "holdout_end": "2026-09-13T12:00:00Z",
+  "snapshots": [
+    {
+      "path": "snapshots/REPLACE_WITH_PERMITTED_SNAPSHOT.json",
+      "available_at": "2026-09-13T10:00:00Z"
+    }
+  ],
+  "holdouts_path": "holdouts.json",
+  "human_reviews_path": "human_reviews.json",
+  "supply_history_path": "supply_history.json"
+}

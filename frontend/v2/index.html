@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="도쿄·오사카·후쿠오카 월세를 같은 조건의 모집 매물과 비교합니다. 비교 근거와 정보 시점을 함께 확인하세요.">
+  <title>HouseEvaluator · 일본 월세, 근거로 비교하기</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#subject-form">매물 입력으로 이동</a>
+  <header class="site-header">
+    <a class="brand" href="./" aria-label="HouseEvaluator 처음으로"><span class="brand-mark" aria-hidden="true">⌂</span><span>HouseEvaluator<span class="brand-caption">일본에서 시작하는 나의 집</span></span></a>
+    <span class="version-label">검증 준비 중 <span class="version-number">v2</span></span>
+  </header>
+
+  <main class="page-shell">
+    <section id="access-panel" class="card access-panel" aria-labelledby="access-title" hidden>
+      <h2 id="access-title">초대받은 분들을 위한 미리보기</h2>
+      <p>제공받은 접속 코드를 입력하세요. 코드는 이 페이지를 닫거나 새로고침하면 지워집니다.</p>
+      <form id="access-form" method="post"><label class="field">접속 코드<input id="access-code" type="password" autocomplete="off" required minlength="32" maxlength="256"></label><button class="primary-button" id="access-submit" type="submit">접속하기</button></form>
+      <p id="access-error" class="form-message error" role="alert"></p>
+    </section>
+    <button id="access-logout" class="text-button" type="button" hidden>접속 코드 지우기</button>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">TOKYO · OSAKA · FUKUOKA</p><h1 id="page-title">이 집 월세,<br class="mobile-break"> 비슷한 집과 비교하면?</h1><p class="lead">같은 역, 같은 구조, 비슷한 크기의 집.<br>가격의 근거와 조건 차이까지 함께 확인하세요.</p></div>
+      <div class="principles"><span><b>01</b> 같은 조건부터 비교</span><span><b>02</b> 다른 조건은 그대로 공개</span><span><b>03</b> 근거가 부족하면 판단 보류</span></div>
+    </section>
+
+    <section class="source-notice" aria-label="시장 자료 연결 상태"><span class="status-dot" aria-hidden="true"></span><div><strong id="source-status">자료 연결 상태 확인 중</strong><p id="source-detail">사용 가능한 공급 자료와 검증 상태를 확인합니다.</p></div><button type="button" class="text-button" id="retry-capabilities" hidden>다시 확인</button><label class="demo-toggle" id="demo-controls" hidden><input type="checkbox" id="demo-mode"><span>합성 데이터로 시연</span></label></section>
+    <div class="demo-banner" id="demo-banner" role="status" hidden><strong>합성 데이터 시연 · 실제 시세 아님</strong><span>입력 예시, 비교 매물과 가격은 기능 확인을 위해 만든 값입니다.</span><button class="text-button" type="button" id="reload-demo">현재 도시의 예시 다시 불러오기</button></div>
+
+    <div class="workspace-grid">
+      <section class="card input-card" aria-labelledby="input-title">
+        <div class="card-heading"><div><p class="eyebrow">YOUR PROPERTY</p><h2 id="input-title">비교할 집의 조건</h2></div><span class="small-muted">* 필수 입력</span></div>
+        <form id="subject-form">
+          <fieldset id="subject-fields" class="bare-fieldset">
+            <legend class="sr-only">비교 대상 매물</legend>
+            <fieldset class="city-fieldset"><legend>도시 *</legend><div class="city-options"><label><input name="city" type="radio" value="tokyo" checked><span>도쿄 <small>東京</small></span></label><label><input name="city" type="radio" value="osaka"><span>오사카 <small>大阪</small></span></label><label><input name="city" type="radio" value="fukuoka"><span>후쿠오카 <small>福岡</small></span></label></div></fieldset>
+            <div class="form-section"><h3><span>1</span> 위치와 가격</h3><div class="form-grid">
+              <label class="field">가장 가까운 역 * <span class="japanese">最寄り駅</span><select id="station_id" name="station_id" required disabled aria-describedby="station-help station-status"><option value="">역 목록 확인 중…</option></select><small id="station-help">연결된 공급 자료에 있는 역을 선택하세요.</small></label>
+              <label class="field">시·구·정·촌 원문 * <span class="japanese">市区町村</span><input id="municipality" name="municipality" required maxlength="120" placeholder="예: 新宿区" autocomplete="off"><small>역을 선택하면 입력됩니다. 실제 매물의 일본어 행정구역과 다르면 수정하세요.</small></label>
+              <div class="station-note span-2"><p id="station-status" role="status">선택 가능한 역 목록을 확인하고 있습니다.</p><button id="reload-stations" type="button" class="text-button" hidden>역 목록 다시 확인</button></div><input name="station_name" id="station_name" type="hidden" value="">
+              <label class="field">월세 * <span class="japanese">賃料</span><span class="input-unit"><input name="rent_yen" id="rent_yen" type="number" inputmode="numeric" min="1" step="1" required placeholder="예: 80000"><span>엔 / 월</span></span></label>
+              <label class="field">관리비·공익비 <span class="japanese">管理費・共益費</span><span class="input-unit"><input name="mgmt_fee_yen" id="mgmt_fee_yen" type="number" inputmode="numeric" min="0" step="1" placeholder="미상"><span>엔 / 월</span></span><small>없음이 확인된 경우에만 0을 입력하세요.</small></label>
+            </div><div class="input-total"><span>비교 기준 <strong>월세 + 관리비</strong></span><strong id="input-total">관리비 포함 금액 확인 필요</strong></div></div>
+            <div class="form-section"><h3><span>2</span> 집의 주요 조건</h3><p class="section-help">모르는 항목은 미상으로 두세요. 비교에 필요한 정보가 없으면 결과를 보류합니다.</p><div class="form-grid">
+              <label class="field">평면 * <span class="japanese">間取り</span><select name="layout" id="layout" required><option value="">선택하세요</option><option>1R</option><option>1K</option><option>1DK</option><option>1LDK</option></select></label>
+              <label class="field">전용면적 * <span class="japanese">専有面積</span><span class="input-unit"><input name="area_sqm" id="area_sqm" type="number" inputmode="decimal" required min="0.01" step="0.01" placeholder="예: 25.5"><span>m²</span></span></label>
+              <label class="field">건물 구조 <span class="japanese">構造</span><select name="structure" id="structure"><option value="">미상</option><option value="wood">목조 · 木造</option><option value="light_steel">경량철골 · 軽量鉄骨</option><option value="steel">철골 · 鉄骨造</option><option value="rc">철근콘크리트 · RC</option><option value="src">철골철근콘크리트 · SRC</option></select></label>
+              <label class="field">준공 연도 <span class="japanese">築年月</span><span class="input-unit"><input name="built_year" id="built_year" type="number" inputmode="numeric" min="1800" step="1" placeholder="미상"><span>년</span></span></label>
+              <label class="field">역까지 도보 <span class="japanese">駅徒歩</span><span class="input-unit"><input name="walk_min" id="walk_min" type="number" inputmode="decimal" min="0" step="0.1" placeholder="미상"><span>분</span></span></label>
+              <label class="field">층 <span class="japanese">所在階</span><span class="input-unit"><input name="floor" id="floor" type="number" inputmode="numeric" step="1" placeholder="미상"><span>층</span></span><small>지하 1층은 -1로 입력하세요.</small></label>
+              <label class="field">주요 창 방향 <span class="japanese">向き</span><select name="orientation" id="orientation"><option value="">미상</option><option value="N">북향</option><option value="NE">북동향</option><option value="E">동향</option><option value="SE">남동향</option><option value="S">남향</option><option value="SW">남서향</option><option value="W">서향</option><option value="NW">북서향</option></select></label>
+              <label class="field">욕실·화장실 분리 <span class="japanese">バス・トイレ別</span><select name="bathroom_separate" id="bathroom_separate"><option value="">미상</option><option value="true">분리</option><option value="false">일체형</option></select></label>
+              <label class="field">계약 종류 <span class="japanese">契約種別</span><select name="contract_type" id="contract_type"><option value="standard">일반 임대 · 普通借家</option><option value="fixed_term">정기 임대 · 定期借家</option></select></label>
+              <label class="field">가구 포함 여부 <span class="japanese">家具付き</span><select name="furnished" id="furnished"><option value="">미상</option><option value="false">포함 안 됨</option><option value="true">포함됨</option></select></label>
+            </div><p class="fine-print">현재 독립된 공동주택 1R~1LDK를 지원합니다. 셰어하우스·호텔·기숙사는 지원 범위에 포함되지 않습니다.</p></div>
+            <details class="identity-details"><summary>호실·건물 식별 정보 <span>자기 매물 제외에 필요</span></summary><p class="section-help">공급처의 정규 ID가 있으면 입력하세요. 호실 ID가 없으면 같은 건물을 보수적으로 제외하며, 둘 다 없으면 높은·낮은 가격 판정을 보류합니다.</p><div class="form-grid"><label class="field">호실 ID<input name="unit_id" id="unit_id" maxlength="200" placeholder="미상" autocomplete="off"></label><label class="field">건물 ID<input name="building_id" id="building_id" maxlength="200" placeholder="미상" autocomplete="off"></label></div></details>
+          </fieldset>
+          <div class="submit-area"><p class="form-message error" id="form-error" role="alert" hidden></p><p class="form-message" id="request-status" role="status"></p><div class="action-row"><button type="submit" class="primary-button" id="evaluate-button">비교 근거 확인하기 <span aria-hidden="true">↗</span></button><button type="button" class="secondary-button" id="cancel-button" hidden>취소</button></div><p class="fine-print">입력값과 허용된 공급 자료를 비교합니다. 매물 사이트를 직접 조회하지 않습니다.</p></div>
+        </form>
+      </section>
+
+      <aside class="result-column" aria-label="가격 비교 결과">
+        <section id="result-placeholder" class="card placeholder-card"><p class="eyebrow">EVIDENCE FIRST</p><div class="line-illustration" aria-hidden="true"><span class="building building-one"></span><span class="building building-two"></span><span class="building building-three"></span><span class="street"></span></div><h2>가격보다 먼저,<br>비교의 근거를 확인해요.</h2><p id="placeholder-message">집의 조건을 입력하면 비교 매물 수, 정보 시점과 다른 조건을 함께 보여드립니다.</p><div class="placeholder-rule"><span>가격 기준</span><strong>월세 + 관리비</strong></div><div class="placeholder-rule"><span>비교 자료</span><strong>모집 상태 확인 24시간 이내</strong></div><div class="placeholder-rule"><span>근거 부족</span><strong>가격 판정 보류</strong></div></section>
+        <section id="result-card" class="card result-card" tabindex="-1" hidden><div id="result-content"></div></section>
+        <section class="card guide-card"><p class="eyebrow">HOW WE COMPARE</p><h2>조건을 조금씩 넓혀요.</h2><p>같은 역·구조·평면을 유지하고, 비교 가능한 집이 부족할 때만 제한된 조건을 순서대로 완화합니다.</p><div class="condition-tags"><span>방향</span><b>→</b><span>면적</span><b>→</b><span>연식</span><b>→</b><span>도보</span></div><p class="fine-print">현재 완화 정책은 아직 실제 시장 자료로 검증되지 않았습니다. 검증을 마치기 전에는 가격 방향을 단정하지 않습니다.</p></section>
+      </aside>
+    </div>
+
+    <section id="evidence-section" class="card evidence-card" aria-labelledby="evidence-title" hidden><div class="card-heading"><div><p class="eyebrow">COMPARISON RECORD</p><h2 id="evidence-title">비교에 사용한 매물과 조건</h2></div><span id="evidence-mode" class="small-muted"></span></div><div id="evidence-content"></div></section>
+
+    <section class="card costs-card" aria-labelledby="costs-title"><div class="card-heading"><div><p class="eyebrow">LIVING BUDGET</p><h2 id="costs-title">내가 실제로 준비할 비용</h2></div><span class="optional-label">선택 계산</span></div><p class="section-help">위에 입력한 월세·관리비와 아래 비용을 사용합니다. 견적서에서 확인한 금액을 엔 단위로 입력하세요. 이 계산은 시장 비교가격을 바꾸지 않습니다.</p><details id="costs-details"><summary>거주 기간과 초기비용 입력하기</summary><form id="cost-form"><fieldset id="cost-fields" class="bare-fieldset"><legend class="sr-only">거주 비용</legend><div class="cost-base" id="cost-base">월세와 관리비를 먼저 입력하세요.</div><div class="form-grid costs-grid">
+      <label class="field">거주 기간<span class="input-unit"><input name="stay_months" type="number" min="1" max="60" step="1" value="12" required><span>개월</span></span></label>
+      <label class="field">매월 추가비용<span class="input-unit"><input name="monthly_extra_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>정액 인터넷·지원 서비스 등</small></label>
+      <label class="field">입주 시 납부 총액<span class="input-unit"><input name="initial_payment_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>아래 선납 월세·보증금을 포함한 총액</small></label>
+      <label class="field">총액에 포함된 선납 월세<span class="input-unit"><input name="prepaid_rent_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>기간 비용에서 중복 계산하지 않음</small></label>
+      <label class="field">총액에 포함된 환급성 보증금<span class="input-unit"><input name="refundable_deposit_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>전액 환급 가정 · 실제 반환액은 계약에 따름</small></label>
+      <label class="field">예상 퇴거 비용<span class="input-unit"><input name="exit_fee_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>청소·해약 비용 등, 보증금과 중복 입력 주의</small></label>
+      <label class="field">기간 중 갱신 비용 총액<span class="input-unit"><input name="renewal_fee_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span></label>
+      <label class="field">기간 중 할인 총액<span class="input-unit"><input name="discount_yen" type="number" min="0" step="1" placeholder="확인 필요" required><span>엔</span></span><small>이미 입력 금액에 반영한 할인은 제외</small></label>
+    </div><p class="fine-print">모든 항목을 확인한 뒤 입력하세요. 해당 비용이 없는 경우에만 0을 입력하세요. 6·12·24개월 등 1~60개월을 계산할 수 있습니다.</p></fieldset><p id="cost-error" class="form-message error" role="alert" hidden></p><div class="action-row cost-actions"><button class="secondary-button" type="submit" id="cost-button">기간 비용 계산</button><button class="text-button" type="button" id="cost-cancel" hidden>취소</button><span id="cost-status" role="status"></span></div></form><div id="cost-result" aria-live="polite" hidden></div></details></section>
+    <footer class="footer"><strong>HouseEvaluator</strong><p>비교 대상은 확인 가능한 모집가격입니다.<br>실제 계약 가능 여부와 최종 비용은 매물 제공처에서 확인하세요.</p><span>Tokyo / Osaka / Fukuoka</span></footer>
+  </main>
+</body>
+</html>

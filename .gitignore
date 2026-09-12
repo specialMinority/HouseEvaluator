@@ -48,3 +48,6 @@ secrets/
 
 # agent cache
 .agent/
+
+# v2 local state
+.runtime/

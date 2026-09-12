@@ -1,0 +1,80 @@
+# Standalone opt-in example, not an override for ../compose.yaml.
+# Do not run until the domain, actual data, release evidence and operator approval exist.
+# Relative paths are resolved from this deploy/ directory.
+services:
+  api:
+    image: ${HOUSE_EVALUATOR_IMAGE:?Set the image validated in the local rehearsal}
+    environment:
+      HOUSE_EVALUATOR_DB: /data/v2.sqlite3
+      HOUSE_EVALUATOR_SUPPLIERS: /config/suppliers.json
+      HOUSE_EVALUATOR_INGESTION_STATE: /data/ingestion.sqlite3
+      HOUSE_EVALUATOR_VALIDATION_REGISTRY: /config/registry.json
+      HOUSE_EVALUATOR_RELEASE_EVIDENCE: /config/release.json
+      HOUSE_EVALUATOR_ACCESS_TOKEN: ${HOUSE_EVALUATOR_ACCESS_TOKEN:?Set a private access token with at least 32 ASCII characters}
+      HOUSE_EVALUATOR_REQUESTS_PER_MINUTE: ${HOUSE_EVALUATOR_REQUESTS_PER_MINUTE:-120}
+      HOUSE_EVALUATOR_PILOT: "1"
+      HOUSE_EVALUATOR_DEMO: "0"
+      HOUSE_EVALUATOR_LEGACY: "0"
+    # No host ports: only the reverse proxy can reach this service externally.
+    volumes:
+      - house-data:/data
+      - house-backups:/backups
+      - ${HOUSE_EVALUATOR_CONFIG_DIR:-../.runtime/config}:/config:ro
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 512m
+    cpus: 1.0
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2); assert r.status == 200"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    logging: &bounded_logs
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  ingestion:
+    image: ${HOUSE_EVALUATOR_IMAGE:?Set the image validated in the local rehearsal}
+    profiles: [ingestion]
+    command: [python, scripts/run_v2_ingestion.py, --config, /config/suppliers.json, --db, /data/v2.sqlite3, --state-db, /data/ingestion.sqlite3, --worker]
+    # Map only the supplier's actual auth_env via a private override if needed.
+    volumes:
+      - house-data:/data
+      - ${HOUSE_EVALUATOR_CONFIG_DIR:-../.runtime/config}:/config:ro
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    logging: *bounded_logs
+
+  caddy:
+    image: ${HOUSE_EVALUATOR_CADDY_IMAGE:-caddy:2}
+    environment:
+      HOUSE_EVALUATOR_DOMAIN: ${HOUSE_EVALUATOR_DOMAIN:?Set an owned DNS name pointing to this host}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile.example:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    read_only: true
+    tmpfs: [/tmp]
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    depends_on:
+      api:
+        condition: service_healthy
+    logging: *bounded_logs
+
+volumes:
+  house-data:
+  house-backups:
+  caddy-data:
+  caddy-config:

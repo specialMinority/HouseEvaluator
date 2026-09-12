@@ -1,0 +1,41 @@
+# yaml-language-server: $schema=https://render.com/schema/render.yaml.json
+# Free, single-instance personal comparison preview. No persistent storage.
+# Also set Blueprint Settings > Auto Sync to No; this setting only disables
+# service code auto-deploys. See docs/DEPLOY_RENDER.md before first deployment.
+services:
+  - type: web
+    name: houseevaluator-personal
+    repo: https://github.com/specialMinority/HouseEvaluator
+    branch: codex/houseevaluator-v2
+    runtime: docker
+    plan: free
+    region: singapore
+    numInstances: 1
+    autoDeployTrigger: "off"
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    # Uses the existing Dockerfile CMD: python -m backend.src.server
+    healthCheckPath: /healthz
+    envVars:
+      - key: HOST
+        value: "0.0.0.0"
+      - key: PORT
+        value: "8080"
+      - key: HOUSE_EVALUATOR_PERSONAL
+        value: "1"
+      - key: HOUSE_EVALUATOR_PUBLIC_SEARCH
+        value: "1"
+      - key: HOUSE_EVALUATOR_DEMO
+        value: "0"
+      - key: HOUSE_EVALUATOR_LEGACY
+        value: "0"
+      - key: HOUSE_EVALUATOR_PILOT
+        value: "0"
+      - key: SUUMO_LIVE
+        value: "0"
+      - key: HOUSE_EVALUATOR_DB
+        value: /tmp/houseevaluator/v2.sqlite3
+      - key: HOUSE_EVALUATOR_REQUESTS_PER_MINUTE
+        value: "120"
+      - key: HOUSE_EVALUATOR_ACCESS_TOKEN
+        generateValue: true

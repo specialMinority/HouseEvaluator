@@ -1,0 +1,60 @@
+services:
+  api:
+    build: .
+    image: ${HOUSE_EVALUATOR_IMAGE:-houseevaluator:v2-local}
+    ports:
+      - "127.0.0.1:${HOUSE_EVALUATOR_PORT:-8000}:8080"
+    environment:
+      HOUSE_EVALUATOR_DB: /data/v2.sqlite3
+      HOUSE_EVALUATOR_SUPPLIERS: /config/suppliers.json
+      HOUSE_EVALUATOR_INGESTION_STATE: /data/ingestion.sqlite3
+      HOUSE_EVALUATOR_VALIDATION_REGISTRY: /config/registry.json
+      HOUSE_EVALUATOR_RELEASE_EVIDENCE: /config/release.json
+      HOUSE_EVALUATOR_ACCESS_TOKEN: ${HOUSE_EVALUATOR_ACCESS_TOKEN:-}
+      HOUSE_EVALUATOR_REQUESTS_PER_MINUTE: ${HOUSE_EVALUATOR_REQUESTS_PER_MINUTE:-120}
+      HOUSE_EVALUATOR_DEMO: ${HOUSE_EVALUATOR_DEMO:-0}
+      HOUSE_EVALUATOR_PILOT: ${HOUSE_EVALUATOR_PILOT:-0}
+      HOUSE_EVALUATOR_PERSONAL: ${HOUSE_EVALUATOR_PERSONAL:-1}
+      HOUSE_EVALUATOR_PUBLIC_SEARCH: ${HOUSE_EVALUATOR_PUBLIC_SEARCH:-1}
+    volumes:
+      - house-data:/data
+      - house-backups:/backups
+      - ${HOUSE_EVALUATOR_CONFIG_DIR:-./.runtime/config}:/config:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    mem_limit: 512m
+    cpus: 1.0
+    restart: unless-stopped
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; r=urllib.request.urlopen('http://127.0.0.1:8080/healthz', timeout=2); assert r.status == 200"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+  ingestion:
+    image: ${HOUSE_EVALUATOR_IMAGE:-houseevaluator:v2-local}
+    profiles: [ingestion]
+    command: [python, scripts/run_v2_ingestion.py, --config, /config/suppliers.json, --db, /data/v2.sqlite3, --state-db, /data/ingestion.sqlite3, --worker]
+    volumes:
+      - house-data:/data
+      - ${HOUSE_EVALUATOR_CONFIG_DIR:-./.runtime/config}:/config:ro
+    read_only: true
+    tmpfs:
+      - /tmp
+    mem_limit: 256m
+    cpus: 0.5
+    restart: unless-stopped
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+volumes:
+  house-data:
+  house-backups:

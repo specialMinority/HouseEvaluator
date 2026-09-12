@@ -1,0 +1,110 @@
+@charset "UTF-8";
+.personal-shell{padding-bottom:12px}.personal-label{font-size:11px;color:var(--green);background:var(--green-soft);padding:6px 9px;border-radius:6px;white-space:nowrap}.personal-intro{padding-bottom:28px}.personal-steps{list-style:none;margin:0;padding:0;display:grid;gap:16px;font-size:13px;color:var(--muted)}.personal-steps li{display:flex;align-items:center;gap:13px}.personal-steps span{display:grid;place-items:center;border:1px solid #cbd9cb;width:28px;height:28px;border-radius:50%;color:var(--green);font-size:11px}.personal-scope{background:#e9efe6;padding:17px 20px;border:1px solid #d8e2d3;border-radius:12px;margin-bottom:22px}.personal-scope strong{font-size:13px}.personal-scope p{font-size:12px;color:var(--muted);margin:4px 0 0}.personal-workspace{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:22px;align-items:start}.personal-workspace>.card{min-width:0}.personal-subject-card .card-heading,.personal-listings-card .card-heading{align-items:flex-start}.personal-primary-actions{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 10px}.personal-primary-actions>.primary-button{flex-basis:100%}.personal-primary-actions .secondary-button{min-height:36px;padding:8px 12px}.personal-example{margin-top:15px}.personal-listings-card .secondary-button{padding:8px 12px;min-height:38px;font-size:12px}.personal-empty{padding:30px 15px 36px;text-align:center;border:1px dashed #cedccd;border-radius:12px;background:#fafcf8}.personal-empty>span{font-size:48px;line-height:1;color:#97ae9c}.personal-empty h3{font-size:16px;margin:16px 0 8px}.personal-empty p{font-size:12px;line-height:1.85;color:var(--muted);max-width:280px;margin:0 auto}.personal-compare-actions{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 10px}.personal-compare-actions .primary-button{justify-content:center;flex-basis:100%}.personal-selection{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin:20px 0 12px}.personal-selection label{display:flex;align-items:center;gap:8px}.personal-selection input,.personal-listing-check input{accent-color:var(--green);width:18px;height:18px}.personal-selection>span{color:var(--muted)}.personal-listings{display:grid;gap:12px}.personal-listing{border:1px solid var(--line);border-radius:10px;padding:15px;min-width:0}.personal-listing-top{display:flex;align-items:flex-start;gap:10px}.personal-listing-check{flex:0 0 auto;padding-top:2px}.personal-listing-heading{min-width:0;flex:1}.personal-listing-heading h3{font-size:14px;margin:0 0 4px;overflow-wrap:anywhere;word-break:break-word}.personal-listing-price{font-size:19px;font-weight:750;letter-spacing:-.4px;font-variant-numeric:tabular-nums}.personal-listing-price small{font-size:10px;font-weight:450;color:var(--muted);margin-left:4px}.personal-listing-sub{font-size:11px;color:var(--muted);margin:3px 0 0}.personal-listing-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}.personal-listing-tags>span{padding:3px 7px;border-radius:4px;background:#f1f5ee;font-size:10px}.personal-listing-missing{margin:10px 0 0;font-size:10px;color:var(--amber);line-height:1.7}.personal-listing-bottom{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-top:12px;border-top:1px solid var(--line);padding-top:11px}.personal-listing-bottom a{font-size:11px}.personal-listing-bottom .text-button{padding:0}.personal-listing-time{font-size:10px;color:var(--muted);margin:7px 0 0;overflow-wrap:anywhere}.personal-source-report{border:1px solid #d7e1d4;background:#f4f7f0;border-radius:8px;padding:12px 14px;margin-bottom:10px;font-size:11px}.personal-source-report p{margin:4px 0 0;color:var(--muted);overflow-wrap:anywhere}.personal-source-report a{display:inline-block;margin-top:6px}.personal-source-report.is-error{background:#fff8e7;border-color:#e9d9ae}.personal-result{margin-top:22px}.personal-result-summary{font-size:25px;line-height:1.5;letter-spacing:-.7px;margin:0 0 10px}.personal-result-summary.is-hold{font-size:21px}.personal-result-intro{font-size:13px;color:var(--muted);max-width:900px}.personal-result-metrics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:22px 0}.personal-result-metric{background:#f1f5ee;border-radius:8px;padding:17px}.personal-result-metric span{display:block;font-size:11px;color:var(--muted);margin-bottom:7px}.personal-result-metric strong{font-size:25px;letter-spacing:-.6px;font-variant-numeric:tabular-nums}.personal-result-metric small{display:block;font-size:11px;color:var(--muted);margin-top:3px}.personal-result ul{font-size:12px;line-height:1.85;padding-left:20px}.personal-result h3{margin-top:24px;margin-bottom:10px}.personal-result .table-wrap{margin-top:12px}.personal-result table{min-width:660px}.personal-result-stamp{font-size:11px;color:var(--muted);margin-top:18px}.personal-editor{color:var(--ink);border:1px solid var(--line);border-radius:18px;padding:26px;width:min(690px,calc(100vw - 28px));max-height:calc(100dvh - 40px);box-shadow:0 12px 70px #12302526;background:#fff;overflow:auto}.personal-editor::backdrop{background:#142e3280}.personal-editor-heading{display:flex;justify-content:space-between;gap:15px;margin-bottom:15px;align-items:flex-start}.personal-close{border:1px solid var(--line);border-radius:7px;background:#fff;font-size:25px;line-height:1;width:36px;height:36px;flex:0 0 36px;color:var(--muted)}.personal-editor-actions{position:sticky;bottom:-26px;padding:18px 0 0;margin-top:24px;display:flex;gap:10px;background:#fff;border-top:1px solid var(--line)}.personal-editor-actions .primary-button{justify-content:center}.personal-editor .form-message{margin-top:15px}.personal-wide-field{grid-column:span 2}#personal-subject-error,#personal-compare-error{margin-top:12px}#personal-logout{margin-top:14px}.personal-condition-help{font-size:11px;color:var(--muted);margin:12px 0}.personal-editor fieldset{border:0;margin:0;padding:0}.personal-result details{margin-top:20px}.personal-result dd{overflow-wrap:anywhere}.personal-listing-bottom .personal-delete{color:var(--red)}
+@media(max-width:950px){.personal-workspace{grid-template-columns:1fr 1fr;gap:16px}.personal-workspace>.card{padding:22px}.personal-listings-card .card-heading{flex-wrap:wrap;gap:14px}.personal-steps{font-size:12px}.personal-result-metric strong{font-size:22px}}
+@media(max-width:760px){.personal-workspace{grid-template-columns:1fr}.personal-steps{display:none}.personal-scope{padding:14px 16px}.personal-intro h1{font-size:31px}.personal-listings-card .card-heading{flex-wrap:nowrap}.personal-result-metrics{grid-template-columns:1fr;gap:9px}.personal-result-metric{display:grid;grid-template-columns:1fr auto;align-items:center;gap:3px 12px;padding:14px}.personal-result-metric span{margin:0}.personal-result-metric small{grid-column:span 2;margin:0}.personal-result-summary{font-size:23px}.personal-label{font-size:10px;padding:5px 7px}.personal-editor{padding:21px;max-height:calc(100dvh - 24px);width:calc(100vw - 22px)}.personal-editor-actions{bottom:-21px;padding:15px 0 0}.personal-workspace .field input,.personal-workspace .field select,.personal-editor .field input,.personal-editor .field select{font-size:16px}.personal-empty{padding:25px 15px}.personal-result .card-heading{align-items:flex-start;flex-wrap:wrap}}
+@media(max-width:400px){.personal-workspace>.card{padding:18px}.personal-subject-card .form-grid,.personal-editor .form-grid{gap:18px 10px}.personal-intro h1{font-size:28px}.personal-label{max-width:110px;white-space:normal;text-align:right}.personal-listings-card .card-heading{align-items:center}.personal-listings-card h2{font-size:19px}.personal-editor{padding:18px}.personal-editor-actions{bottom:-18px}.personal-editor h2{font-size:20px}.personal-result-metric strong{font-size:21px}}
+/* Comparison stays within reach even when a search returns a long list. */
+html{scroll-padding-bottom:calc(var(--personal-dock-space,0px) + 18px)}
+.personal-shell{padding-bottom:calc(var(--personal-dock-space,0px) + 20px)}
+.personal-result{margin:0 0 22px;scroll-margin-top:18px}
+#personal-listings-card,#personal-compare-error{scroll-margin-top:18px}
+.personal-selection{flex-wrap:wrap;gap:10px 12px}
+.personal-selection>span{margin-left:auto}
+.personal-selection>.primary-button{flex:0 0 auto;min-height:40px;padding:9px 13px;font-size:12px;justify-content:center}
+.personal-action-dock{position:fixed;z-index:20;bottom:max(14px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(1216px,calc(100% - 40px));display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border:1px solid #bdcdbf;border-radius:13px;background:#fffffff5;box-shadow:0 5px 30px #18382926;backdrop-filter:blur(10px)}
+.personal-dock-summary{display:flex;align-items:baseline;gap:12px;min-width:0}
+.personal-dock-summary strong{font-size:16px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.personal-dock-summary span{font-size:12px;color:var(--muted);line-height:1.5}
+.personal-dock-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.personal-dock-actions .primary-button,.personal-dock-actions .secondary-button{min-height:44px;justify-content:center;flex:0 0 auto;padding:10px 20px}
+.personal-dock-actions .text-button{min-height:44px;padding:8px;font-size:12px;white-space:nowrap}
+.personal-result .card-heading .secondary-button{min-height:38px;padding:8px 12px;font-size:12px}
+@media(max-width:760px){.personal-action-dock{width:calc(100% - 26px);bottom:max(9px,env(safe-area-inset-bottom));padding:11px 12px;gap:8px;flex-wrap:wrap}.personal-dock-summary{width:100%;justify-content:space-between;gap:8px}.personal-dock-summary strong{font-size:14px}.personal-dock-summary span{font-size:11px}.personal-dock-actions{width:100%}.personal-dock-actions .primary-button{flex:1}.personal-dock-actions .primary-button,.personal-dock-actions .secondary-button{padding:10px 13px;font-size:12px}.personal-result .card-heading{gap:12px}.personal-selection>.primary-button{margin-left:auto}.personal-result{scroll-margin-top:12px}}
+.personal-level-label{display:inline-block;font-size:12px;color:var(--green);background:var(--green-soft);border-radius:6px;padding:6px 9px;margin:0 0 12px;line-height:1.6}
+.personal-level-label.is-cautious{color:var(--amber);background:var(--amber-bg)}
+.personal-price-basis{font-size:13px;font-weight:700;margin:0 0 10px;color:var(--green)}
+.personal-price-basis.is-rent-only{color:var(--amber)}
+.personal-comparison-context{padding:12px 15px;background:#f7f6ee;border-radius:7px;margin:14px 0;font-size:12px;color:#706147}
+.personal-comparison-context p{margin:0;line-height:1.8}.personal-comparison-context p+p{margin-top:4px}
+.personal-info-warning{font-size:12px;line-height:1.8;color:var(--amber);background:var(--amber-bg);padding:11px 14px;border-radius:7px}
+.personal-result .step-list{margin-top:12px}.personal-result details>summary{font-size:13px;padding:8px 0}
+.personal-result-summary.is-range{font-size:23px;overflow-wrap:anywhere}
+.personal-result-metric.is-range strong{font-size:20px;overflow-wrap:anywhere}
+@media(max-width:760px){.personal-result-metric.is-range{display:block}.personal-result-metric.is-range span{margin-bottom:6px}.personal-result-metric.is-range small{margin-top:6px}.personal-result-summary.is-range{font-size:21px}.personal-comparison-context{padding:11px 12px;font-size:11px}}
+.personal-reference-section{margin:25px 0;border-top:1px solid var(--line);padding-top:2px}
+.personal-reference-intro{font-size:12px;line-height:1.85;color:var(--muted);margin:0 0 15px;max-width:900px}
+.personal-reference-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.personal-reference-card{min-width:0;border:1px solid #dfdacb;border-radius:10px;padding:17px;background:#fffefa}
+.personal-reference-card h4{font-size:14px;line-height:1.8;margin:6px 0;overflow-wrap:anywhere}
+.personal-reference-relation{display:inline-block;font-size:11px;margin:0;color:var(--amber);background:var(--amber-bg);padding:4px 7px;border-radius:4px}
+.personal-reference-count{font-size:11px;color:var(--muted);margin:6px 0;line-height:1.8}
+.personal-reference-range{display:block;font-size:22px;letter-spacing:-.5px;font-variant-numeric:tabular-nums;margin-top:13px;overflow-wrap:anywhere}
+.personal-reference-median{font-size:12px;margin:10px 0;color:var(--ink)}
+.personal-reference-reasons{margin:12px 0;color:#706147}
+.personal-reference-context{font-size:11px;line-height:1.8;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.personal-reference-context p{margin:3px 0}
+.personal-result .personal-reference-card details{margin-top:10px}
+.personal-result .personal-reference-card details>summary{font-size:12px;line-height:1.8}
+.personal-result table{min-width:850px}
+@media(max-width:760px){.personal-reference-grid{grid-template-columns:1fr}.personal-reference-card{padding:14px}.personal-reference-range{font-size:21px}.personal-reference-section h3{font-size:17px;line-height:1.7}}
+.personal-source-report .personal-search-scope{font-weight:700;color:var(--ink);margin-top:8px}
+.personal-search-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;margin:13px 0}
+.personal-search-metrics>div{min-width:0;padding:9px 10px;border:1px solid #dce5d7;border-radius:6px;background:#ffffffb3}
+.personal-search-metrics dt{font-size:10px;color:var(--muted);line-height:1.6}
+.personal-search-metrics dd{font-size:18px;font-weight:700;margin:2px 0 0;font-variant-numeric:tabular-nums;color:var(--ink)}
+.personal-search-metrics small{display:block;font-size:10px;color:var(--muted);margin-top:2px;line-height:1.5}
+.personal-source-report .personal-search-count-note{font-size:10px;line-height:1.8;margin:8px 0}
+.personal-source-report .personal-search-stop{font-weight:700;color:var(--amber);margin:8px 0}
+.personal-search-links a{display:block;font-size:11px;margin:5px 0}
+.personal-source-report details{margin-top:10px}.personal-source-report summary{font-size:11px;cursor:pointer;line-height:1.7}
+.personal-result-search{margin:18px 0}.personal-result-search h3{font-size:15px;margin:0 0 10px}
+.personal-result-search .personal-source-report{font-size:12px}.personal-result-search .personal-search-count-note{font-size:11px}
+@media(max-width:760px){.personal-search-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.personal-search-metrics dd{font-size:17px}.personal-result-search .personal-source-report{padding:12px;font-size:11px}}
+.personal-reference-card.has-related-features{border-color:#adc6b5;background:#fbfefb;scroll-margin-top:18px}
+.personal-reference-related{display:block;width:fit-content;max-width:100%;margin:0 0 8px;padding:5px 8px;border-radius:5px;background:var(--green-soft);color:var(--green);font-size:11px;font-weight:700;line-height:1.7;word-break:keep-all}
+.personal-reference-related-note{font-size:11px;color:var(--muted);line-height:1.8;margin:7px 0 10px}
+.personal-related-intro{font-size:13px;font-weight:600;line-height:1.9;color:var(--green);padding:11px 14px;background:var(--green-soft);border-radius:7px;margin:12px 0}
+.personal-related-intro p{margin:0}.personal-related-jump{min-height:40px;padding:9px 12px;font-size:12px;margin-top:10px}
+@media(max-width:760px){.personal-related-jump{width:100%;justify-content:center}.personal-reference-card.has-related-features{scroll-margin-top:12px}}
+.personal-price-visual{min-width:0}
+.personal-visual-kicker{font-size:12px;color:var(--green);font-weight:700;margin:0 0 8px}
+.personal-price-visual>h3{font-size:31px;line-height:1.4;letter-spacing:-1px;margin:0 0 8px;word-break:keep-all}
+.personal-visual-rank-note{font-size:13px;font-weight:700;color:var(--green);margin:0 0 11px}
+.personal-visual-scope{font-size:13px;color:var(--muted);line-height:1.8;margin:0 0 6px;max-width:950px}
+.personal-visual-selection{font-size:11px;color:var(--muted);line-height:1.8;margin:0}
+.personal-price-plot{margin:20px 0 26px;padding:18px 20px;border:1px solid #d8e3dc;border-radius:12px;background:#f8fbf7}
+.personal-price-plot figcaption{font-size:11px;color:var(--muted);margin-bottom:15px}
+.personal-price-bars{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.personal-price-row{padding:10px 12px;border:1px solid transparent;border-radius:7px;min-width:0}
+.personal-price-row-heading{display:flex;align-items:baseline;justify-content:space-between;gap:15px;margin-bottom:7px;font-size:13px}
+.personal-price-row-name{min-width:0;overflow-wrap:anywhere;line-height:1.65}
+.personal-price-row-heading strong{flex-shrink:0;font-size:16px;font-variant-numeric:tabular-nums;letter-spacing:-.3px}
+.personal-price-track{height:14px;background:repeating-linear-gradient(to right,#e7ede6 0,#e7ede6 calc(25% - 1px),#d3ddd2 calc(25% - 1px),#d3ddd2 25%);border-radius:3px;overflow:hidden}
+.personal-price-bar{display:block;height:100%;background:#9bb7a5;border-radius:3px}
+.personal-price-row.is-subject{background:#e5f0e9;border-color:#88af9a}
+.personal-price-row.is-subject .personal-price-row-name{font-weight:800;color:var(--green)}
+.personal-price-row.is-subject .personal-price-row-heading strong{font-size:19px;color:var(--green)}
+.personal-price-row.is-subject .personal-price-bar{background:var(--green)}
+.personal-price-axis{display:flex;justify-content:space-between;margin:8px 12px 0;font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums}
+.personal-visual-list-title{font-size:18px;margin:0 0 7px;letter-spacing:-.4px}
+.personal-visual-list-help{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 14px}
+.personal-visual-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.personal-visual-listing{min-width:0;padding:18px;border:1px solid var(--line);border-radius:10px;background:#fff;display:flex;flex-direction:column;align-items:stretch}
+.personal-visual-listing-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.personal-visual-listing-heading h5{font-size:15px;line-height:1.7;overflow-wrap:anywhere;min-width:0;margin:0}
+.personal-visual-listing-heading>strong{font-size:19px;white-space:nowrap;letter-spacing:-.5px;font-variant-numeric:tabular-nums}
+.personal-visual-difference{font-size:13px;font-weight:650;color:var(--green);margin:10px 0 3px;line-height:1.75}
+.personal-visual-cost{font-size:11px;color:var(--muted);margin:0 0 12px}
+.personal-visual-facts{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.personal-visual-facts>span{font-size:10px;padding:4px 7px;border-radius:4px;background:#f0f5ee;line-height:1.5}
+.personal-visual-matches{font-size:11px;line-height:1.8;color:var(--green);margin:0 0 7px}
+.personal-result .personal-visual-differences{font-size:11px;color:var(--muted);margin:0 0 12px;padding-left:17px;line-height:1.85}
+.personal-visual-group{font-size:10px;line-height:1.7;color:var(--muted);margin:0 0 12px}
+.personal-visual-source{border-top:1px solid var(--line);padding-top:10px;margin-top:auto;font-size:11px;line-height:1.8}
+.personal-visual-source>span,.personal-visual-source>a,.personal-visual-source>small{display:block}
+.personal-visual-source>span{color:var(--muted);font-size:10px}.personal-visual-source>a{overflow-wrap:anywhere;word-break:break-all}.personal-visual-source>small{color:var(--muted);font-size:10px;margin-top:5px}
+.personal-result .personal-visual-warnings{font-size:11px;line-height:1.9;color:var(--muted);margin:15px 0 0;padding-left:18px}
+.personal-result>.personal-method-details,.personal-result .personal-method-details{margin-top:25px;border-top:1px solid var(--line);padding-top:12px}
+.personal-result .personal-method-details>summary{font-size:13px;line-height:1.8;font-weight:650;color:var(--green);cursor:pointer;padding:8px 0}
+.personal-method-content{padding-top:18px;min-width:0}
+@media(max-width:760px){.personal-price-visual>h3{font-size:26px;letter-spacing:-.7px}.personal-visual-rank-note{font-size:12px}.personal-visual-scope{font-size:12px}.personal-visual-selection{font-size:10px}.personal-price-plot{padding:13px 10px;margin:16px 0 22px}.personal-price-row{padding:8px}.personal-price-row-heading{gap:10px;font-size:12px}.personal-price-row-heading strong{font-size:15px}.personal-price-row.is-subject .personal-price-row-heading strong{font-size:17px}.personal-price-track{height:12px}.personal-price-axis{margin-left:8px;margin-right:8px}.personal-visual-list{grid-template-columns:1fr}.personal-visual-listing{padding:15px}.personal-visual-listing-heading h5{font-size:14px}.personal-visual-listing-heading>strong{font-size:18px}.personal-visual-list-title{font-size:17px}.personal-result .personal-method-details>summary{font-size:12px}}

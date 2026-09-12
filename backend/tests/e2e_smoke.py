@@ -30,6 +30,8 @@ class E2ESmokeTest(unittest.TestCase):
         prev_live = os.environ.get("SUUMO_LIVE")
         os.environ["SUUMO_LIVE"] = "0"
         httpd = HTTPServer(("127.0.0.1", 0), _ApiHandler)
+        # Preserve the old evaluator as an explicit offline regression fixture.
+        httpd.legacy_enabled = True
         port = httpd.server_address[1]
         t = threading.Thread(target=httpd.serve_forever, daemon=True)
         t.start()

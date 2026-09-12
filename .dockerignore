@@ -14,3 +14,7 @@ frontend/.cache/
 .secrets/
 **/*service-account*.json
 **/*sa_key*.json
+.git/
+.runtime/
+**/*.env
+**/.env

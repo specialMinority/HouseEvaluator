@@ -1,0 +1,21 @@
+# Only start after a real domain, permitted data and release approval exist.
+# The Compose example requires HOUSE_EVALUATOR_DOMAIN explicitly.
+{$HOUSE_EVALUATOR_DOMAIN} {
+    # Container liveness is internal; it is not a market readiness endpoint.
+    @internal_health path /healthz
+    respond @internal_health 404
+
+    reverse_proxy api:8080
+
+    # Keep status/duration/size, but omit request URLs, headers and client IPs.
+    log {
+        output stdout
+        format filter {
+            wrap json
+            fields {
+                request delete
+                resp_headers delete
+            }
+        }
+    }
+}
