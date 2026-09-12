@@ -13,7 +13,7 @@ import threading
 import time
 from urllib.parse import parse_qs, urlencode, urlsplit
 
-from .public_fetch import PublicFetchError, PublicResponse, USER_AGENT, fetch_public
+from .public_fetch import PublicFetchError, PublicResponse, USER_AGENT, fetch_public, safe_diagnostics
 from .public_html import clean, enrich_detail, parse_search, station_name
 from .personal import validate_listing
 from .public_discovery import line_choices, station_choice, next_page
@@ -341,6 +341,17 @@ def search(subject, *, fetcher=None):
     if station:
         report['station_resolution'] = 'cached_public_form'
     halted = False
+    failure_context = {'stage': 'robots', 'http_status': None, 'diagnostics': None}
+
+    def begin_stage(kind):
+        failure_context.update(stage=kind, http_status=None, diagnostics=None)
+
+    def observe_response(response):
+        if type(response.status) is not int or not 100 <= response.status <= 599:
+            raise PublicFetchError('invalid_response')
+        failure_context['http_status'] = response.status
+        if 500 <= response.status <= 599:
+            failure_context['diagnostics'] = safe_diagnostics(response.diagnostics)
 
     def in_scope(item):
         return (item['city'] == subject['city'] and item['municipality'] == subject['municipality']
@@ -349,6 +360,7 @@ def search(subject, *, fetcher=None):
                 and abs(item['area_sqm'] - subject['area_sqm']) <= subject['area_sqm'] * .20 + .00001)
 
     def read(url, kind):
+        begin_stage(kind)
         if not policy.allows(url):
             raise PublicFetchError('robots_blocked')
         if time.monotonic() + delay + .1 >= deadline:
@@ -357,6 +369,7 @@ def search(subject, *, fetcher=None):
         if kind == 'search':
             report['search_urls'].append(url)
         response = fetcher(url, deadline=deadline)
+        observe_response(response)
         if response.status in (401, 403, 429):
             raise PublicFetchError('source_blocked')
         if response.status != 200:
@@ -371,6 +384,10 @@ def search(subject, *, fetcher=None):
     def fail(exc):
         report['partial'] = True
         report['error_code'] = exc.code
+        report['failure_stage'] = failure_context['stage']
+        report['http_status'] = failure_context['http_status']
+        if failure_context['diagnostics'] is not None:
+            report['diagnostics'] = failure_context['diagnostics']
         if exc.code in ('robots_blocked', 'source_blocked'):
             report.update(status='blocked', stop_reason='blocked', message='사이트의 자동 접근 제한을 확인해 추가 요청을 중단했습니다. 읽은 표본만 표시합니다.')
         elif exc.code == 'parse_changed':
@@ -416,6 +433,7 @@ def search(subject, *, fetcher=None):
 
     try:
         robots = fetcher('https://suumo.jp/robots.txt', deadline=deadline)
+        observe_response(robots)
         if robots.status != 200:
             raise PublicFetchError('source_blocked' if robots.status in (401, 403, 429) else 'robots_unavailable')
         policy = RobotsPolicy(_decode(robots))
@@ -474,6 +492,7 @@ def search(subject, *, fetcher=None):
         if not halted:
             for index in _detail_candidates(items):
                 try:
+                    begin_stage('detail')
                     if time.monotonic() + delay + .1 >= deadline:
                         raise PublicFetchError('timeout')
                     url = items[index]['source_url']

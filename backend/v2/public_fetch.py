@@ -5,6 +5,7 @@ does not grant redistribution rights or establish that a room is still vacant.
 """
 
 from dataclasses import dataclass
+import html
 import http.client
 import re
 import socket
@@ -19,6 +20,8 @@ from .supply import SupplyError, _bounded_dns, _PinnedHTTPSConnection
 USER_AGENT = "HouseEvaluator-PublicComparison/2.0"
 MAX_PAGE_BYTES = 3 * 1024 * 1024
 MAX_ROBOTS_BYTES = 256 * 1024
+MAX_ERROR_DIAGNOSTIC_BYTES = 8 * 1024
+MAX_RETRY_AFTER_SECONDS = 24 * 60 * 60
 REQUEST_SECONDS = 9
 _QUERY = frozenset(("ar", "bs", "ta", "sc", "md", "mb", "mt", "pc", "cb", "ct", "et", "cn", "rn", "ek", "ts", "page", "ra"))
 
@@ -34,6 +37,95 @@ class PublicResponse:
     status: int
     body: bytes = b""
     content_type: str = "text/html; charset=UTF-8"
+    diagnostics: dict | None = None
+
+
+def safe_diagnostics(value):
+    """Only fixed, non-identifying observations can leave the transport."""
+    if not isinstance(value, dict):
+        return None
+    result = {}
+    if value.get("classification") in ("access_denied", "challenge", "service_unavailable", "unclassified"):
+        result["classification"] = value["classification"]
+    if value.get("body_inspection") in ("complete", "limited", "unavailable"):
+        result["body_inspection"] = value["body_inspection"]
+    if value.get("edge_hint") in ("cloudflare", "cloudfront", "akamai"):
+        result["edge_hint"] = value["edge_hint"]
+    retry = value.get("retry_after_seconds")
+    if type(retry) is int and 0 <= retry <= MAX_RETRY_AFTER_SECONDS:
+        result["retry_after_seconds"] = retry
+    return result or None
+
+
+def _error_classification(body):
+    # Inspect only bounded visible text. Script URLs, headers and opaque IDs
+    # neither identify a cause nor belong in an operational report.
+    text = body.decode("utf-8", errors="replace")
+    text = re.sub(r"<!--.*?(?:-->|$)|<(script|style)\b[^>]*>.*?(?:</\1\s*>|$)", " ", text, flags=re.I | re.S)
+    text = html.unescape(re.sub(r"<[^>]*>", " ", text))
+    text = " ".join(text.lower().split())
+    if any(marker in text for marker in ("verify you are human", "verify that you are human", "captcha", "ロボットではないことを確認")):
+        return "challenge"
+    if any(marker in text for marker in ("access denied", "access forbidden", "request blocked", "アクセス制限", "お客様のアクセスを制限", "不正なアクセスを検知")):
+        return "access_denied"
+    if any(marker in text for marker in ("service unavailable", "service temporarily unavailable", "temporarily unavailable", "一時的にサービスをご利用いただけません")):
+        return "service_unavailable"
+    return "unclassified"
+
+
+def _error_diagnostics(response, connection, *, deadline, check_time):
+    """Best-effort 5xx inspection must never replace the received HTTP status.
+
+    Both bytes read and visible text examined are capped at 8 KiB. Compressed,
+    non-text or malformed responses remain unclassified; no raw values escape.
+    The caller's existing socket/watchdog deadline also covers this read.
+    """
+    result = {"classification": "unclassified", "body_inspection": "unavailable"}
+    try:
+        # Fixed branding hints are observations, not attribution of the error
+        # to that provider. Never return an arbitrary Server/Via value or ID.
+        server = response.getheader("Server", "")
+        via = response.getheader("Via", "")
+        brands = {"cloudflare": "cloudflare", "cloudfront": "cloudfront", "akamaighost": "akamai"}
+        if isinstance(server, str) and len(server) <= 128 and server.strip().lower() in brands:
+            result["edge_hint"] = brands[server.strip().lower()]
+        elif isinstance(via, str) and len(via) <= 1024 and re.search(r"\b[0-9a-z.-]+\.cloudfront\.net\s+\(cloudfront\)", via, re.I):
+            result["edge_hint"] = "cloudfront"
+        retry = response.getheader("Retry-After")
+        if isinstance(retry, str) and re.fullmatch(r"[0-9]{1,5}", retry.strip()):
+            seconds = int(retry.strip())
+            if seconds <= MAX_RETRY_AFTER_SECONDS:
+                result["retry_after_seconds"] = seconds
+        check_time()
+        content_type = response.getheader("Content-Type", "")
+        encoding = response.getheader("Content-Encoding", "identity")
+        if (not isinstance(content_type, str) or content_type.split(";", 1)[0].strip().lower()
+                not in ("text/html", "text/plain", "application/xhtml+xml")
+                or not isinstance(encoding, str) or encoding.strip().lower() != "identity"):
+            return result
+        length = response.getheader("Content-Length")
+        if length is not None and (not isinstance(length, str) or not re.fullmatch(r"[0-9]{1,10}", length)):
+            return result
+        chunks, size, complete = [], 0, False
+        while size < MAX_ERROR_DIAGNOSTIC_BYTES:
+            check_time()
+            if connection.sock:
+                connection.sock.settimeout(max(0.001, deadline - time.monotonic()))
+            chunk = response.read(min(2048, MAX_ERROR_DIAGNOSTIC_BYTES - size))
+            check_time()
+            if not chunk:
+                complete = True
+                break
+            size += len(chunk)
+            chunks.append(chunk)
+        check_time()
+        result["classification"] = _error_classification(b"".join(chunks))
+        result["body_inspection"] = "complete" if complete else "limited"
+    except Exception:
+        # This optional observation cannot hide an already received 5xx behind
+        # a decode/read/timeout error or leak an exception's sensitive text.
+        pass
+    return result
 
 
 def checked_url(url):
@@ -122,6 +214,9 @@ def fetch_public(url, *, deadline):
         check_time()
         if 300 <= response.status < 400:
             raise PublicFetchError("redirect_denied")
+        if 500 <= response.status <= 599:
+            diagnostics = _error_diagnostics(response, connection, deadline=local_deadline, check_time=check_time)
+            return PublicResponse(response.status, diagnostics=diagnostics)
         if response.status != 200:
             return PublicResponse(response.status)
         content_type = response.getheader("Content-Type", "")
