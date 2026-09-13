@@ -20,7 +20,8 @@ IMPORT_URL = 'https://www.chintai.net/detail/bk-C000000000000000000000000001/'
 
 
 @pytest.fixture(autouse=True)
-def source_configuration(monkeypatch):
+def source_configuration(monkeypatch, tmp_path):
+    monkeypatch.setenv('HOUSE_EVALUATOR_WORKER_BUDGET_FILE', str(tmp_path / 'worker-budget.sqlite3'))
     monkeypatch.setenv('HOUSE_EVALUATOR_SEARCH_SOURCE', 'suumo')
     monkeypatch.setenv('HOUSE_EVALUATOR_IMPORT_SOURCES', 'chintai,yahoo_realestate')
 
