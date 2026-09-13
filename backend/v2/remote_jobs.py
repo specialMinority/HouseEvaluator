@@ -4,6 +4,7 @@ Only validated search/import jobs are dispatched. Jobs are never redelivered
 after a lease expires; an upload retry must contain the same completed result.
 """
 from copy import deepcopy
+from datetime import datetime, timezone
 import hashlib
 import json
 import re
@@ -22,6 +23,7 @@ _MESSAGES = {
     'worker_offline': (503, '조회 서비스 연결이 끊겼습니다. 잠시 후 연결 상태를 다시 확인해 주세요.'),
     'worker_busy': (429, '조회 요청이 진행 중입니다. 잠시 후 다시 시도해 주세요.'),
     'worker_timeout': (503, '조회 작업의 제한 시간이 지났습니다. 연결 상태를 확인해 주세요.'),
+    'worker_clock_skew': (503, '조회 서비스의 시간 설정 문제로 결과를 전달하지 못했습니다. 잠시 후 다시 확인해 주세요.'),
     'worker_invalid': (400, '조회 작업 요청 형식이 올바르지 않습니다.'),
     'worker_mismatch': (409, '조회 작업자의 설정이 서버와 일치하지 않습니다.'),
     'job_stale': (409, '종료되거나 만료된 조회 작업입니다.'),
@@ -50,6 +52,11 @@ def _error(code, kind):
 
 def _identity(value):
     return isinstance(value, str) and re.fullmatch(r'[A-Za-z0-9_-]{16,80}', value) is not None
+
+
+def _claim_response(job=None):
+    return {'job': job, 'poll_after_seconds': 1 if job else 10,
+            'server_time': datetime.now(timezone.utc).isoformat()}
 
 
 def _encoded(value):
@@ -207,14 +214,14 @@ class WorkerJobs:
             self.last_seen = self.clock()
             # Cancelled jobs also retain their lease until the original worker finishes.
             if any(j.get('lease_until', 0) > self.clock() for j in self.jobs.values()):
-                return {'job': None, 'poll_after_seconds': 10}
+                return _claim_response()
             pending = [(key, j) for key, j in self.jobs.items() if j['status'] == 'pending']
             if not pending:
-                return {'job': None, 'poll_after_seconds': 10}
+                return _claim_response()
             key, job = min(pending, key=lambda pair: pair[1]['created'])
             lease = secrets.token_urlsafe(32)
             job.update(status='running', worker_id=payload['worker_id'], lease_token=lease, lease_until=self.clock() + 75)
-            return {'job': {'job_id': key, 'lease_token': lease, 'kind': job['kind'], 'payload': deepcopy(job['payload']), 'lease_seconds': 75}, 'poll_after_seconds': 1}
+            return _claim_response({'job_id': key, 'lease_token': lease, 'kind': job['kind'], 'payload': deepcopy(job['payload']), 'lease_seconds': 75})
 
     def finish(self, payload):
         if not isinstance(payload, dict) or set(payload) != {'worker_id', 'job_id', 'lease_token', 'outcome'} or any(not _identity(payload.get(k)) for k in ('worker_id', 'job_id', 'lease_token')):

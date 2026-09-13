@@ -1,5 +1,6 @@
 """Offline worker protocol and transport boundaries; no source or cloud calls."""
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 import json
 import ssl
 
@@ -336,3 +337,139 @@ def test_processed_identity_memory_is_bounded_and_once_clears_results():
     assert len(runner._seen) == len(runner._seen_order) == 256
     runner.stop()
     assert runner.run(once=True) == 0 and not runner._seen and runner._pending is None
+
+
+@pytest.mark.parametrize(('error', 'code'), [
+    (module.WorkerProtocolError('cloud_request_rejected'), 'cloud_request_rejected'),
+    (module.WorkerProtocolError('invalid_response'), 'invalid_response'),
+    (module.WorkerProtocolError(SECRET), 'worker_unavailable'),
+    (OSError(SECRET), 'invalid_configuration'),
+])
+def test_cli_failure_diagnostics_are_allowlisted_constants_only(error, code, monkeypatch, capsys):
+    monkeypatch.setattr(module, 'read_token', lambda path: TOKEN)
+    def fail(*args): raise error
+    monkeypatch.setattr(module, 'HttpsTransport', fail)
+    assert module.main(['--once']) == 2
+    output = capsys.readouterr().out
+    assert 'code=' + code + ':' in output
+    assert SECRET not in output and TOKEN not in output
+
+
+ANCHOR = datetime(2026, 1, 1, tzinfo=timezone.utc)
+
+
+class StopEvent:
+    def __init__(self, clock, *, cancel=False):
+        self.clock, self.cancel, self.stopped, self.waits = clock, cancel, False, []
+    def is_set(self): return self.stopped
+    def set(self): self.stopped = True
+    def wait(self, seconds):
+        self.waits.append(seconds)
+        if self.cancel:
+            self.stopped = True
+            return True
+        self.clock.advance(seconds)
+        return False
+
+
+def timed_job(server_time=ANCHOR.isoformat()):
+    response = job()
+    response['server_time'] = server_time
+    return response
+
+
+@pytest.mark.parametrize('key', ['fetched_at', 'details_fetched_at', 'searched_at'])
+def test_server_anchor_waits_for_observed_timestamp_without_modifying_it(key):
+    clock, calls = Clock(), []
+    stop = StopEvent(clock)
+    stamp = (ANCHOR + timedelta(seconds=1.7)).isoformat()
+    result = {'listings': [{key: stamp}], 'source_reports': [], 'unknown_key': SECRET}
+    transport = Transport(timed_job(), {})
+    runner = worker(transport, clock=clock, stop_event=stop, search_fn=lambda p: calls.append(p) or deepcopy(result))
+    assert runner.step() == 1
+    assert stop.waits == pytest.approx([1.8]) and len(calls) == 1
+    assert outcome(transport) == {'status': 'complete', 'result': result}
+
+
+def test_monotonic_source_duration_and_latest_known_key_determine_wait():
+    clock = Clock()
+    stop = StopEvent(clock)
+    result = {'searched_at': (ANCHOR + timedelta(seconds=1.7)).isoformat(),
+              'listings': [{'fetched_at': (ANCHOR + timedelta(seconds=11.7)).isoformat(),
+                            'details_fetched_at': (ANCHOR + timedelta(seconds=12.7)).isoformat()}]}
+    def source(_):
+        clock.advance(10)
+        return deepcopy(result)
+    transport = Transport(timed_job(), {})
+    runner = worker(transport, clock=clock, stop_event=stop, search_fn=source)
+    runner.step()
+    assert stop.waits == pytest.approx([2.8])
+    assert outcome(transport)['result'] == result
+
+
+@pytest.mark.parametrize('delta', [5, 10, 100000000])
+def test_clock_offset_over_five_second_wait_budget_uploads_only_fixed_failure(delta):
+    clock, stop = Clock(), None
+    stop = StopEvent(clock)
+    original = {'searched_at': (ANCHOR + timedelta(seconds=delta)).isoformat(), 'private': SECRET}
+    transport = Transport(timed_job(), {})
+    worker(transport, clock=clock, stop_event=stop, search_fn=lambda p: original).step()
+    assert stop.waits == [] and outcome(transport)['error']['code'] == 'worker_clock_skew'
+    assert SECRET not in json.dumps(outcome(transport))
+    assert original['private'] == SECRET
+
+
+def test_exact_five_second_total_wait_is_allowed():
+    clock = Clock()
+    stop = StopEvent(clock)
+    result = {'searched_at': (ANCHOR + timedelta(seconds=4.9)).isoformat()}
+    transport = Transport(timed_job(), {})
+    worker(transport, clock=clock, stop_event=stop, search_fn=lambda p: result).step()
+    assert stop.waits == [5] and outcome(transport)['status'] == 'complete'
+
+
+def test_stop_during_clock_wait_discards_result_without_upload_or_second_query():
+    clock, calls = Clock(), []
+    stop = StopEvent(clock, cancel=True)
+    transport = Transport(timed_job())
+    runner = worker(transport, clock=clock, stop_event=stop, search_fn=lambda p: calls.append(p) or
+                    {'searched_at': (ANCHOR + timedelta(seconds=1)).isoformat()})
+    assert runner.step() == 0 and runner.last_event == 'stopped'
+    assert len(calls) == len(transport.calls) == 1 and runner._pending is None
+
+
+@pytest.mark.parametrize('stamp', [None, True, '2026-01-01T00:00:00', 'not-a-date', SECRET, '2026-99-99T00:00:00Z'])
+def test_invalid_present_server_time_is_protocol_failure_before_source_call(stamp):
+    transport = Transport(timed_job(stamp))
+    with pytest.raises(module.WorkerProtocolError, match='invalid_server_time'):
+        worker(transport, search_fn=lambda p: pytest.fail('source must not run')).step()
+    assert len(transport.calls) == 1
+
+
+@pytest.mark.parametrize('stamp', ['2026-01-01T00:00:00', SECRET, 10])
+def test_invalid_known_result_time_returns_safe_clock_error(stamp):
+    transport = Transport(timed_job(), {})
+    worker(transport, search_fn=lambda p: {'searched_at': stamp}).step()
+    assert outcome(transport)['error']['code'] == 'worker_clock_skew'
+    assert SECRET not in json.dumps(outcome(transport))
+
+
+def test_missing_anchor_legacy_and_past_observations_do_not_wait():
+    clock = Clock()
+    stop = StopEvent(clock)
+    transport = Transport(job(), {}, timed_job(), {})
+    runner = worker(transport, clock=clock, stop_event=stop, search_fn=lambda p: {'searched_at': ANCHOR.isoformat()})
+    runner.step()
+    # Use a new job identity; the previous one is intentionally not rerun.
+    transport.responses[0]['job']['job_id'] = 'k' * 32
+    runner.step()
+    assert stop.waits == [] and outcome(transport)['status'] == 'complete'
+
+
+def test_cancellation_before_pending_upload_discards_payload_without_network():
+    transport = Transport()
+    runner = worker(transport)
+    runner._pending = {'message': {'private': SECRET}, 'expires': 999, 'attempts': 0}
+    runner.stop()
+    assert runner._upload() == 0 and runner._pending is None
+    assert transport.calls == [] and runner.last_event == 'stopped'

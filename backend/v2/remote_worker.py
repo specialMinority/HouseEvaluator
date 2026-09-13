@@ -6,6 +6,7 @@ No job, token, URL, or page content is written to disk or application logs.
 """
 from collections import deque
 from copy import deepcopy
+from datetime import datetime, timedelta, timezone
 import argparse
 import http.client
 import json
@@ -28,6 +29,14 @@ HTTP_SECONDS = 10
 _PATHS = frozenset(('/api/v2/worker/claim', '/api/v2/worker/result'))
 _ID = re.compile(r'[A-Za-z0-9_-]{16,128}')
 _TOKEN = re.compile(r'[A-Za-z0-9_-]{32,256}')
+_DIAGNOSTIC_CODES = frozenset((
+    'invalid_json', 'message_too_large', 'invalid_response', 'invalid_origin',
+    'invalid_token_file', 'invalid_endpoint', 'cloud_timeout', 'worker_auth_rejected',
+    'redirect_denied', 'worker_busy', 'lease_expired', 'cloud_unavailable',
+    'cloud_request_rejected', 'encoding_denied', 'invalid_source_configuration',
+    'invalid_worker_id', 'invalid_job_envelope', 'worker_unavailable',
+    'invalid_server_time',
+))
 _ERRORS = {
     'invalid_job': '작업 요청 형식을 확인하지 못했습니다.',
     'unsupported_job': '지원하지 않는 작업 종류입니다.',
@@ -36,7 +45,18 @@ _ERRORS = {
     'worker_unavailable': '조회 작업을 완료하지 못했습니다. 직접 입력을 사용할 수 있습니다.',
     'result_too_large': '조회 결과가 전송 한도를 초과했습니다. 직접 입력을 사용해 주세요.',
     'already_processed': '이미 처리한 작업입니다. 새 작업을 요청해 주세요.',
+    'worker_clock_skew': '조회 PC와 서버의 시간 차이가 커 결과를 전달하지 못했습니다. 운영자에게 확인해 주세요.',
 }
+_RESULT_TIMES = frozenset(('fetched_at', 'details_fetched_at', 'searched_at'))
+
+
+def _aware_timestamp(value):
+    if not isinstance(value, str) or not 1 <= len(value) <= 64:
+        raise ValueError()
+    timestamp = datetime.fromisoformat(value.replace('Z', '+00:00'))
+    if timestamp.tzinfo is None or timestamp.utcoffset() is None:
+        raise ValueError()
+    return timestamp.astimezone(timezone.utc)
 
 
 class WorkerError(Exception):
@@ -295,7 +315,54 @@ class RemoteWorker:
         except Exception:
             return _failed('worker_unavailable')
 
+    def _await_server_clock(self, outcome, anchor):
+        """Do not change observation timestamps to compensate for a PC clock.
+
+        Receipt time makes this an intentionally conservative server estimate:
+        return-network latency is omitted. At most five seconds are spent
+        waiting, within the existing lease, using an interruptible event.
+        """
+        if self._stop.is_set():
+            return None
+        if anchor is None or outcome.get('status') != 'complete':
+            return outcome
+        latest, stack = None, [outcome['result']]
+        try:
+            while stack:
+                item = stack.pop()
+                if isinstance(item, dict):
+                    for key, value in item.items():
+                        if key in _RESULT_TIMES and value is not None:
+                            stamp = _aware_timestamp(value)
+                            latest = stamp if latest is None or stamp > latest else latest
+                        elif isinstance(value, (dict, list)):
+                            stack.append(value)
+                elif isinstance(item, list):
+                    stack.extend(value for value in item if isinstance(value, (dict, list)))
+            if latest is None:
+                return outcome
+            server_time, received_at = anchor
+            estimate = server_time + timedelta(seconds=max(0, self._clock() - received_at))
+            ahead = (latest - estimate).total_seconds()
+            if ahead <= 0:
+                return outcome
+            delay = ahead + .1
+            if delay > 5:
+                return _failed('worker_clock_skew')
+            if self._stop.wait(delay) or self._stop.is_set():
+                return None
+            estimate = server_time + timedelta(seconds=max(0, self._clock() - received_at))
+            if latest > estimate:
+                return _failed('worker_clock_skew')
+            return outcome
+        except (ValueError, OverflowError, TypeError):
+            return _failed('worker_clock_skew')
+
     def _upload(self):
+        if self._stop.is_set():
+            self._pending = None
+            self.last_event = 'stopped'
+            return 0
         pending = self._pending
         if self._clock() >= pending['expires'] or pending['attempts'] >= 3:
             self._pending = None
@@ -341,6 +408,7 @@ class RemoteWorker:
                 'worker_id': self.worker_id, 'protocol': 1, 'search_source': self.search_source,
                 'import_sources': list(self.import_source_ids),
             })
+            received_at = self._clock()
         except WorkerBusy:
             self.last_event = 'cloud_busy'
             return 10
@@ -350,6 +418,12 @@ class RemoteWorker:
             self.last_event = 'cloud_unavailable'
             return self._backoff()
         self._failures = 0
+        anchor = None
+        if 'server_time' in response:
+            try:
+                anchor = (_aware_timestamp(response['server_time']), received_at)
+            except (ValueError, OverflowError, TypeError):
+                raise WorkerProtocolError('invalid_server_time') from None
         if 'job' not in response:
             raise WorkerProtocolError('invalid_response')
         poll = response.get('poll_after_seconds', 10)
@@ -377,6 +451,10 @@ class RemoteWorker:
             _json_bytes(message)
         except WorkerProtocolError:
             message['outcome'] = _failed('result_too_large')
+        message['outcome'] = self._await_server_clock(message['outcome'], anchor)
+        if message['outcome'] is None:
+            self.last_event = 'stopped'
+            return 0
         self._pending = {'message': deepcopy(message), 'expires': expires, 'attempts': 0}
         return self._upload()
 
@@ -414,8 +492,12 @@ def main(argv=None):
     except WorkerAuthError:
         print('worker_auth_rejected: 전용 워커 인증 설정을 확인한 후 다시 시작해 주세요.', flush=True)
         return 2
-    except (WorkerError, ValueError, OSError):
-        print('worker_configuration_or_protocol_error: 워커 설정과 서버 프로토콜을 확인해 주세요.', flush=True)
+    except WorkerError as error:
+        code = error.code if isinstance(error.code, str) and error.code in _DIAGNOSTIC_CODES else 'worker_unavailable'
+        print('worker_configuration_or_protocol_error code=' + code + ': 워커 설정과 서버 프로토콜을 확인해 주세요.', flush=True)
+        return 2
+    except (ValueError, OSError):
+        print('worker_configuration_or_protocol_error code=invalid_configuration: 워커 설정과 서버 프로토콜을 확인해 주세요.', flush=True)
         return 2
     finally:
         if worker is not None:

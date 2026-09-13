@@ -51,3 +51,9 @@ The public Render site keeps its existing URL and browser API. An explicitly con
 - [ ] W5: Verify actual public URL import, search, graph and connection recovery. Offline/unit tests alone do not meet this acceptance condition.
 
 See docs/REMOTE_WORKER.md for setup, lifecycle, private data handling, and stopping the worker. The source request functions retain their robots, request limits and rejection handling. A failed job is not automatically retried through another source or host.
+
+## 2026-09-13 공개 조회 전달 시각 교정
+
+PC와 서버의 약 1.7초 시계 차이로 정상 원문 결과가 미래 조회 시각으로 거절되는 문제를 합성 입력으로 재현했다. 원문 조회 시각은 변경하지 않고 claim 응답의 서버 UTC와 단조 시계를 기준으로 최대 5초 대기한 뒤 전송한다. 한도를 초과하면 고정 오류로 종료하며 원문을 다시 요청하지 않는다. 회귀 검증 후 실제 공개 사이트 URL 입력·자동검색·비교를 재검증한다.
+
+관련 작업자·작업 중개·브라우저 회귀: **153 passed**(41.90초). 기존 전체 회귀: 1,356 passed, 1 skipped, 468 subtests passed.
