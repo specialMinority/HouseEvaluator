@@ -57,4 +57,6 @@ Application commit: 0d8aa6ad278c6c94e8f55de9cbe2927b33022bd4. Render deployment 
 ## Direct Korean typing — 2026-09-13
 
 - [x] C4: Replace password-type access fields with text inputs that support Korean IME, disable spelling/capitalization corrections, suppress composition-confirmation Enter submission and defer button submission until composition completes. Preserve NFC normalization, existing code and credential separation.
-- [ ] C5: Deploy and verify the public input type, login and source-worker connection. Tests include synthetic composition events and native Chromium composition commands in an isolated local browser; they do not operate the user's physical keyboard.
+- [x] C5: Deployed and verified the text input, completed-composition login, paste-compatible login and online query connection against the public service. Partial composition sent no authenticated request; browser errors and source jobs were zero. Tests use synthetic events and native Chromium composition commands, not the user's physical Windows keyboard.
+
+Affected browser regression: 37 passed; both JavaScript syntax checks passed. Live application commit dc65e1f1724a01296231419a8b9954f194162926, Render dep-daj70a1594qs73b29u90, live 2026-09-13 18:43:48 KST; public composition/login verification completed at 18:44 KST. Deployment credentials were unchanged.
