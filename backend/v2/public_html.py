@@ -5,6 +5,7 @@ import re
 import unicodedata
 from urllib.parse import urljoin
 
+from .building_identity import building_name as _building_name
 from .public_fetch import PublicFetchError, checked_url
 
 
@@ -261,7 +262,7 @@ def parse_search(text, *, fetched_at, regions, target_station):
             if not isinstance(source_listing_id, str) or not re.fullmatch(r"[0-9]{8,16}", source_listing_id):
                 source_listing_id = None
             item = {
-                "source_id": "suumo", "source_url": url, "title": name, "building_name": name or None,
+                "source_id": "suumo", "source_url": url, "title": name, "building_name": _building_name(name),
                 "source_listing_id": source_listing_id,
                 "address": address or None, "city": city, "municipality": municipality,
                 "rent_yen": yen(node_text(row.first(cls="cassetteitem_price--rent"))),

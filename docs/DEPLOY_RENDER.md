@@ -94,7 +94,7 @@ Render는 `PORT` 환경변수 변경을 지원한다. 외부 HTTPS는 Render가 
 
 코드 업데이트는 검증한 커밋을 **Manual Deploy → Deploy a specific commit**으로 지정한다. 환경변수 변경을 적용할 때 **Restart service만 누르지 않는다**. Render의 Restart service는 현재 실행 중인 버전의 환경변수를 재사용한다. Environment에서 새 값을 저장하고 해당 값을 반영하는 배포를 실행한다. [수동 배포와 재시작 차이](https://render.com/docs/deploys#manual-deploys)
 
-## 6. 배포 기록
+## 6. 최초 배포 기록
 
 2026-09-13 KST 기준. 계정 식별정보와 접속 코드는 기록하지 않는다. 아래 비교 검증에는 명시적인 가상 매물만 사용했으며 실제 시장가격 검증을 뜻하지 않는다.
 
@@ -128,3 +128,27 @@ Render는 `PORT` 환경변수 변경을 지원한다. 외부 HTTPS는 Render가 
 - 오프라인 재평가: `render-remote-smoke-reassessment.json` (`network_requests_sent=0`, 새로운 배포 검증 실행 아님)
 
 로컬 준비 검증에서는 YAML 파싱, 무료 구성·환경변수 타입·중복 키, 생성형 Base64 접속 코드 형식의 `AccessPolicy` 수용, 새 SQLite 부모 디렉터리 자동 생성이 통과했다. 필드는 [공식 JSON Schema](https://render.com/schema/render.yaml.json)와 명세를 대조했다. Render CLI/API의 전체 Blueprint 검증은 실행하지 않았으며, 이번 실제 배포는 위의 수동 서비스 생성 방식으로 검증했다. 이용자 검수나 클라우드 자동검색의 성공으로 확대 해석하지 않는다.
+
+## 7. URL 자동입력 배포와 현재 검색 상태
+
+2026-09-13 10:02 KST 기준, **앱 배포는 성공했지만 클라우드 자동검색 복구는 미완료**다. 09:30의 Yahoo 사전 확인 200 이후 정상 앱의 실제 목록 조회가 403을 반환했다. 실제 Chrome의 URL 자동입력도 접근 제한 오류를 표시했다. 로컬 성공과 사전 확인만으로 클라우드 성공을 기록하지 않는다.
+
+| 항목 | 확인 내용 |
+| --- | --- |
+| 기능 커밋 | `760f35c07b43fb32026a666800e42ebcc6558300` |
+| 환경 반영 배포 | `dep-daivbqu7bikc73a75fc0`, 시작 10:01:31 → Live 10:01:58 KST, 26.7초 |
+| 정상 실행 명령 | `python -m backend.src.server`; 일회성 사전 확인 명령은 해제 |
+| 클라우드 출처 | `HOUSE_EVALUATOR_SEARCH_SOURCE=yahoo_realestate`, `HOUSE_EVALUATOR_IMPORT_SOURCES=yahoo_realestate` |
+| HTTP·인증·가상 비교 | 통과; 실제 사이트 검색 성공과 별도 검사 |
+| 실제 자동검색 | Yahoo robots 확인 후 첫 목록 HTTP 403, 매물 0개. 추가 목록 재시도 없음 |
+| 실제 클라우드 URL 입력 | 지원 링크와 입력 UI 표시 정상, 상세 읽기는 접근 제한 안내. 기존 입력 보존 |
+| 코드 검증 | 1,216 tests passed, 1 skipped, 468 subtests passed; [GitHub Actions 성공](https://github.com/specialMinority/HouseEvaluator/actions/runs/34729022931) |
+| 실제 로컬 흐름 | 별도 PC 탭에서 Yahoo URL의 조건 자동입력 → 기존 SUUMO 검색 광고 59개 → 가격 그래프·원문 링크 확인 |
+
+09:51 배포는 검색원 변경이 저장되지 않아 CHINTAI가 계속 사용됐다. 대시보드에서 비밀이 아닌 검색원 두 값만 확인하여 Yahoo로 저장하고 위 배포를 실행했다. 환경변수 입력은 저장 완료 뒤 값과 실제 옵션을 각각 확인한다. `Save only`는 값을 저장하며 새 값을 실행하려면 배포가 필요하다. [Render 환경변수 저장 방식](https://render.com/docs/configure-environment-variables)
+
+사전 확인과 정상 검색의 URL·HTTP 헤더·Host/SNI·DNS 선택 코드를 외부 요청 없이 비교했고 첫 두 요청의 직렬화 결과가 같았다. 최종 403은 원격 HTTP 응답이며 파서가 만든 값이 아니다. 당시 연결 IP와 차단 사유는 기록하지 않아 원인을 단정하지 않는다. 확인된 접근 제한에 대해 프록시·계정·요청 신원 변경이나 반복 재시도를 사용하지 않는다.
+
+원격 상세 증거는 로컬 `.runtime/render-yahoo-acceptance.json`에만 보관한다. 이후 클라우드에서 실제 목록·URL 입력·비교 흐름이 성공하기 전까지 상태를 복구 완료로 바꾸지 않는다.
+
+추가 검증에서 역·층수·연식만으로 된 광고 제목을 독립 건물명으로 세는 문제를 교정했다. 이미 브라우저에 가져온 자료에도 같은 검사를 적용하며, 대상의 건물 정보가 미상이면 다른 사이트의 자기 매물 가능성을 안내한다. 최종 전체 회귀는 **1,237 passed, 1 skipped, 468 subtests passed**다. 로컬의 기존 59개 결과를 외부 재조회 없이 재비교하여 그래프 5개·원문 링크 5개·미확인 안내를 확인했다. 유사 조건만으로 같은 호실이라고 판정하지 않는다.

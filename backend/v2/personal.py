@@ -13,6 +13,8 @@ from copy import deepcopy
 from datetime import datetime, timezone
 from urllib.parse import urlsplit, urlunsplit
 
+from .building_identity import building_name as _known_building_name
+
 LABELS = {
     'city': '도시', 'municipality': '행정구역', 'station_name': '역명',
     'layout': '평면', 'area_sqm': '면적', 'structure': '구조',
@@ -143,7 +145,7 @@ def _url_identity(value):
 
 
 def _building_key(row):
-    address, name = normalized(row['address']), normalized(row['building_name'])
+    address, name = normalized(row['address']), normalized(_known_building_name(row['building_name']))
     if address and name:
         return row['city'], address, name
     return None
@@ -683,8 +685,10 @@ def compare(payload, *, now=None):
         response['warnings'].append('같은 건물군 안에서 거주 층·연식·면적 등의 범위를 넓힌 참고가격입니다. 동일 조건의 적정가격으로 해석하지 마세요.')
     if selected and any(field in response['unverified_fields'] for field in ('structure', 'built_year', 'walk_min', 'floor')):
         response['warnings'].append('구조·준공·도보·층 중 미확인 정보는 추정하지 않았습니다. 아래 표에서 각 매물의 미상 항목을 확인하세요.')
-    if not subject['source_url'] and not subject_building:
-        response['warnings'].append('대상의 원문 URL과 건물 정보가 없어 자기 매물 포함 여부를 확인할 수 없습니다.')
+    if not subject_building:
+        response['warnings'].append(
+            '대상의 건물명·주소 정보가 부족해 다른 사이트에 게시된 자기 매물 포함 여부를 확인할 수 없습니다.'
+            if subject['source_url'] else '대상의 원문 URL과 건물 정보가 없어 자기 매물 포함 여부를 확인할 수 없습니다.')
     if any(row['_group'] == ('unknown',) for row in selected):
         response['warnings'].append('주소·건물명이 미상인 광고는 독립된 건물로 확인되지 않아 하나의 그룹으로 묶었습니다.')
     if selected and any(subject[f] is None or any(row[f] is None for row in selected) for f in EXTRA):
