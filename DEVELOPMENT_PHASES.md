@@ -1,59 +1,47 @@
 # HouseEvaluator v2 development and deployment
 
-Public progress record. Detailed local evidence and user-entered rental examples remain local.
+Public progress record. User-entered rental examples, source snapshots, access codes and detailed diagnostic evidence remain local.
 
-## Existing comparison features
+## Current operating state — 2026-09-13
 
-- [x] Supplier-free personal comparison, manual input and editing.
+The existing public site, https://houseevaluator-personal.onrender.com, now completes actual URL autofill, automatic search and visual comparison through a fixed operator PC worker. Render serves the web/API and computes comparisons. The browser only calls Render; the worker makes outbound HTTPS connections and exposes no inbound PC port.
+
+**The operator PC must be powered on, signed in and online.** This is a free, access-protected preview, not autonomous cloud-only operation. Source policies, availability and page structures still apply. A failed task is not automatically repeated through another source or host.
+
+## Comparison features
+
+- [x] Supplier-free personal comparison and manual input/editing.
 - [x] Building type, structure, total height and floor-position boundaries.
-- [x] Progressive comparison tolerances and clearly separated reference samples.
-- [x] Visual price comparison, sample ranks, original listing links and fixed comparison actions.
-- [x] Access-protected Docker preview deployed on Render Free.
+- [x] Progressive condition tolerances and separate reference samples.
+- [x] Visual price comparison, sample ranks, original links and fixed comparison actions.
+- [x] Building identity handling that excludes generic station/height/age advertisement titles from known building names.
 
-## Automatic search recovery — 2026-09-13
+## Public-site query integration
 
-- [x] A1: Identify the actual failed stage. SUUMO returned HTTP 503 for the first listing page from Render; its exact cause remains unclassified. CHINTAI subsequently returned HTTP 403 for robots and was not retried.
-- [x] A2: Implement the independent Yahoo! Real Estate source with observed station/theme/page links, strict URL and robots checks, bounded requests, exact station/layout and area scope, and cross-page conflict rejection.
-- [x] A3: Publish the tested integration and deploy it to the existing free service. Commit 760f35c passed 1,216 tests and 468 subtests (one platform skip); GitHub Actions 34729022931 succeeded.
-- [ ] A4: Cloud acceptance remains incomplete. After the earlier Yahoo preflight returned HTTP 200, the final live application received HTTP 403 on its first listing page. No listings were returned and no retry or identity change was used.
+- [x] W1: Separate user/worker credentials and fixed validated search/import contracts.
+- [x] W2: Bounded claim/lease/result queue, no expired-job redelivery, identical-result upload retry only, cancellation and role isolation.
+- [x] W3: Asynchronous URL autofill, service connection status/manual refresh and stale-response protection.
+- [x] W4: Deploy the worker broker to the existing free Render service and install a hidden current-user Windows logon task with a separate private token.
+- [x] W5: Actual public-site Yahoo URL autofill → SUUMO 60 advertisements → comparison graph, rank and source links; connection loss/recovery preserves the form and existing result.
 
-## Listing URL autofill — 2026-09-13
+Active configuration: execution mode worker, search source SUUMO, compatible import sources Yahoo! Real Estate and CHINTAI. Actual live import acceptance in this release used Yahoo; it is not a claim that every compatible URL or source was tested.
 
-- [x] U1: Parse compatible Yahoo and CHINTAI detail pages using source identity and stated facts; unknown values stay unknown.
-- [x] U2: Add authenticated import API, source selection, URL input, review of missing fields, and protection against stale responses and mixed old/new inputs.
-- [x] U3: Verify parser, URL/transport restrictions, authentication, deadlines, and offline mobile UI behavior.
-- [ ] U4: Cloud URL import received an access restriction and remains incomplete. A separate local browser did complete an actual Yahoo URL import, review, existing SUUMO search (59 returned advertisements), and graph/link flow. Local success does not establish cloud availability.
+## Verification
 
-Production configuration enables Yahoo search and Yahoo URL import only. Source availability and page structures may change; failed requests do not switch identity or bypass restrictions. No supplier contract, whole-market valuation or uninterrupted availability is claimed.
+- Application commit: af7231de6c0c3660ea2afecee466d9ea7594c4e1.
+- Render deployment: dep-daj09o8ae00c7385ml40, started 2026-09-13 11:05:21 KST, live 11:05:55 KST.
+- GitHub Actions 34732146457 succeeded. Before the final clock correction, full regression was 1,356 passed, one platform skip, 468 subtests passed; the final affected worker/broker/browser suite passed 153 tests.
+- Public UI acceptance at 11:06–11:08 KST: actual Yahoo detail autofill with four unknown-field notices; SUUMO three list pages, 60 returned advertisements and 22 enriched details from 24 detail requests; four comparison cards plus the subject in the graph, with rank, condition differences and original URLs.
+- Stopping the dedicated worker produced an offline message and disabled source-query actions; the form and comparison remained unchanged. Restarting restored both actions and preserved the same inputs and result. This lifecycle check made no additional source requests; the worker was left running.
+- A roughly 1.7-second PC/server clock difference initially caused fresh results to fail future-timestamp validation. Claim responses now carry server UTC; the worker uses elapsed monotonic time and waits up to five seconds before upload. Observation timestamps and OS time are unchanged. Excess skew fails with a fixed error and does not repeat source requests.
 
-## Latest verification
+## Earlier direct-cloud attempts
 
-- Live Render deployment: dep-daivbqu7bikc73a75fc0, 2026-09-13 10:01:58 KST, normal Python server command.
-- Actual cloud search and detail import are unavailable in the final acceptance check; basic HTTPS, authentication, static resources and synthetic comparisons passed.
-- Preflight and production requests were compared offline and had identical serialized request headers and URLs. The remote cause of the changed response is not established.
-- The existing local server was updated without changing the user's open form; it retains SUUMO search and enables Yahoo/CHINTAI URL import.
-- Remaining cloud acceptance requires successful actual source access and a full search/import/comparison flow. A source adapter or a preflight response alone does not meet this condition.
+- [x] A1–A3: Diagnose failed source stages, implement Yahoo support and publish tested integrations.
+- [ ] A4: Direct source access from Render remains unresolved. SUUMO returned HTTP 503, CHINTAI robots returned HTTP 403, and the final direct Yahoo search returned HTTP 403. Their exact remote cause is not established.
+- [x] U1–U3: Compatible Yahoo/CHINTAI URL parsing, review of unknown fields, authenticated import and validation.
+- [ ] U4: Direct URL retrieval on Render remains unresolved after an access-restriction response. The completed W5 flow above uses the fixed operator PC; it does not establish cloud-only source access.
 
-## Building identity correction
+## Remaining operating limits
 
-- [x] Do not count station/height/age advertisement descriptions as known building names, including previously loaded browser data.
-- [x] Warn when a source URL cannot establish whether the subject also appears on another site; do not merge units by similar prices or features.
-- [x] Final regression: 1,237 passed, one platform skip, 468 subtests passed. Recomparison of the existing local 59 advertisements required no additional source requests and displayed five comparison links with identity warnings.
-
-## Fixed pull worker integration — 2026-09-13
-
-The public Render site keeps its existing URL and browser API. An explicitly configured operator PC worker handles validated source search/import tasks. This requires the PC to be powered on, signed in and online; it is not an autonomous cloud-only deployment. No inbound PC port is exposed.
-
-- [x] W1: Separate user/worker authentication and fixed source/task contracts.
-- [x] W2: Bounded claim/lease/result queue, no expired job redelivery, identical result upload retry only, cancellation and role isolation.
-- [x] W3: Asynchronous URL import, connection state/manual refresh, stale result guards; 1,356 tests and 468 subtests passed (one platform skip).
-- [ ] W4: Deploy and connect the fixed worker with a separate private token and current-user startup task.
-- [ ] W5: Verify actual public URL import, search, graph and connection recovery. Offline/unit tests alone do not meet this acceptance condition.
-
-See docs/REMOTE_WORKER.md for setup, lifecycle, private data handling, and stopping the worker. The source request functions retain their robots, request limits and rejection handling. A failed job is not automatically retried through another source or host.
-
-## 2026-09-13 공개 조회 전달 시각 교정
-
-PC와 서버의 약 1.7초 시계 차이로 정상 원문 결과가 미래 조회 시각으로 거절되는 문제를 합성 입력으로 재현했다. 원문 조회 시각은 변경하지 않고 claim 응답의 서버 UTC와 단조 시계를 기준으로 최대 5초 대기한 뒤 전송한다. 한도를 초과하면 고정 오류로 종료하며 원문을 다시 요청하지 않는다. 회귀 검증 후 실제 공개 사이트 URL 입력·자동검색·비교를 재검증한다.
-
-관련 작업자·작업 중개·브라우저 회귀: **153 passed**(41.90초). 기존 전체 회귀: 1,356 passed, 1 skipped, 468 subtests passed.
+No supplier agreement, uninterrupted availability or whole-market valuation is claimed. Incomplete building identity can leave cross-site duplicates; identical price/area alone is not treated as proof of one unit. The preview has one shared access code, a single source worker and transient jobs. Render Free quotas and operator-PC uptime bound its availability. See docs/REMOTE_WORKER.md and docs/DEPLOY_RENDER.md for configuration, lifecycle and stopping instructions.
