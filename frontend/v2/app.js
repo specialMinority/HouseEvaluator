@@ -90,7 +90,7 @@
     const token = state.accessToken;
     const response = await fetch(path, {
       method: body === undefined ? "GET" : "POST", cache: "no-store", credentials: "same-origin", signal,
-      headers: { Accept: "application/json", ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(body === undefined ? {} : { "Content-Type": "application/json" }) },
+      headers: { Accept: "application/json", ...(token ? { Authorization: `Bearer ${/[^\x21-\x7e]/.test(token) ? encodeURIComponent(token) : token}` } : {}), ...(body === undefined ? {} : { "Content-Type": "application/json" }) },
       ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     });
     let payload;
@@ -604,7 +604,7 @@
   $("built_year").max = String(new Date().getFullYear());
   $("access-form").addEventListener("submit", async (event) => {
     event.preventDefault();
-    state.accessToken = $("access-code").value.trim();
+    state.accessToken = $("access-code").value.trim().normalize("NFC");
     $("access-code").value = "";
     $("access-error").textContent = "";
     $("access-submit").disabled = true;

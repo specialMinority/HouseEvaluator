@@ -212,7 +212,7 @@
     try {
       const headers = { Accept: "application/json" };
       if (data !== undefined) headers["Content-Type"] = "application/json";
-      if (accessToken) headers.Authorization = `Bearer ${accessToken}`;
+      if (accessToken) headers.Authorization = `Bearer ${/[^\x21-\x7e]/.test(accessToken) ? encodeURIComponent(accessToken) : accessToken}`;
       const response = await fetch(path, { method, headers, body: data === undefined ? undefined : JSON.stringify(data), signal: controller.signal, credentials: "same-origin", cache: "no-store" });
       let result;
       try { result = await response.json(); } catch { throw new Error("서버 응답을 읽지 못했습니다. 잠시 뒤 다시 시도하세요."); }
@@ -711,7 +711,7 @@
     municipalityOptions("subject"); updateSubjectTotal(); clearResult(); $("personal-example-note").hidden = false; errorAt("personal-subject-error");
   });
   $("personal-access-form").addEventListener("submit", async (event) => {
-    event.preventDefault(); stopImport(); state.authSequence += 1; state.accessToken = $("personal-access-code").value.trim(); $("personal-access-code").value = "";
+    event.preventDefault(); stopImport(); state.authSequence += 1; state.accessToken = $("personal-access-code").value.trim().normalize("NFC"); $("personal-access-code").value = "";
     errorAt("personal-access-error"); $("personal-access-submit").disabled = true;
     try { await loadOptions(); } finally { $("personal-access-submit").disabled = false; }
   });

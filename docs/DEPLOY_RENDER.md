@@ -58,7 +58,7 @@ Render는 `PORT` 환경변수 변경을 지원한다. 외부 HTTPS는 Render가 
 6. 서비스의 Environment에서 생성된 `HOUSE_EVALUATOR_ACCESS_TOKEN`을 확인한다. 코드나 문서에 복사하지 말고 허용된 이용자에게만 별도로 전달한다. 서비스 URL의 접속 코드 입력란에 넣어 연결한다.
 7. 다음 절차로 실제 Render 환경을 검증하고 배포 기록을 작성한다.
 
-`generateValue: true`는 현재 공식 명세상 **256비트 무작위 값의 Base64 표현**을 만든다. 32자 hex를 가정하면 안 된다. 환경변수가 이미 있으면 새로 생성하지 않는다. 앱은 공백 없는 ASCII 32~256자를 허용하므로 생성 형식과 호환된다. 이 코드는 모든 허용 이용자가 공유하는 API 접속 코드이며, 개별 사용자 계정·권한 분리 기능은 아니다. HTML과 `/healthz`는 공개되고 `/api/` 요청에 코드가 필요하다. [무작위 비밀값 생성](https://render.com/docs/blueprint-spec#generating-random-secrets)
+`generateValue: true`는 현재 공식 명세상 **256비트 무작위 값의 Base64 표현**을 만든다. 32자 hex를 가정하면 안 된다. 환경변수가 이미 있으면 새로 생성하지 않는다. 개인 비교 모드는 공백·제어문자 없는 1~256자 접속 문구를 지원하며 한글은 NFC 정규화 후 UTF-8 퍼센트 인코딩하여 인증 헤더로 전달한다. 기존 ASCII 코드는 그대로 호환된다. 공급형 파일럿과 작업자 비밀키는 기존 ASCII 32~256자 규칙을 유지한다. 이 코드는 모든 허용 이용자가 공유하는 API 접속 코드이며, 개별 사용자 계정·권한 분리 기능은 아니다. HTML과 `/healthz`는 공개되고 `/api/` 요청에 코드가 필요하다. [무작위 비밀값 생성](https://render.com/docs/blueprint-spec#generating-random-secrets)
 
 ## 4. 최초 배포 확인
 

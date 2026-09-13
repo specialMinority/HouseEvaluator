@@ -12,7 +12,7 @@ from urllib.parse import parse_qs, unquote, urlparse
 from backend.v2.costs import calculate_costs
 from backend.v2.models import ValidationError
 from backend.v2.service import CITIES, ROOT, Runtime
-from backend.v2.security import AccessPolicy
+from backend.v2.security import AccessPolicy, access_code_header_value
 from backend.v2.personal import compare as compare_personal, validate_listing
 from backend.v2.personal_jobs import SearchBusy, SearchJobs
 from backend.v2 import public_search
@@ -402,14 +402,17 @@ def create_server(host="127.0.0.1", port=8000, *, db_path=None, demo_enabled=Fal
                   personal_enabled=True, public_search_enabled=True, search_fn=None, import_fn=None,
                   execution_mode='direct', worker_token=None):
     sources = import_sources()  # Reject invalid operator configuration before opening a socket.
-    access_policy = AccessPolicy(access_token, requests_per_minute=requests_per_minute)
+    access_policy = AccessPolicy(access_token, requests_per_minute=requests_per_minute,
+                                 allow_passphrase=bool(personal_enabled and not pilot_mode))
     if execution_mode not in ('direct', 'worker'):
         raise ValidationError('조회 실행 모드는 direct 또는 worker여야 합니다.')
     worker_policy, broker = None, None
     if execution_mode == 'worker':
-        if not access_policy.protected or not worker_token or worker_token == access_token or pilot_mode or not personal_enabled:
+        if not access_policy.protected or not worker_token or pilot_mode or not personal_enabled:
             raise ValidationError('원격 조회에는 서로 다른 사용자·작업자 코드와 개인 모드가 필요합니다.')
         worker_policy = AccessPolicy(worker_token, requests_per_minute=240)
+        if access_policy.authenticated('Bearer ' + access_code_header_value(worker_token)):
+            raise ValidationError('원격 조회에는 서로 다른 사용자·작업자 코드와 개인 모드가 필요합니다.')
         broker = WorkerJobs(public_search.selected_source(), [source['id'] for source in sources])
     if pilot_mode and (not access_policy.protected or demo_enabled or legacy_enabled or not suppliers_path):
         raise ValidationError("제한 공개 모드에는 접속 코드와 공급 설정이 필요하며 시연·레거시는 꺼야 합니다.")

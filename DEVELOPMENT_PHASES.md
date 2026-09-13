@@ -45,3 +45,10 @@ Active configuration: execution mode worker, search source SUUMO, compatible imp
 ## Remaining operating limits
 
 No supplier agreement, uninterrupted availability or whole-market valuation is claimed. Incomplete building identity can leave cross-site duplicates; identical price/area alone is not treated as proof of one unit. The preview has one shared access code, a single source worker and transient jobs. Render Free quotas and operator-PC uptime bound its availability. See docs/REMOTE_WORKER.md and docs/DEPLOY_RENDER.md for configuration, lifecycle and stopping instructions.
+
+## Personal access-code change — 2026-09-13
+
+- [x] C1: Support short Unicode codes on the personal page, with NFC normalization and ASCII-safe HTTP header transport. No deployment credential appears in source or tests.
+- [x] C2: Keep strong worker/pilot credentials and existing ASCII compatibility; verify wrong/missing credentials, role isolation, normalization and logout. Backend authentication suites: 94 passed; personal browser suites: 22 passed; both JavaScript syntax checks passed.
+- [ ] C3: Deploy the change, rotate the private environment value and verify new-code login, rejection of the previous code and worker connectivity on the public service.
+
