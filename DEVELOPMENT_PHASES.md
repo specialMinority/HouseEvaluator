@@ -50,5 +50,6 @@ No supplier agreement, uninterrupted availability or whole-market valuation is c
 
 - [x] C1: Support short Unicode codes on the personal page, with NFC normalization and ASCII-safe HTTP header transport. No deployment credential appears in source or tests.
 - [x] C2: Keep strong worker/pilot credentials and existing ASCII compatibility; verify wrong/missing credentials, role isolation, normalization and logout. Backend authentication suites: 94 passed; personal browser suites: 22 passed; both JavaScript syntax checks passed.
-- [ ] C3: Deploy the change, rotate the private environment value and verify new-code login, rejection of the previous code and worker connectivity on the public service.
+- [x] C3: Deployed and rotated the private user code. Actual Chrome login succeeded; new-code API returned 200, previous-code and unauthenticated API returned 401. The worker remained online and URL/search actions were available. The private local code file was updated; source requests during authentication verification: zero.
 
+Application commit: 0d8aa6ad278c6c94e8f55de9cbe2927b33022bd4. Render deployment dep-daj6ao5g1s2s739ijitg became live at 2026-09-13 17:57:35 KST; public authentication verification completed at 17:58 KST. The worker credential was unchanged.
