@@ -60,3 +60,13 @@ Application commit: 0d8aa6ad278c6c94e8f55de9cbe2927b33022bd4. Render deployment 
 - [x] C5: Deployed and verified the text input, completed-composition login, paste-compatible login and online query connection against the public service. Partial composition sent no authenticated request; browser errors and source jobs were zero. Tests use synthetic events and native Chromium composition commands, not the user's physical Windows keyboard.
 
 Affected browser regression: 37 passed; both JavaScript syntax checks passed. Live application commit dc65e1f1724a01296231419a8b9954f194162926, Render dep-daj70a1594qs73b29u90, live 2026-09-13 18:43:48 KST; public composition/login verification completed at 18:44 KST. Deployment credentials were unchanged.
+
+## PC 조회 작업자 보안 — 2026-09-13
+
+- [x] S1: 원격 명령 실행 경로, 요청 검증, 키 권한과 작업자 실행 방식 점검. 수신 포트 공개 없는 발신 구조를 확인.
+- [x] S2: 비관리자 Docker 작업자, 읽기 전용 실행 파일, 개인 폴더 미공유, CPU·메모리·프로세스·로그 제한.
+- [x] S3: 작업자 네트워크 차단, 별도 Unix 소켓 통신 통로의 고정 목적지·공인 IP·시간·바이트·동시 연결 제한. 실제 격리 검사 통과.
+- [x] S4: 재시작 후 유지되는 시간별·일별 작업 예산, 별도 통신량 예산, 개인 키 파일 ACL 축소, 잘못된 인증 시도 한도 강화.
+- [ ] S5: 전체 회귀·공개 배포·실제 자동검색/URL 조회·시작/중단 검증 마무리.
+
+상세: docs/PC_WORKER_SECURITY.md. 컨테이너·동일 사용자 악성코드·공급 사이트 제한 등 잔여 위험은 문서에 분리한다. PC 전체의 무감염 판정이나 공격 불가 보증이 아니다.

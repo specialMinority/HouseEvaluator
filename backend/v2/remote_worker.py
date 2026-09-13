@@ -22,6 +22,8 @@ import time
 from . import listing_import, public_search
 from .personal import validate_listing
 from .personal_jobs import SearchBusy
+from .worker_limits import BudgetError, RollingBudget
+from .worker_network import gateway_enabled, GatewayHTTPSConnection
 
 ORIGIN = 'https://houseevaluator-personal.onrender.com'
 MAX_BYTES = 1024 * 1024
@@ -46,6 +48,8 @@ _ERRORS = {
     'result_too_large': '조회 결과가 전송 한도를 초과했습니다. 직접 입력을 사용해 주세요.',
     'already_processed': '이미 처리한 작업입니다. 새 작업을 요청해 주세요.',
     'worker_clock_skew': '조회 PC와 서버의 시간 차이가 커 결과를 전달하지 못했습니다. 운영자에게 확인해 주세요.',
+    'worker_rate_limited': '안정적인 운영을 위한 조회 횟수 한도에 도달했습니다. 나중에 다시 시도하거나 직접 입력해 주세요.',
+    'worker_budget_unavailable': '조회 보호 설정을 확인하지 못해 작업을 중단했습니다. 운영자에게 확인해 주세요.',
 }
 _RESULT_TIMES = frozenset(('fetched_at', 'details_fetched_at', 'searched_at'))
 
@@ -153,7 +157,7 @@ class HttpsTransport:
         if not isinstance(token, str) or not _TOKEN.fullmatch(token):
             raise WorkerProtocolError('invalid_token_file')
         self._token = token
-        self._connect = connection_factory or http.client.HTTPSConnection
+        self._connect = connection_factory or (GatewayHTTPSConnection if gateway_enabled() else http.client.HTTPSConnection)
         self._clock = clock
 
     def __call__(self, path, payload):
@@ -165,6 +169,7 @@ class HttpsTransport:
         try:
             connection = self._connect('houseevaluator-personal.onrender.com', 443,
                                        timeout=HTTP_SECONDS, context=ssl.create_default_context())
+            connection._absolute_deadline = deadline
             connection.request('POST', path, body=data, headers={
                 'Authorization': 'Bearer ' + self._token,
                 'Content-Type': 'application/json; charset=utf-8', 'Accept': 'application/json',
@@ -238,7 +243,7 @@ class RemoteWorker:
 
     def __init__(self, transport, *, search_fn=None, import_fn=None, search_source='suumo',
                  import_source_ids=('chintai', 'yahoo_realestate'), worker_id=None,
-                 clock=time.monotonic, stop_event=None):
+                 clock=time.monotonic, stop_event=None, budget=None):
         if search_source not in ('suumo', 'chintai', 'yahoo_realestate'):
             raise WorkerProtocolError('invalid_source_configuration')
         if (not isinstance(import_source_ids, (tuple, list)) or len(import_source_ids) != len(set(import_source_ids))
@@ -252,6 +257,7 @@ class RemoteWorker:
         self._real_search, self._real_import = search_fn is None, import_fn is None
         self.search_source, self.import_source_ids = search_source, tuple(import_source_ids)
         self._stop = stop_event or threading.Event()
+        self._budget = budget or RollingBudget()
         self._pending = None
         self._seen, self._seen_order = set(), deque()
         self._failures = 0
@@ -292,6 +298,7 @@ class RemoteWorker:
                 public_search.build_search_url(subject)  # Geography and exact supported station input.
                 if self._real_search and public_search.selected_source() != self.search_source:
                     return _failed('worker_unavailable')
+                self._budget.admit('search')
                 result = self._search(subject)
             else:
                 url = listing_import.validate_payload(payload)
@@ -300,10 +307,13 @@ class RemoteWorker:
                     return _failed('source_disabled')
                 if self._real_import and {source['id'] for source in listing_import.import_sources()} != set(self.import_source_ids):
                     return _failed('worker_unavailable')
+                self._budget.admit('import')
                 result = self._import(payload)
             if not isinstance(result, dict):
                 return _failed('worker_unavailable')
             return {'status': 'complete', 'result': result}
+        except BudgetError as error:
+            return _failed(error.code)
         except listing_import.ListingImportError as error:
             return _failed(error.code)
         except SearchBusy:
@@ -477,13 +487,15 @@ def main(argv=None):
     parser.add_argument('--once', action='store_true', help='perform one claim cycle, then exit')
     args = parser.parse_args(argv)
     worker = None
+    budget = None
     previous = {}
     try:
         origin = validate_origin(os.getenv('HOUSE_EVALUATOR_WORKER_ORIGIN', ORIGIN))
         token = read_token(os.getenv('HOUSE_EVALUATOR_WORKER_TOKEN_FILE', '.runtime/worker-token.txt'))
         search_source = public_search.selected_source()
         sources = [source['id'] for source in listing_import.import_sources()]
-        worker = RemoteWorker(HttpsTransport(origin, token), search_source=search_source, import_source_ids=sources)
+        budget = RollingBudget(path=os.getenv('HOUSE_EVALUATOR_WORKER_BUDGET_FILE', '.runtime/worker-budget.sqlite3'))
+        worker = RemoteWorker(HttpsTransport(origin, token), search_source=search_source, import_source_ids=sources, budget=budget)
         for signum in (signal.SIGINT, signal.SIGTERM):
             previous[signum] = signal.signal(signum, lambda *_: worker.stop())
         return worker.run(once=args.once)
@@ -502,6 +514,8 @@ def main(argv=None):
     finally:
         if worker is not None:
             worker.stop()
+        if budget is not None:
+            budget.close()
         for signum, handler in previous.items():
             signal.signal(signum, handler)
 

@@ -17,6 +17,6 @@ $taskPrincipal = New-ScheduledTaskPrincipal -UserId $taskUser -LogonType Interac
 $taskSettings = New-ScheduledTaskSettingsSet -ExecutionTimeLimit ([TimeSpan]::Zero) -MultipleInstances IgnoreNew `
     -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -Hidden
 $taskDefinition = New-ScheduledTask -Action $taskAction -Trigger $taskTrigger -Principal $taskPrincipal -Settings $taskSettings `
-    -Description 'HouseEvaluator fixed query worker. Requires this signed-in PC and private token file.'
+    -Description 'HouseEvaluator isolated Docker query worker. Requires this signed-in PC, Docker Desktop and private token file.'
 Register-ScheduledTask -TaskName $taskName -InputObject $taskDefinition -Force | Out-Null
 Write-Output 'Registered HouseEvaluator worker for the current user logon. No password was stored.'

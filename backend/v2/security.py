@@ -76,7 +76,7 @@ class AccessPolicy:
                 clients[client_ip] = (now, 1)
                 return True
             start, count = clients[client_ip]
-            if count >= self.limit:
+            if count >= (self.limit if authenticated else min(10, self.limit)):
                 return False
             clients[client_ip] = (start, count + 1)
             return True

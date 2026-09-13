@@ -215,7 +215,9 @@ def _public_addresses(host, port, *, resolver=socket.getaddrinfo):
         addresses = []
         for record in records:
             address = ipaddress.ip_address(record[4][0])
-            if not address.is_global or getattr(address, "ipv4_mapped", None) is not None:
+            if (not address.is_global or address.is_multicast or getattr(address, "ipv4_mapped", None) is not None
+                    or getattr(address, 'sixtofour', None) is not None or getattr(address, 'teredo', None) is not None
+                    or (address.version == 6 and any(address in ipaddress.ip_network(prefix) for prefix in ('64:ff9b::/96', '64:ff9b:1::/48')))):
                 raise SupplyError("network_target_denied")
             if str(address) not in addresses:
                 addresses.append(str(address))

@@ -1,32 +1,19 @@
-param(
-    [string]$Python = 'C:\Python314\python.exe'
-)
+# Keep the legacy parameter so the existing scheduled task remains compatible.
+param([string]$Python = 'C:\Python314\python.exe')
 $ErrorActionPreference = 'Stop'
 $taskRepo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
-$taskRuntime = Join-Path $taskRepo '.runtime'
-$taskToken = Join-Path $taskRuntime 'worker-token.txt'
-if (-not (Test-Path -LiteralPath $Python -PathType Leaf)) { throw 'Python executable is unavailable.' }
+$taskCompose = Join-Path $taskRepo 'compose.worker.yaml'
+$taskToken = Join-Path $taskRepo '.runtime/worker-token.txt'
 if (-not (Test-Path -LiteralPath $taskToken -PathType Leaf)) { throw 'Private worker-token.txt is required.' }
-$taskMutex = [System.Threading.Mutex]::new($false, 'Local\HouseEvaluatorPersonalWorker')
-$taskOwned = $false
-try {
-    try { $taskOwned = $taskMutex.WaitOne(0) }
-    catch [System.Threading.AbandonedMutexException] { $taskOwned = $true }
-    if (-not $taskOwned) { Write-Output 'Worker launcher is already running.'; exit 0 }
-    $env:HOUSE_EVALUATOR_WORKER_ORIGIN = 'https://houseevaluator-personal.onrender.com'
-    $env:HOUSE_EVALUATOR_WORKER_TOKEN_FILE = $taskToken
-    $env:HOUSE_EVALUATOR_SEARCH_SOURCE = 'suumo'
-    $env:HOUSE_EVALUATOR_IMPORT_SOURCES = 'chintai,yahoo_realestate'
-    $taskWorker = Start-Process -FilePath $Python -ArgumentList @('-m', 'backend.v2.remote_worker') `
-        -WorkingDirectory $taskRepo -WindowStyle Hidden -PassThru `
-        -RedirectStandardOutput (Join-Path $taskRuntime 'worker.stdout.log') `
-        -RedirectStandardError (Join-Path $taskRuntime 'worker.stderr.log')
-    Set-Content -LiteralPath (Join-Path $taskRuntime 'worker.pid') -Value $taskWorker.Id -Encoding ascii
-    Set-Content -LiteralPath (Join-Path $taskRuntime 'worker-launcher.pid') -Value $PID -Encoding ascii
-    $taskWorker.WaitForExit()
-    exit $taskWorker.ExitCode
+$taskDocker = (Get-Command docker -ErrorAction Stop).Source
+# Docker Desktop may need time after logon. Never fall back to host Python.
+$taskReady = $false
+for ($taskAttempt = 0; $taskAttempt -lt 12; $taskAttempt++) {
+    & $taskDocker info --format '{{.ServerVersion}}' 2>$null | Out-Null
+    if ($LASTEXITCODE -eq 0) { $taskReady = $true; break }
+    Start-Sleep -Seconds 10
 }
-finally {
-    if ($taskOwned) { $taskMutex.ReleaseMutex() }
-    $taskMutex.Dispose()
-}
+if (-not $taskReady) { throw 'Docker Desktop is unavailable. The query worker remains stopped.' }
+& $taskDocker compose -f $taskCompose up -d --no-build --pull never
+if ($LASTEXITCODE -ne 0) { throw 'Isolated worker did not start. No host process was launched.' }
+Write-Output 'Isolated query worker started. Stop it with scripts/stop_personal_worker.ps1.'

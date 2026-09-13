@@ -15,6 +15,7 @@ from urllib.parse import parse_qsl, urlsplit
 import zlib
 
 from .supply import SupplyError, _bounded_dns, _PinnedHTTPSConnection
+from .worker_network import gateway_enabled, GatewayHTTPSConnection
 
 
 USER_AGENT = "HouseEvaluator-PublicComparison/2.0"
@@ -180,13 +181,14 @@ def fetch_public(url, *, deadline):
     if remaining <= 0:
         raise PublicFetchError("timeout")
     try:
-        address = _bounded_dns(parts.hostname, 443, remaining)[0]
+        isolated = gateway_enabled()
+        address = None if isolated else _bounded_dns(parts.hostname, 443, remaining)[0]
     except SupplyError as exc:
         raise PublicFetchError(exc.code) from None
     remaining = local_deadline - time.monotonic()
     if remaining <= 0:
         raise PublicFetchError("timeout")
-    connection = _PinnedHTTPSConnection(parts.hostname, address, timeout=remaining)
+    connection = GatewayHTTPSConnection(parts.hostname, timeout=remaining) if isolated else _PinnedHTTPSConnection(parts.hostname, address, timeout=remaining)
     connection._absolute_deadline = local_deadline
     expired = threading.Event()
 

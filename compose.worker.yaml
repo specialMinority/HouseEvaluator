@@ -1,0 +1,73 @@
+name: houseevaluator-worker
+services:
+  gateway:
+    image: houseevaluator-egress:local
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+      target: gateway
+    user: "10002:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 128m
+    memswap_limit: 128m
+    cpus: 0.25
+    pids_limit: 32
+    restart: "on-failure:5"
+    tmpfs: ["/tmp:size=16m,noexec,nosuid,nodev"]
+    volumes:
+      - egress_socket:/run/houseevaluator-egress
+      - gateway_budget:/state/gateway
+    logging:
+      driver: json-file
+      options: {max-size: 2m, max-file: "2"}
+    healthcheck:
+      test: [CMD, python, -c, "import socket; s=socket.socket(socket.AF_UNIX); s.settimeout(1); s.connect('/run/houseevaluator-egress/https.sock'); s.close()"]
+      interval: 20s
+      timeout: 2s
+      retries: 3
+      start_period: 5s
+  worker:
+    image: houseevaluator-query:local
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+      target: worker
+    user: "10001:10001"
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    mem_limit: 384m
+    memswap_limit: 384m
+    cpus: 0.5
+    pids_limit: 64
+    restart: "on-failure:5"
+    tmpfs: ["/tmp:size=32m,noexec,nosuid,nodev"]
+    depends_on:
+      gateway:
+        condition: service_healthy
+    environment:
+      HOUSE_EVALUATOR_WORKER_ORIGIN: https://houseevaluator-personal.onrender.com
+      HOUSE_EVALUATOR_WORKER_TOKEN_FILE: /run/secrets/worker-token.txt
+      HOUSE_EVALUATOR_WORKER_BUDGET_FILE: /state/worker/budget.sqlite3
+      HOUSE_EVALUATOR_EGRESS_SOCKET: /run/houseevaluator-egress/https.sock
+      HOUSE_EVALUATOR_SEARCH_SOURCE: suumo
+      HOUSE_EVALUATOR_IMPORT_SOURCES: chintai,yahoo_realestate
+    volumes:
+      - egress_socket:/run/houseevaluator-egress:ro
+      - worker_budget:/state/worker
+      - type: bind
+        source: ./.runtime/worker-token.txt
+        target: /run/secrets/worker-token.txt
+        read_only: true
+        bind:
+          create_host_path: false
+    logging:
+      driver: json-file
+      options: {max-size: 2m, max-file: "2"}
+volumes:
+  egress_socket:
+  worker_budget:
+  gateway_budget:

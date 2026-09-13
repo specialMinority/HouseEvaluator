@@ -2,31 +2,53 @@
 
 무료 운영 구성은 기존 Render HTTPS 웹/API와 운영자 PC의 전용 조회 작업자를 사용한다. 브라우저는 Render API만 호출한다. PC 작업자는 Render로 HTTPS 발신하고 등록된 매물 검색·URL 입력 작업만 처리한다. PC에 수신 포트를 열거나 임의 주소·프로그램을 전달하지 않는다.
 
-이 구성에는 PC 전원·사용자 로그인·인터넷 연결이 필요하다. PC 종료·절전·로그아웃 동안 조회할 수 없으며 화면에서 연결 상태를 확인할 수 있다. 원문 사이트의 정책·접근 가능성은 별개다. 고정 실행 모드에서 원문이 거절하면 해당 작업을 종료하고 다른 출처·호스트로 자동 재실행하지 않는다.
+이 구성에는 PC 전원·사용자 로그인·인터넷 연결과 Docker Desktop 실행이 필요하다. PC 종료·절전·로그아웃 동안 조회할 수 없으며 화면에서 연결 상태를 확인할 수 있다. 원문 사이트의 정책·접근 가능성은 별개다. 고정 실행 모드에서 원문이 거절하면 해당 작업을 종료하고 다른 출처·호스트로 자동 재실행하지 않는다.
 
 ## 설정
 
 Render에는 `HOUSE_EVALUATOR_EXECUTION_MODE=worker`, `HOUSE_EVALUATOR_SEARCH_SOURCE=suumo`, `HOUSE_EVALUATOR_IMPORT_SOURCES=chintai,yahoo_realestate`를 지정한다. `HOUSE_EVALUATOR_WORKER_TOKEN`은 기존 사용자 접속코드와 다른 무작위 비밀값이어야 한다. 설정을 저장하고 배포한다. 사용자 코드로 작업을 가져가거나 작업자 코드로 일반 개인 API를 사용할 수 없다.
 
-PC는 같은 전용 비밀값을 Git에서 제외된 `.runtime/worker-token.txt`에 보관한다. 비밀값은 URL·스크립트·Git·로그에 기록하지 않는다. `scripts/start_personal_worker.ps1`은 Python 경로를 확인하고 고정 Render 원점·출처 설정으로 숨김 작업자를 실행한다. 프로세스 ID와 고정 오류 로그는 `.runtime`에만 남긴다. 조회 조건·결과는 디스크에 저장하지 않는다.
+PC는 같은 전용 비밀값을 Git에서 제외된 `.runtime/worker-token.txt`에 보관한다. 비밀값은 URL·스크립트·Git·로그에 기록하지 않는다. 현재 권장 실행은 `compose.worker.yaml`의 비관리자 컨테이너 두 개다. 작업자는 네트워크가 없으며, 전용 Unix 소켓을 통해 고정된 HTTPS 목적지에만 연결한다. 개인 문서 폴더·Docker 제어 소켓은 공유하지 않는다. 작업자 전용 키 파일만 읽기 전용으로 전달한다.
+
+최초 설치 또는 코드 갱신:
 
 ```powershell
+./scripts/stop_personal_worker.ps1
+./scripts/protect_personal_worker_files.ps1
+docker compose -f compose.worker.yaml build
 ./scripts/install_personal_worker_task.ps1
-Start-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker'
+./scripts/start_personal_worker.ps1
 ```
 
-설치 스크립트는 현재 로그인한 사용자 권한만 사용하며 암호를 저장하지 않는다. 다른 실행 경로가 같은 작업 이름을 사용하면 덮어쓰지 않는다. 작업은 다음 로그인 때도 시작된다. 여러 실행을 막고 기본 72시간 실행 제한·배터리 전환 중단을 해제하지만, PC 절전이나 로그아웃을 방지하지 않는다. 컴퓨터의 전체 전원 정책은 바꾸지 않는다.
+Docker Desktop이 실행 중이어야 한다. 시작 스크립트는 준비를 최대 약 2분 기다리며, 이미지가 없거나 Docker에 접속하지 못하면 중단한다. 호스트 Python으로 자동 전환하지 않는다. 설치 스크립트는 현재 로그인한 사용자 권한만 사용하며 암호를 저장하지 않는다. 다른 실행 경로가 같은 예약 작업 이름을 사용하면 덮어쓰지 않는다. Windows/Docker의 전체 전원·네트워크·보안 정책은 바꾸지 않는다.
 
 ## 상태와 중단
 
 인증된 `/api/v2/personal/options`는 `execution_mode`, `worker.online`, `search_available`, `import_available`을 반환한다. 마지막 확인 30초 또는 진행 중인 유효 실행권으로 연결을 판정한다. 화면의 연결 재확인은 매물 조회를 실행하지 않는다.
 
 ```powershell
-Get-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker'
-Stop-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker'
+docker compose -f compose.worker.yaml ps
+./scripts/stop_personal_worker.ps1
 ```
 
-중단 후 `.runtime/worker.pid`의 프로세스가 종료됐는지도 확인한다. 남아 있으면 실제 실행 경로와 `-m backend.v2.remote_worker` 명령이 일치하는 해당 PID만 종료한다. 자동 시작까지 해제하려면 `Unregister-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker' -Confirm:$false`를 사용한다. 코드 교체는 작업자를 중단하고 새 파일을 반영한 뒤 시작한다.
+예약 작업은 컨테이너 시작 후 완료되므로 `Ready`도 정상일 수 있다. **`Stop-ScheduledTask`만으로는 이미 실행된 컨테이너가 멈추지 않는다.** 즉시 중단은 위 중단 스크립트를 사용한다. 다음 로그인 자동 시작까지 해제하려면:
+
+```powershell
+Disable-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker'
+./scripts/stop_personal_worker.ps1
+```
+
+다시 자동 시작하려면 `Enable-ScheduledTask` 후 시작 스크립트를 실행한다. 컨테이너의 `on-failure:5`는 오류 종료 재시작을 제한하며, 수동 중단 후 Docker 재시작만으로 다시 실행하지 않는다. 정상 중단 후에는 명시적 시작 또는 다음 로그인 실행이 필요하다. 사용량 볼륨은 중단·재생성 때 보존하며 `down -v`로 초기화하지 않는다.
+
+## 보안 상한
+
+- 작업자: 비관리자 UID 10001, 네트워크 없음, 읽기 전용 실행 파일, 메모리 384 MiB, CPU 0.5개, 프로세스 64개, 로그 2 MiB × 2.
+- 통신 통로: 별도 UID 10002, TCP 수신 포트 없음, 4개 고정 HTTPS 호스트, DNS 공인 IP 검사와 연결 고정. 동시에 최대 4개, 한 연결 12초, 송신 2 MiB·수신 8 MiB.
+- 검색 12회/시간, URL 조회 30회/시간, 합계 120회/24시간. 실패한 실제 조회도 포함하고 완료 결과 업로드 재전송은 제외한다. 전 이용자 합산 한도이며 고정 정각 초기화가 아닌 이동 구간이다.
+- 통신 통로에도 별도 원문 연결 한도 60회/분·500회/시간·2,000회/일이 있다. 제어 서버 연결은 별도 한도를 사용한다. 두 사용량 DB에는 작업 종류·시각만 저장하며 재시작 후에도 유지한다.
+- 키 파일은 운영자·SYSTEM·관리자만 접근하도록 제한한다. 같은 Windows 사용자 권한의 악성코드까지 막는 장치는 아니다.
+
+범위와 잔여 위험은 [PC_WORKER_SECURITY.md](PC_WORKER_SECURITY.md)를 참고한다.
 
 ## 작업 수명과 운영 범위
 
@@ -54,6 +76,6 @@ Stop-ScheduledTask -TaskName 'HouseEvaluator Public Query Worker'
 
 그 이전의 Render 직접 조회는 SUUMO 503, CHINTAI와 Yahoo! 부동산 접근 제한으로 실패했다. PC 작업자 최초 연동에서는 PC와 서버의 작은 시각 차이로 결과가 거절됐고, 조회 시각을 바꾸지 않는 서버 UTC 기준 대기 처리 후 위 흐름을 확인했다. 과거 실패를 성공으로 다시 분류하지 않으며 **Render 단독 직접 조회의 복구 성공은 확인되지 않았다.**
 
-검증 후 작업자는 실행 중 상태로 복구했다. 현재 사용자는 공유 접속 코드로 접근하는 소규모 미리보기다. PC가 켜져 있고 현재 사용자가 로그인한 상태로 인터넷에 연결돼 있어야 하며, 작업자는 현재 사용자 로그인 시 자동 시작하도록 구성한다. 이 설정은 절전·로그아웃·네트워크 단절을 막지 않는다. 원문 사이트의 정책이나 응답 형식이 바뀌면 다시 실패할 수 있다. 이번 확인은 선택 광고의 처리 흐름 검증이며 전체 시장·현재 공실·상시 가용성을 보장하지 않는다.
+위 11시 검증 당시 작업자는 실행 중 상태로 복구했다. 이후 보안 전환 상태는 보안 문서를 따른다. 현재 사용자는 공유 접속 코드로 접근하는 소규모 미리보기다. PC가 켜져 있고 현재 사용자가 로그인한 상태로 인터넷에 연결돼 있어야 하며, 작업자는 현재 사용자 로그인 시 자동 시작하도록 구성한다. 이 설정은 절전·로그아웃·네트워크 단절을 막지 않는다. 원문 사이트의 정책이나 응답 형식이 바뀌면 다시 실패할 수 있다. 이번 확인은 선택 광고의 처리 흐름 검증이며 전체 시장·현재 공실·상시 가용성을 보장하지 않는다.
 
 실제 매물 조건·상세 링크·이름·접속 코드·작업자 비밀값은 이 문서에 기록하지 않는다. 상세 진행은 `DEVELOPMENT_PHASES.md`에 기록한다.
