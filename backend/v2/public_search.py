@@ -46,14 +46,14 @@ _LAYOUTS = {"1R": "01", "1K": "02", "1DK": "03", "1LDK": "04"}
 def options():
     source = selected_source()
     return {"cities": [{"id": city["id"], "name": city["name"], "municipalities": deepcopy(city["municipalities"])} for city in _REGIONS],
-            "sources": [{"id": source, "name": ("CHINTAI" if source == "chintai" else "SUUMO") + " 공개 검색", "kind": "public_page", "automatic": True}],
+            "sources": [{"id": source, "name": {"suumo": "SUUMO", "chintai": "CHINTAI", "yahoo_realestate": "Yahoo! 부동산"}[source] + " 공개 검색", "kind": "public_page", "automatic": True}],
             "layouts": list(_LAYOUTS), "max_search_seconds": SEARCH_SECONDS,
             "notice": "공개 검색 결과 일부를 비교합니다. 모집 중 여부와 전체 시장을 보장하지 않습니다."}
 
 
 def selected_source():
     source = os.getenv("HOUSE_EVALUATOR_SEARCH_SOURCE", "suumo")
-    if source not in ("suumo", "chintai"):
+    if source not in ("suumo", "chintai", "yahoo_realestate"):
         raise ValueError("지원하지 않는 공개 검색 출처 설정입니다.")
     return source
 
@@ -319,7 +319,11 @@ def _resolve_station(subject, items, read):
 
 
 def search(subject, *, fetcher=None):
-    if selected_source() == "chintai":
+    source = selected_source()
+    if source == "yahoo_realestate":
+        from .yahoo_search import search as search_yahoo
+        return search_yahoo(subject, fetcher=fetcher)
+    if source == "chintai":
         from .chintai_search import search as search_chintai
         return search_chintai(subject, fetcher=fetcher)
     fetcher = fetcher or fetch_public

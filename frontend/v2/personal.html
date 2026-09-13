@@ -37,6 +37,15 @@
     <div class="personal-workspace">
       <section class="card personal-subject-card" aria-labelledby="personal-subject-title">
         <div class="card-heading"><div><p class="eyebrow">01 · YOUR PROPERTY</p><h2 id="personal-subject-title">비교할 집</h2></div><span class="small-muted">* 필수 입력</span></div>
+        <form id="personal-import-form" class="personal-import-form">
+          <div class="personal-import-heading"><strong>매물 링크로 빠르게 입력</strong><span>선택사항</span></div>
+          <label for="personal-import-url" class="personal-import-label">매물 상세 URL</label>
+          <div class="personal-import-controls"><input id="personal-import-url" name="url" type="url" required maxlength="2000" placeholder="https://realestate.yahoo.co.jp/rent/detail/…" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="personal-import-help"><button id="personal-import-submit" class="secondary-button" type="submit">조건 불러오기</button></div>
+          <p id="personal-import-help" class="fine-print">Yahoo! 부동산·CHINTAI 상세 링크를 지원합니다. 불러오기에 성공하면 아래 입력을 교체하고 확인하지 못한 항목은 비웁니다.</p>
+          <div class="personal-import-feedback"><p id="personal-import-status" class="form-message" role="status" aria-live="polite"></p><button id="personal-import-cancel" class="text-button" type="button" hidden>불러오기 중단</button></div>
+          <p id="personal-import-error" class="form-message error" role="alert" hidden></p>
+          <div id="personal-import-review" class="personal-import-review" tabindex="-1" aria-label="불러온 조건 검토" hidden></div>
+        </form>
         <form id="personal-subject-form">
           <div id="personal-subject-fields" class="form-grid"></div>
           <p class="fine-print">모르는 정보는 미상으로 두세요. 관리비가 없다고 확인한 경우에만 0을 입력하세요.</p>
@@ -44,7 +53,7 @@
           <div class="personal-primary-actions"><button id="personal-search" class="primary-button" type="submit">비슷한 매물 자동으로 찾기 <span aria-hidden="true">↗</span></button><button id="personal-search-cancel" class="secondary-button" type="button" hidden>검색 대기 중단</button></div>
           <p id="personal-search-status" class="form-message" role="status"></p>
           <p id="personal-subject-error" class="form-message error" role="alert" hidden></p>
-          <p id="personal-search-help" class="fine-print">현재 자동검색은 SUUMO를 사용합니다. 사이트 응답이나 페이지 변경으로 찾지 못하면 직접 입력해 계속 비교할 수 있습니다.</p>
+          <p id="personal-search-help" class="fine-print">자동검색 출처: 공개 매물 사이트. 사이트 응답이나 페이지 변경으로 찾지 못하면 직접 입력해 계속 비교할 수 있습니다.</p>
           <button id="personal-example" class="text-button personal-example" type="button">신주쿠 대상 입력 예시</button>
           <p id="personal-example-note" class="fine-print" hidden>입력 방법을 보여주는 가상의 대상입니다. 실제 매물의 조건으로 바꾸세요. 비교용 매물은 추가하지 않습니다.</p>
         </form>

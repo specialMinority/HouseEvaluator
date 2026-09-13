@@ -26,7 +26,9 @@ services:
       - key: HOUSE_EVALUATOR_PUBLIC_SEARCH
         value: "1"
       - key: HOUSE_EVALUATOR_SEARCH_SOURCE
-        value: chintai
+        value: yahoo_realestate
+      - key: HOUSE_EVALUATOR_IMPORT_SOURCES
+        value: yahoo_realestate
       - key: HOUSE_EVALUATOR_DEMO
         value: "0"
       - key: HOUSE_EVALUATOR_LEGACY

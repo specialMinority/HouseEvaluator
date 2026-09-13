@@ -15,7 +15,8 @@
 | 공개 포트 | `HOST=0.0.0.0`, `PORT=8080` |
 | 상태 검사 | `/healthz` |
 | 개인 비교 / 공개 검색 | `HOUSE_EVALUATOR_PERSONAL=1`, `HOUSE_EVALUATOR_PUBLIC_SEARCH=1` |
-| 자동검색 출처 | `HOUSE_EVALUATOR_SEARCH_SOURCE=chintai` (미지정 시 기존 `suumo`) |
+| 자동검색 출처 | `HOUSE_EVALUATOR_SEARCH_SOURCE=yahoo_realestate` (미지정 시 기존 `suumo`) |
+| URL 자동입력 출처 | `HOUSE_EVALUATOR_IMPORT_SOURCES=yahoo_realestate`; 실제 클라우드에서 접근 가능한 출처만 활성화 |
 | 시연 / 구버전 / 공급형 파일럿 | `HOUSE_EVALUATOR_DEMO=0`, `HOUSE_EVALUATOR_LEGACY=0`, `HOUSE_EVALUATOR_PILOT=0` |
 | 구버전 실시간 수집 | `SUUMO_LIVE=0`; 개인 검색은 별도 `HOUSE_EVALUATOR_PUBLIC_SEARCH`로 제어 |
 | 임시 SQLite | `HOUSE_EVALUATOR_DB=/tmp/houseevaluator/v2.sqlite3` |

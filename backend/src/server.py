@@ -16,6 +16,7 @@ from backend.v2.security import AccessPolicy
 from backend.v2.personal import compare as compare_personal, validate_listing
 from backend.v2.personal_jobs import SearchBusy, SearchJobs
 from backend.v2 import public_search
+from backend.v2.listing_import import ListingImportError, import_listing, import_sources, validate_payload as validate_import_payload
 
 MAX_BODY = 65536
 LOG = logging.getLogger(__name__)
@@ -41,6 +42,7 @@ class _ApiHandler(BaseHTTPRequestHandler):
     sys_version = ""
 
     def setup(self):
+        self._request_started = time.monotonic()
         self.request.settimeout(10)
         super().setup()
         self._timed_out = False
@@ -121,7 +123,9 @@ class _ApiHandler(BaseHTTPRequestHandler):
     def _dispatch_error(self, error):
         if self._timed_out:
             return
-        if isinstance(error, BodyError):
+        if isinstance(error, ListingImportError):
+            self._send_json(error.status, {"error": error.code, "message": error.message})
+        elif isinstance(error, BodyError):
             self._send_json(error.status, {"error": "invalid_body", "message": str(error)})
         elif isinstance(error, (ValidationError, ValueError)):
             self._send_json(400, {"error": "bad_request", "message": str(error)})
@@ -169,8 +173,11 @@ class _ApiHandler(BaseHTTPRequestHandler):
             elif path == "/api/v2/capabilities":
                 self._send_json(200, self.runtime.capabilities())
             elif path == "/api/v2/personal/options":
+                sources = import_sources()
                 self._send_json(200, dict(public_search.options(), enabled=self.server.personal_enabled,
-                                         search_enabled=self.server.public_search_enabled))
+                                         search_enabled=self.server.public_search_enabled,
+                                         import_enabled=self.server.public_search_enabled and bool(sources),
+                                         import_sources=sources))
             elif path.startswith("/api/v2/personal/search/"):
                 self._require_personal()
                 result = self.server.search_jobs.get(path.rsplit("/", 1)[-1])
@@ -245,7 +252,16 @@ class _ApiHandler(BaseHTTPRequestHandler):
             path = urlparse(self.path).path.rstrip("/")
             if not self._guard(path):
                 return
-            if path == "/api/v2/personal/search":
+            if path == "/api/v2/personal/import":
+                self._require_personal()
+                if not self.server.public_search_enabled:
+                    self._send_json(403, {"error": "import_disabled", "message": "URL 자동 입력을 잠시 중단했습니다. 직접 입력해 주세요."})
+                    return
+                payload = self._read_json_body()
+                validate_import_payload(payload)
+                deadline = self._request_started + getattr(self.server, "request_deadline_seconds", 10) - .5
+                self._send_json(200, self.server.import_fn(payload, deadline=deadline))
+            elif path == "/api/v2/personal/search":
                 self._require_personal()
                 if not self.server.public_search_enabled:
                     self._send_json(503, {"error": "public_search_disabled", "message": "자동 검색을 잠시 중단했습니다. 직접 입력으로 비교할 수 있습니다."})
@@ -347,7 +363,8 @@ class BoundedServer(ThreadingHTTPServer):
 
 def create_server(host="127.0.0.1", port=8000, *, db_path=None, demo_enabled=False, registry_path=None, legacy_enabled=False,
                   suppliers_path=None, state_db=None, release_evidence_path=None, access_token=None, requests_per_minute=120, pilot_mode=False,
-                  personal_enabled=True, public_search_enabled=True, search_fn=None):
+                  personal_enabled=True, public_search_enabled=True, search_fn=None, import_fn=None):
+    import_sources()  # Reject invalid operator configuration before opening a socket.
     access_policy = AccessPolicy(access_token, requests_per_minute=requests_per_minute)
     if pilot_mode and (not access_policy.protected or demo_enabled or legacy_enabled or not suppliers_path):
         raise ValidationError("제한 공개 모드에는 접속 코드와 공급 설정이 필요하며 시연·레거시는 꺼야 합니다.")
@@ -362,6 +379,7 @@ def create_server(host="127.0.0.1", port=8000, *, db_path=None, demo_enabled=Fal
     httpd.personal_enabled = personal_enabled and not pilot_mode
     httpd.public_search_enabled = public_search_enabled and httpd.personal_enabled
     httpd.search_jobs = SearchJobs(search_fn or public_search.search)
+    httpd.import_fn = import_fn or import_listing
     return httpd
 
 def serve(host="127.0.0.1", port=8000):
