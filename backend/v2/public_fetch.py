@@ -137,6 +137,9 @@ def checked_url(url):
         if parts.netloc == "www.chintai.net":
             from .chintai_discovery import checked_url as checked_chintai_url
             return checked_chintai_url(url)
+        if parts.netloc == "realestate.yahoo.co.jp":
+            from .yahoo_discovery import checked_url as checked_yahoo_url
+            return checked_yahoo_url(url)
         if (parts.scheme != "https" or parts.netloc != "suumo.jp" or parts.hostname != "suumo.jp"
                 or parts.username is not None or parts.password is not None or parts.fragment or "\\" in url):
             raise ValueError()
