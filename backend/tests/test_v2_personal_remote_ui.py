@@ -21,7 +21,7 @@ def remote(page, *, online=True):
       const previousFetch = window.fetch;
       const reply = (body, status = 200) => new Response(JSON.stringify(body), {status, headers: {'Content-Type': 'application/json'}});
       const originalTimeout = window.setTimeout.bind(window);
-      window.setTimeout = (callback, ms, ...args) => originalTimeout(callback, ms === 2000 ? 10 : ms, ...args);
+      window.setTimeout = (callback, ms, ...args) => originalTimeout(callback, (ms === 2000 || ms === 5000) ? 10 : ms, ...args);
       const originalNow = Date.now;
       window.__remote.clockOffset = 0;
       Date.now = () => originalNow() + window.__remote.clockOffset;
@@ -175,7 +175,7 @@ def test_local_wait_limit_cancels_job_without_replacing_inputs(ui):
     page.locator('#personal-example').click()
     before = subject_values(page)
     begin(page)
-    page.evaluate('window.__remote.clockOffset = 100001')
+    page.evaluate('window.__remote.clockOffset = 450001')
     resolve(page, 'polls', 0, {'job_id': 'remote-1', 'status': 'running'})
     playwright.expect(page.locator('#personal-import-error')).to_contain_text('대기를 마쳤습니다')
     assert len(requests(page, '/import/remote-1/cancel')) == 1
@@ -245,3 +245,43 @@ def test_mobile_offline_controls_fit_and_recheck_is_keyboard_accessible(ui):
     assert page.evaluate('document.documentElement.scrollWidth <= window.innerWidth')
     box = button.bounding_box()
     assert box['height'] >= 44 and box['x'] >= 0 and box['x'] + box['width'] <= 390
+
+
+def test_import_fifth_in_queue_keeps_waiting_past_old_timeout(ui):
+    page = make_remote(ui)
+    page.evaluate("window.__remote.registrationBody = {job_id:'remote-1',status:'pending',queue_position:5,max_wait_seconds:450,poll_after_seconds:5}")
+    begin(page)
+    playwright.expect(page.locator('#personal-import-status')).to_contain_text('앞에 4건')
+    page.evaluate('window.__remote.clockOffset = 150000')
+    resolve(page, 'polls', 0, {'job_id':'remote-1','status':'pending','queue_position':3})
+    page.wait_for_function('window.__remote.polls.length === 2')
+    playwright.expect(page.locator('#personal-import-status')).to_contain_text('앞에 2건')
+    complete(page, index=1)
+    playwright.expect(page.locator('#subject-rent_yen')).to_have_value('81000')
+
+
+def test_search_queue_position_and_five_second_polling(ui):
+    page = make_remote(ui)
+    page.locator('#personal-example').click()
+    page.evaluate("""() => {
+      const previous = window.fetch;
+      window.__searchPolls = [];
+      window.__searchDelays = [];
+      const timeout = window.setTimeout;
+      window.setTimeout = (callback, ms, ...args) => {window.__searchDelays.push(ms); return timeout(callback,ms,...args);};
+      const reply = body => new Response(JSON.stringify(body), {status:200,headers:{'Content-Type':'application/json'}});
+      window.fetch = (path, settings) => {
+        if (path === '/api/v2/personal/search') return Promise.resolve(reply({job_id:'queued-search',status:'pending',queue_position:5,max_wait_seconds:450,poll_after_seconds:5}));
+        if (path === '/api/v2/personal/search/queued-search') return new Promise(resolve => window.__searchPolls.push(body => resolve(reply(body))));
+        return previous(path,settings);
+      };
+    }""")
+    page.locator('#personal-search').click()
+    page.wait_for_function('window.__searchPolls.length === 1')
+    playwright.expect(page.locator('#personal-search-status')).to_contain_text('앞에 4건')
+    assert 5000 in page.evaluate('window.__searchDelays')
+    page.evaluate("window.__remote.clockOffset = 150000; window.__searchPolls[0]({job_id:'queued-search',status:'pending',queue_position:2})")
+    page.wait_for_function('window.__searchPolls.length === 2')
+    playwright.expect(page.locator('#personal-search-status')).to_contain_text('앞에 1건')
+    page.evaluate("window.__searchPolls[1]({job_id:'queued-search',status:'complete',result:{listings:[],source_reports:[]}})")
+    playwright.expect(page.locator('#personal-search-status')).to_contain_text('이번 검색')

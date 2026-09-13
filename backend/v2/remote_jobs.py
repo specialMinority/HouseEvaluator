@@ -19,6 +19,9 @@ from .public_fetch import checked_url
 from .public_search import build_search_url
 
 MAX_RESULT_BYTES = 1024 * 1024
+MAX_ACTIVE_JOBS = 5
+JOB_SECONDS = 450
+CLIENT_POLL_SECONDS = 5
 _MESSAGES = {
     'worker_offline': (503, '조회 서비스 연결이 끊겼습니다. 잠시 후 연결 상태를 다시 확인해 주세요.'),
     'worker_busy': (429, '조회 요청이 진행 중입니다. 잠시 후 다시 시도해 주세요.'),
@@ -170,7 +173,7 @@ class WorkerJobs:
         with self.lock:
             if not self.state()['online']:
                 raise WorkerError('worker_offline')
-            if sum(j['status'] in ('pending', 'running') for j in self.jobs.values()) >= 3:
+            if sum(j['status'] in ('pending', 'running') for j in self.jobs.values()) >= MAX_ACTIVE_JOBS:
                 raise WorkerError('worker_busy')
             if len(self.jobs) >= 32:
                 terminal = [(key, j) for key, j in self.jobs.items() if j['status'] not in ('pending', 'running') and j.get('lease_until', 0) <= self.clock()]
@@ -178,9 +181,9 @@ class WorkerJobs:
                     raise WorkerError('worker_busy')
                 del self.jobs[min(terminal, key=lambda pair: pair[1]['created'])[0]]
             identity, now = secrets.token_urlsafe(24), self.clock()
-            self.jobs[identity] = {'kind': kind, 'payload': deepcopy(payload), 'created': now, 'deadline': now + 100,
+            self.jobs[identity] = {'kind': kind, 'payload': deepcopy(payload), 'created': now, 'deadline': now + JOB_SECONDS,
                                    'status': 'pending', 'result': None, 'error': None}
-            return {'job_id': identity, 'status': 'pending'}
+            return self.get(kind, identity)
 
     def get(self, kind, identity):
         with self.lock:
@@ -189,6 +192,13 @@ class WorkerJobs:
             if not job or job['kind'] != kind:
                 return None
             value = {'job_id': identity, 'status': job['status']}
+            if job['status'] in ('pending', 'running'):
+                # Include cancelled-but-leased work: it still occupies the source worker.
+                active = [key for key, item in self.jobs.items()
+                          if item['status'] in ('pending', 'running') or item.get('lease_until', 0) > self.clock()]
+                value.update(queue_position=active.index(identity) + 1, queue_size=len(active),
+                             remaining_seconds=max(0, int(job['deadline'] - self.clock())),
+                             max_wait_seconds=JOB_SECONDS, poll_after_seconds=CLIENT_POLL_SECONDS)
             if job['status'] == 'complete':
                 value['result'] = deepcopy(job['result'])
             if job['status'] == 'failed':

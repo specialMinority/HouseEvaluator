@@ -72,3 +72,16 @@ Affected browser regression: 37 passed; both JavaScript syntax checks passed. Li
 상세: docs/PC_WORKER_SECURITY.md. 컨테이너·동일 사용자 악성코드·공급 사이트 제한 등 잔여 위험은 문서에 분리한다. PC 전체의 무감염 판정이나 공격 불가 보증이 아니다.
 
 보안 실행 커밋 `d102a632819eef4ef8061c45f41dcab8324477ce`, Render `dep-daj7ftlg1s2s739md18g` Live 19:16:52 KST. 19:25 KST 기존 Python 종료 후 격리 작업자만으로 URL 조건 6개 확인·SUUMO 광고 60개 반환. 별도 기존 수집 자료의 UI 형식 비교 요청은 HTTP 200·시각화 5개. 전체 Windows 회귀 1,474 passed, 1 skipped, 468 subtests passed; CLI 테스트의 임시 사용량 폴더를 분리한 후 관련 125개 통과 및 [Linux Python 3.12/3.14 CI 성공](https://github.com/specialMinority/HouseEvaluator/actions/runs/34751635678). 전용 예약 시작과 중단·재시작 검증 완료. 공개 기록에는 실제 매물·키·사용자 정보가 포함되지 않는다.
+
+
+## 동시 이용 5명 지원
+
+목표: 5명이 각각 검색 또는 URL 조회 1건을 동시에 요청하면 접수하고 순서대로 결과를 전달한다. 원문 조회 실행은 1개를 유지한다.
+
+- [x] 1단계: 병목 확인 — 기존 대기/실행 3개·100초와 2초 상태 조회가 5명 사용에 불리함을 확인.
+- [x] 2단계: 대기/실행 5개, 총 450초, 대기 순서 표시, 작업자 모드 5초 상태 조회 적용. 실행권 75초·원문 제한·PC 격리 유지.
+- [x] 3단계: 합산 검색 30회/시간·URL 조회 60회/시간·240회/24시간, 통신 한도 조정. 사용량 기록과 재시작 유지.
+- [x] 4단계: 5개 동시 HTTP 요청, 장시간 순차 실행, 브라우저 대기 표시 검증. 전체 회귀 1,479 passed·1 skipped·468 subtests passed (169.89초), JavaScript 구문 검사 통과.
+- [ ] 5단계: 검증 코드 게시·Render 반영·PC 이미지 교체 후 실제 서비스에서 확인.
+
+개인별 계정이 없으므로 이 제한은 5개의 진행 중 요청 기준이며 5명의 신원을 구분하지 않는다. 혼잡 시 수 분 기다릴 수 있다. 실패·차단을 성공 결과로 표시하지 않는다.

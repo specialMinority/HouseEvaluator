@@ -20,8 +20,8 @@ def test_worker_hourly_budgets_survive_restart_and_expire_at_boundary(tmp_path):
     now = [100000.0]
     path = tmp_path / 'usage.sqlite3'
     budget = RollingBudget(path=path, clock=lambda: now[0])
-    for _ in range(12): budget.admit('search')
-    for _ in range(30): budget.admit('import')
+    for _ in range(30): budget.admit('search')
+    for _ in range(60): budget.admit('import')
     budget.close()
     budget = RollingBudget(path=path, clock=lambda: now[0])
     for kind in ('search', 'import'):
@@ -35,9 +35,9 @@ def test_worker_hourly_budgets_survive_restart_and_expire_at_boundary(tmp_path):
 def test_worker_daily_budget_combines_operations_and_is_rolling():
     now = [100000.0]
     budget = RollingBudget(clock=lambda: now[0])
-    for hour in range(3):
-        for _ in range(12): budget.admit('search')
-        for _ in range(28): budget.admit('import')
+    for hour in range(4):
+        for _ in range(30): budget.admit('search')
+        for _ in range(30): budget.admit('import')
         now[0] += 3600
     with pytest.raises(BudgetError, match='worker_rate_limited'): budget.admit('search')
     now[0] = 100000 + 86400
@@ -56,7 +56,7 @@ def test_quota_admission_is_atomic_across_connections(tmp_path):
             assert error.code == 'worker_rate_limited'
             return False
     with ThreadPoolExecutor(max_workers=8) as pool:
-        assert sum(pool.map(admit, range(32))) == 12
+        assert sum(pool.map(admit, range(64))) == 30
     first.close()
     second.close()
 

@@ -72,7 +72,7 @@ def test_job_claim_complete_and_idempotent_upload(queue, kind):
 
 def test_only_one_worker_can_claim_and_capacity_is_bounded(queue):
     q, _ = queue
-    for _ in range(3):
+    for _ in range(5):
         q.start('search', {'subject': subject()})
     with pytest.raises(WorkerError) as exc:
         q.start('search', {'subject': subject()})
@@ -112,7 +112,7 @@ def test_cancel_rejects_result_and_does_not_release_active_source_lease_early(qu
 def test_pending_deadline_and_retention_are_bounded(queue):
     q, now = queue
     identity = q.start('import', {'url': URL})['job_id']
-    now[0] = 101
+    now[0] = 451
     assert q.get('import', identity)['status'] == 'failed'
     now[0] = 900
     assert q.get('import', identity) is None
@@ -121,9 +121,9 @@ def test_pending_deadline_and_retention_are_bounded(queue):
 def test_deadline_failed_job_still_holds_its_active_source_lease(queue):
     q, now = queue
     identity = q.start('search', {'subject': subject()})['job_id']
-    now[0] = 80
+    now[0] = 430
     lease = q.claim(CAPS)['job']
-    now[0] = 101
+    now[0] = 451
     assert q.get('search', identity)['status'] == 'failed'
     q.start('search', {'subject': subject()})
     assert q.claim(CAPS)['job'] is None
@@ -291,3 +291,69 @@ def test_only_worker_result_accepts_more_than_normal_body_limit(server_factory, 
     result['source_reports'][0]['warnings'] = ['bounded metadata ' * 100] * 55
     assert request(server, 'POST', '/api/v2/worker/result', finished(lease, result), token=WORKER_TOKEN)[0] == 200
     assert request(server, 'POST', '/api/v2/personal/compare', {'subject': subject(), 'listings': [], 'extra': 'x' * 66000}, token=USER_TOKEN)[0] == 413
+
+
+def test_five_queued_searches_survive_slow_serial_processing(queue):
+    q, now = queue
+    ids = [q.start('search', {'subject': subject()})['job_id'] for _ in range(5)]
+    assert [q.get('search', key)['queue_position'] for key in ids] == [1, 2, 3, 4, 5]
+    now[0] = 10  # worker's idle polling delay
+    for index, key in enumerate(ids):
+        lease = q.claim(CAPS)['job']
+        assert lease['job_id'] == key
+        now[0] += 74  # near the execution lease limit, longer than a normal source query
+        q.finish(finished(lease))
+        assert q.get('search', key)['status'] == 'complete'
+        for pending in ids[index + 1:]:
+            status = q.get('search', pending)
+            assert status['status'] == 'pending' and status['remaining_seconds'] > 0
+        now[0] += 1
+    assert now[0] == 385  # the fifth job used to expire at 100 seconds
+
+
+def test_cancelled_active_job_remains_visible_in_wait_position(queue):
+    q, _ = queue
+    key, lease = claimed(q)
+    waiting = q.start('import', {'url': URL})['job_id']
+    q.cancel('search', key)
+    assert q.get('import', waiting)['queue_position'] == 2
+    with pytest.raises(WorkerError):
+        q.finish(finished(lease))
+    assert q.get('import', waiting)['queue_position'] == 1
+
+
+def test_five_http_clients_search_poll_compare_under_shared_limit(server_factory, monkeypatch):
+    from concurrent.futures import ThreadPoolExecutor
+    from backend.v2.remote_worker import RemoteWorker
+    monkeypatch.setenv('HOUSE_EVALUATOR_SEARCH_SOURCE', 'suumo')
+    monkeypatch.setenv('HOUSE_EVALUATOR_IMPORT_SOURCES', 'chintai,yahoo_realestate')
+    server = server_factory(execution_mode='worker', access_token=USER_TOKEN, worker_token=WORKER_TOKEN,
+                            requests_per_minute=120)
+    def transport(path, body):
+        status, data = request(server, 'POST', path, body, token=WORKER_TOKEN)
+        assert status == 200
+        return data
+    runner = RemoteWorker(transport, search_fn=lambda _: search_result())
+    runner.step()
+    barrier = threading.Barrier(5)
+    def register(_):
+        barrier.wait(timeout=5)
+        return request(server, 'POST', '/api/v2/personal/search', {'subject': subject()}, token=USER_TOKEN)
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        created = list(pool.map(register, range(5)))
+        assert all(code == 202 for code, _ in created)
+        ids = [value['job_id'] for _, value in created]
+        assert sorted(value['queue_position'] for _, value in created) == [1, 2, 3, 4, 5]
+        assert request(server, 'POST', '/api/v2/personal/search', {'subject': subject()}, token=USER_TOKEN)[0] == 429
+        # Compress a whole minute of 5-second polling into one real rate-limit window.
+        for _ in range(12):
+            polled = list(pool.map(lambda key: request(server, 'GET', '/api/v2/personal/search/' + key, token=USER_TOKEN), ids))
+            assert all(code == 200 for code, _ in polled)
+        for _ in range(5):
+            runner.step()
+        def compare(key):
+            code, data = request(server, 'GET', '/api/v2/personal/search/' + key, token=USER_TOKEN)
+            assert code == 200 and data['status'] == 'complete'
+            return request(server, 'POST', '/api/v2/personal/compare',
+                           {'subject': subject(), 'listings': data['result']['listings']}, token=USER_TOKEN)[0]
+        assert list(pool.map(compare, ids)) == [200] * 5

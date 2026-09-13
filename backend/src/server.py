@@ -17,7 +17,7 @@ from backend.v2.personal import compare as compare_personal, validate_listing
 from backend.v2.personal_jobs import SearchBusy, SearchJobs
 from backend.v2 import public_search
 from backend.v2.listing_import import ListingImportError, import_listing, import_sources, validate_payload as validate_import_payload
-from backend.v2.remote_jobs import WorkerError, WorkerJobs, WorkerSearchAdapter, MAX_RESULT_BYTES
+from backend.v2.remote_jobs import WorkerError, WorkerJobs, WorkerSearchAdapter, MAX_RESULT_BYTES, JOB_SECONDS
 
 MAX_BODY = 65536
 LOG = logging.getLogger(__name__)
@@ -195,7 +195,7 @@ class _ApiHandler(BaseHTTPRequestHandler):
                                          search_enabled=self.server.public_search_enabled,
                                          import_enabled=self.server.public_search_enabled and bool(sources),
                                          import_sources=sources, execution_mode=self.server.execution_mode,
-                                         worker=worker, max_search_seconds=100 if broker else public_search.SEARCH_SECONDS,
+                                         worker=worker, max_search_seconds=JOB_SECONDS if broker else public_search.SEARCH_SECONDS,
                                          search_available=self.server.public_search_enabled and available,
                                          import_available=self.server.public_search_enabled and bool(sources) and available))
             elif path.startswith('/api/v2/personal/import/'):

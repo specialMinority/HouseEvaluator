@@ -274,6 +274,21 @@
     review.append(element("p", `${data.source?.fetched_at ? `페이지 조회: ${timestamp(data.source.fetched_at)}. ` : ""}공실 여부와 최종 계약 조건은 원문에서 확인하세요. 자동 검색은 아래 버튼으로 시작할 수 있습니다.`, "fine-print"));
     review.hidden = false;
   }
+  function jobWaitMilliseconds(job, fallback) {
+    const seconds = job?.max_wait_seconds;
+    return (Number.isFinite(seconds) && seconds > 0 ? Math.min(seconds, 450) : state.options?.execution_mode === "worker" ? 450 : fallback) * 1000;
+  }
+  function jobPollMilliseconds(job) {
+    const seconds = job?.poll_after_seconds;
+    return (Number.isFinite(seconds) ? Math.min(10, Math.max(5, seconds)) : state.options?.execution_mode === "worker" ? 5 : 2) * 1000;
+  }
+  function queueMessage(job, running) {
+    if (job.status !== "pending") return running;
+    const position = job.queue_position;
+    return Number.isInteger(position) && position >= 1 && position <= 6
+      ? `요청이 접수되었습니다. 처리 순서 ${position}번째${position > 1 ? ` · 앞에 ${position - 1}건` : ""}. 순서대로 조회하며, 혼잡할 때는 몇 분 걸릴 수 있습니다.`
+      : "요청이 접수되었습니다. 순서대로 조회하며, 혼잡할 때는 몇 분 걸릴 수 있습니다.";
+  }
   async function importSubject(event) {
     event.preventDefault();
     if (state.importing || state.search || state.compare || unavailable("import") || state.options?.enabled === false || state.options?.search_enabled === false || state.options?.import_enabled === false || !$("personal-import-form").reportValidity()) return;
@@ -291,10 +306,11 @@
         if (typeof data.job_id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(data.job_id)) throw new Error("불러오기 작업을 확인하지 못했습니다. 기존 입력은 유지됩니다.");
         const jobId = data.job_id; state.importJobId = jobId;
         let job = data;
+        const waitMilliseconds = jobWaitMilliseconds(job, 100);
         while (["pending", "running"].includes(job.status)) {
-          if (Date.now() - started > 100000) throw new Error("불러오기가 오래 걸려 대기를 마쳤습니다. 기존 입력을 유지하며 직접 수정할 수 있습니다.");
-          $("personal-import-status").textContent = job.status === "pending" ? "조회 서비스에서 불러오기를 준비하고 있습니다…" : "매물 원문에서 조건을 확인하고 있습니다…";
-          await delay(2000, controller.signal);
+          if (Date.now() - started > waitMilliseconds) throw new Error("불러오기가 오래 걸려 대기를 마쳤습니다. 기존 입력을 유지하며 직접 수정할 수 있습니다.");
+          $("personal-import-status").textContent = queueMessage(job, "매물 원문에서 조건을 확인하고 있습니다…");
+          await delay(jobPollMilliseconds(job), controller.signal);
           job = await request(`/api/v2/personal/import/${encodeURIComponent(jobId)}`, { signal: controller.signal });
           if (sequence !== state.importSequence || authSequence !== state.authSequence) return;
           if (!job || job.job_id !== jobId) throw new Error("불러오기 작업 응답이 일치하지 않습니다. 기존 입력은 유지됩니다.");
@@ -436,10 +452,14 @@
       if (!job.job_id) throw new Error("검색 작업을 시작하지 못했습니다. 직접 입력으로 계속할 수 있습니다.");
       if (sequence !== state.searchSequence) return;
       state.searchJobId = job.job_id;
+      const jobId = job.job_id;
+      const waitMilliseconds = jobWaitMilliseconds(job, 120);
       while (["pending", "running"].includes(job.status)) {
-        if (Date.now() - started > 120000) throw new Error("검색이 오래 걸려 대기를 마쳤습니다. 원문에서 찾은 매물을 직접 입력해 주세요.");
-        await delay(2000, controller.signal);
-        job = await request(`/api/v2/personal/search/${encodeURIComponent(job.job_id)}`, { signal: controller.signal });
+        if (Date.now() - started > waitMilliseconds) throw new Error("검색이 오래 걸려 대기를 마쳤습니다. 원문에서 찾은 매물을 직접 입력해 주세요.");
+        $("personal-search-status").textContent = queueMessage(job, `${automaticSourceName()}에서 조건이 비슷한 매물을 찾고 있습니다…`);
+        await delay(jobPollMilliseconds(job), controller.signal);
+        job = await request(`/api/v2/personal/search/${encodeURIComponent(jobId)}`, { signal: controller.signal });
+        if (!job || job.job_id !== jobId) throw new Error("검색 작업 응답이 일치하지 않습니다.");
       }
       if (sequence !== state.searchSequence) return;
       if (job.status !== "complete") { const error = new Error(job.error?.message || job.message || "자동검색을 완료하지 못했습니다. 직접 입력한 매물은 유지됩니다."); error.code = job.error?.code; throw error; }

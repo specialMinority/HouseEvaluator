@@ -5,8 +5,8 @@ import sqlite3
 import threading
 import time
 
-WORKER_RULES = ((('search',), 3600, 12), (('import',), 3600, 30), (('search', 'import'), 86400, 120))
-GATEWAY_RULES = ((('source',), 60, 60), (('source',), 3600, 500), (('source',), 86400, 2000),
+WORKER_RULES = ((('search',), 3600, 30), (('import',), 3600, 60), (('search', 'import'), 86400, 240))
+GATEWAY_RULES = ((('source',), 60, 60), (('source',), 3600, 1200), (('source',), 86400, 6000),
                  (('cloud',), 60, 60), (('cloud',), 86400, 12000))
 
 
@@ -56,7 +56,7 @@ class RollingBudget:
                 now = max(now, last[0]) if last else now
                 self.db.execute('DELETE FROM budget_events WHERE at <= ?', (now - 86400,))
                 self.db.execute('INSERT OR REPLACE INTO budget_clock VALUES (1, ?)', (now,))
-                if self.db.execute('SELECT count(*) FROM budget_events').fetchone()[0] > 14000:
+                if self.db.execute('SELECT count(*) FROM budget_events').fetchone()[0] > 20000:
                     raise BudgetError()
                 for kinds, seconds, limit in self.rules:
                     if kind not in kinds:
