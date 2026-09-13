@@ -5,6 +5,12 @@ $taskRepo = (Resolve-Path -LiteralPath (Join-Path $PSScriptRoot '..')).Path
 $taskCompose = Join-Path $taskRepo 'compose.worker.yaml'
 $taskToken = Join-Path $taskRepo '.runtime/worker-token.txt'
 if (-not (Test-Path -LiteralPath $taskToken -PathType Leaf)) { throw 'Private worker-token.txt is required.' }
+# A completed legacy scheduled task can leave its child Python process alive.
+# Refuse mixed execution; never kill a process based on an old PID file.
+$taskLegacyWorkers = @(Get-CimInstance Win32_Process -Filter "Name = 'python.exe' OR Name = 'pythonw.exe'" | Where-Object {
+    $_.CommandLine -match '(?:^|\s)-m\s+backend\.v2\.remote_worker(?:\s|$)'
+})
+if ($taskLegacyWorkers.Count -gt 0) { throw 'A legacy host Python worker is still running. Verify its identity and stop it before starting isolated execution.' }
 $taskDocker = (Get-Command docker -ErrorAction Stop).Source
 # Docker Desktop may need time after logon. Never fall back to host Python.
 $taskReady = $false

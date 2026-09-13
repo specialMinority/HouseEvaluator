@@ -67,6 +67,8 @@ Affected browser regression: 37 passed; both JavaScript syntax checks passed. Li
 - [x] S2: 비관리자 Docker 작업자, 읽기 전용 실행 파일, 개인 폴더 미공유, CPU·메모리·프로세스·로그 제한.
 - [x] S3: 작업자 네트워크 차단, 별도 Unix 소켓 통신 통로의 고정 목적지·공인 IP·시간·바이트·동시 연결 제한. 실제 격리 검사 통과.
 - [x] S4: 재시작 후 유지되는 시간별·일별 작업 예산, 별도 통신량 예산, 개인 키 파일 ACL 축소, 잘못된 인증 시도 한도 강화.
-- [ ] S5: 전체 회귀·공개 배포·실제 자동검색/URL 조회·시작/중단 검증 마무리.
+- [x] S5: 전체 회귀·공개 배포·실제 자동검색/URL 조회·시작/중단 검증 완료. 기존 호스트 Python 작업자의 잔존을 확인해 정확한 실행 신원 검증 후 종료했고 혼합 실행 거절 검사를 추가했다.
 
 상세: docs/PC_WORKER_SECURITY.md. 컨테이너·동일 사용자 악성코드·공급 사이트 제한 등 잔여 위험은 문서에 분리한다. PC 전체의 무감염 판정이나 공격 불가 보증이 아니다.
+
+보안 실행 커밋 `d102a632819eef4ef8061c45f41dcab8324477ce`, Render `dep-daj7ftlg1s2s739md18g` Live 19:16:52 KST. 19:25 KST 기존 Python 종료 후 격리 작업자만으로 URL 조건 6개 확인·SUUMO 광고 60개 반환. 별도 기존 수집 자료의 UI 형식 비교 요청은 HTTP 200·시각화 5개. 전체 Windows 회귀 1,474 passed, 1 skipped, 468 subtests passed; CLI 테스트의 임시 사용량 폴더를 분리한 후 관련 125개 통과 및 [Linux Python 3.12/3.14 CI 성공](https://github.com/specialMinority/HouseEvaluator/actions/runs/34751635678). 전용 예약 시작과 중단·재시작 검증 완료. 공개 기록에는 실제 매물·키·사용자 정보가 포함되지 않는다.
