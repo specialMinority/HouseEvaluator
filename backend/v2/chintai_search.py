@@ -24,7 +24,7 @@ def search(subject, *, fetcher=None):
         'search_url': None, 'search_urls': [], 'fetched_at': None,
         'listing_count': 0, 'search_page_count': 0, 'station_page_count': 0,
         'metadata_page_count': 0, 'discovered_count': 0, 'rejected_count': 0,
-        'duplicate_count': 0, 'out_of_scope_count': 0, 'station_count': 0,
+        'duplicate_count': 0, 'conflicting_url_count': 0, 'out_of_scope_count': 0, 'station_count': 0,
         'distinct_building_count': 0, 'detail_count': 0, 'detail_attempt_count': 0,
         'detail_unavailable_count': 0, 'detail_limit': 0, 'detail_limit_per_building': 0,
         'partial': False, 'search_scope': 'municipality_fallback',
@@ -87,13 +87,18 @@ def search(subject, *, fetcher=None):
 
     def ingest(text):
         stamp = _timestamp()
+        page_conflicts = set()
         rows, cards, empty = parse_search(text, fetched_at=stamp, regions=_REGIONS,
-                                          target_station=subject['station_name'])
+                                          target_station=subject['station_name'], conflicts_out=page_conflicts)
         if not rows and not empty and not cards:
             raise PublicFetchError('parse_changed')
         report['search_page_count'] += 1
         report['discovered_count'] += len(rows)
         report['fetched_at'] = stamp
+        for identity in page_conflicts:
+            conflicts.add(identity)
+            if found.pop(identity, None) is not None:
+                report['rejected_count'] += 1
         if cards >= 50:
             report['partial'] = True
         for row in rows:
@@ -185,6 +190,7 @@ def search(subject, *, fetcher=None):
             result['listings'] = [rows[index] for index in order[:60]]
             report['partial'] = report['partial'] or len(rows) > 60
             report['listing_count'] = len(result['listings'])
+            report['conflicting_url_count'] = len(conflicts)
             report['station_count'] = report['listing_count']
             report['discovered_station_count'] = len(rows)
             report['distinct_building_count'] = len({(clean(row.get('address')), clean(row.get('building_name')))

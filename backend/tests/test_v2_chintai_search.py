@@ -76,7 +76,7 @@ class Pages:
         self.snapshots = {self.tokens[url]: values for url, values in pages.items()}
         following = {self.tokens[url]: self.urls[index + 1] if index + 1 < len(self.urls) else None for index, url in enumerate(self.urls)}
 
-        def parse(html, *, fetched_at, regions, target_station):
+        def parse(html, *, fetched_at, regions, target_station, conflicts_out=None):
             self.parser_calls.append((html, fetched_at, target_station))
             return deepcopy(self.snapshots[html]), cards, empty
 

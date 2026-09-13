@@ -114,7 +114,7 @@ def _building_name(title):
     return title or None
 
 
-def parse_search(text, *, fetched_at, regions, target_station=None):
+def parse_search(text, *, fetched_at, regions, target_station=None, conflicts_out=None):
     if not isinstance(text, str) or len(text) > MAX_HTML_CHARACTERS:
         raise PublicFetchError('html_too_complex')
     tree = Tree(text).root
@@ -199,5 +199,9 @@ def parse_search(text, *, fetched_at, regions, target_station=None):
             if accepted < MAX_ROOMS_PER_BUILDING:
                 listings.append(missing(item))
                 accepted += 1
+    # A page-local conflict must also invalidate any earlier page's copy of the
+    # same URL. Keep the public three-value return contract for other callers.
+    if conflicts_out is not None:
+        conflicts_out.update(conflicts)
     empty = not cards and bool(re.search(r'(?:該当する物件(?:は|が)ありません|条件に一致する物件が見つかりません|(?<![0-9])0\s*件の賃貸物件情報)', clean(tree.text())))
     return listings, len(cards), empty
