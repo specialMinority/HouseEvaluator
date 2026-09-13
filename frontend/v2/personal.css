@@ -69,6 +69,10 @@ html{scroll-padding-bottom:calc(var(--personal-dock-space,0px) + 18px)}
 .personal-related-intro{font-size:13px;font-weight:600;line-height:1.9;color:var(--green);padding:11px 14px;background:var(--green-soft);border-radius:7px;margin:12px 0}
 .personal-related-intro p{margin:0}.personal-related-jump{min-height:40px;padding:9px 12px;font-size:12px;margin-top:10px}
 @media(max-width:760px){.personal-related-jump{width:100%;justify-content:center}.personal-reference-card.has-related-features{scroll-margin-top:12px}}
+.personal-service-connection{display:flex;align-items:center;justify-content:space-between;gap:14px;min-width:0;margin:12px 0}
+.personal-service-connection .form-message{margin:0;flex:1;line-height:1.8}
+.personal-service-connection .secondary-button{flex-shrink:0;min-height:44px}
+@media(max-width:760px){.personal-service-connection{align-items:stretch;flex-direction:column;gap:8px}.personal-service-connection .secondary-button{align-self:flex-start;max-width:100%}}
 .personal-price-visual{min-width:0}
 .personal-visual-kicker{font-size:12px;color:var(--green);font-weight:700;margin:0 0 8px}
 .personal-price-visual>h3{font-size:31px;line-height:1.4;letter-spacing:-1px;margin:0 0 8px;word-break:keep-all}

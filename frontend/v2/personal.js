@@ -36,7 +36,7 @@
     { key: "source_url", label: "원문 링크", type: "url", placeholder: "https://…", maxLength: 2000, wide: true, help: "같은 매물이나 건물의 중복 확인에 사용합니다." },
   ];
   const fieldNames = Object.fromEntries(fields.map((field) => [field.key, field.label]));
-  const state = { accessToken: "", authSequence: 0, options: null, listings: [], sourceReports: [], nextKey: 1, editingKey: null, search: null, searchJobId: null, compare: null, importing: null, importSequence: 0, searchSequence: 0, compareSequence: 0, optionsSequence: 0 };
+  const state = { accessToken: "", authSequence: 0, options: null, optionsLoading: false, connectionFailed: false, listings: [], sourceReports: [], nextKey: 1, editingKey: null, search: null, searchJobId: null, compare: null, importing: null, importJobId: null, importSequence: 0, searchSequence: 0, compareSequence: 0, optionsSequence: 0 };
 
   function sourceName(id) {
     return { suumo: "SUUMO", chintai: "CHINTAI", yahoo_realestate: "Yahoo! 부동산", manual: "직접 입력" }[id] || "공개 검색";
@@ -140,8 +140,23 @@
     if (jobId) request(`/api/v2/personal/search/${encodeURIComponent(jobId)}/cancel`, { method: "POST", data: {} }).catch(() => {});
   }
   function stopImport(message = "") {
+    const jobId = state.importJobId; state.importJobId = null;
     state.importSequence += 1; state.importing?.abort(); state.importing = null;
     $("personal-import-status").textContent = message; updateButtons();
+    cancelImportJob(jobId);
+  }
+  function cancelImportJob(jobId) {
+    if (typeof jobId === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(jobId)) request(`/api/v2/personal/import/${encodeURIComponent(jobId)}/cancel`, { method: "POST", data: {} }).catch(() => {});
+  }
+  function unavailable(kind) {
+    return state.connectionFailed || state.options?.[`${kind}_available`] === false || (state.options?.execution_mode === "worker" && state.options?.worker?.online !== true);
+  }
+  function serviceDisconnected(error) {
+    if (error.code !== "worker_offline" && error.code !== "connection_failed") return;
+    state.connectionFailed = true;
+    $("personal-service-status").textContent = "조회 서비스 연결이 끊겼습니다. 잠시 후 연결을 다시 확인해 주세요. 입력한 내용은 유지됩니다.";
+    $("personal-reconnect").hidden = false;
+    updateButtons();
   }
   function clearImportReview() {
     $("personal-import-review").replaceChildren(); $("personal-import-review").hidden = true;
@@ -150,9 +165,11 @@
     const selected = state.listings.filter((row) => row.selected).length;
     const busy = Boolean(state.search || state.compare || state.importing);
     const hasResult = !$("personal-result").hidden;
-    $("personal-search").disabled = busy || state.options?.enabled === false || state.options?.search_enabled === false;
+    $("personal-search").disabled = busy || unavailable("search") || state.options?.enabled === false || state.options?.search_enabled === false;
     $("personal-search-cancel").hidden = !state.search;
-    $("personal-import-submit").disabled = busy || state.options?.enabled === false || state.options?.search_enabled === false || state.options?.import_enabled === false;
+    $("personal-import-submit").disabled = busy || unavailable("import") || state.options?.enabled === false || state.options?.search_enabled === false || state.options?.import_enabled === false;
+    $("personal-reconnect").disabled = busy || state.optionsLoading;
+    $("personal-reconnect").textContent = state.optionsLoading ? "연결 확인 중…" : "연결 다시 확인";
     $("personal-import-submit").textContent = state.importing ? "불러오는 중…" : "조건 불러오기";
     $("personal-import-form").setAttribute("aria-busy", String(Boolean(state.importing)));
     $("personal-import-cancel").hidden = !state.importing;
@@ -209,30 +226,36 @@
       }
       if (!response.ok) {
         const detail = typeof result.message === "string" ? result.message : typeof result.error === "string" && /[가-힣]/.test(result.error) ? result.error : null;
-        throw new Error(detail || (response.status === 429 ? "요청이 많습니다. 잠시 뒤 다시 시도하세요." : response.status === 413 ? "비교할 매물이 너무 많습니다. 선택 수를 줄여주세요." : "요청을 처리하지 못했습니다. 입력 조건을 확인해 주세요."));
+        const error = new Error(detail || (response.status === 429 ? "요청이 많습니다. 잠시 뒤 다시 시도하세요." : response.status === 413 ? "비교할 매물이 너무 많습니다. 선택 수를 줄여주세요." : "요청을 처리하지 못했습니다. 입력 조건을 확인해 주세요."));
+        error.code = typeof result.error === "string" ? result.error : result.error?.code;
+        throw error;
       }
       if (authSequence === state.authSequence) { $("personal-access-panel").hidden = true; $("personal-logout").hidden = !state.accessToken; }
       return result;
     } catch (error) {
       if (timedOut) throw new Error("응답이 지연되고 있습니다. 잠시 뒤 다시 시도하세요.");
-      if (error.name === "TypeError") throw new Error("서버에 연결하지 못했습니다. 직접 입력한 내용은 이 페이지에 남아 있습니다.");
+      if (error.name === "TypeError") { const disconnected = new Error("서버에 연결하지 못했습니다. 직접 입력한 내용은 이 페이지에 남아 있습니다."); disconnected.code = "connection_failed"; throw disconnected; }
       throw error;
     } finally { clearTimeout(timer); signal?.removeEventListener("abort", abort); }
   }
   async function loadOptions() {
     const sequence = ++state.optionsSequence;
+    const authSequence = state.authSequence;
+    state.optionsLoading = true; updateButtons();
     try {
       const data = await request("/api/v2/personal/options");
-      if (sequence !== state.optionsSequence) return;
-      state.options = data;
+      if (sequence !== state.optionsSequence || authSequence !== state.authSequence) return;
+      state.options = data; state.connectionFailed = false;
       municipalityOptions("subject"); municipalityOptions("editor");
-      $("personal-service-status").textContent = data.enabled === false ? "개인 비교 기능이 현재 비활성화되어 있습니다." : "";
-      $("personal-search-help").textContent = data.search_enabled === false ? "자동검색이 꺼져 있습니다. 원문에서 확인한 매물을 직접 입력하면 계속 비교할 수 있습니다." : `자동검색 출처: ${automaticSourceName()}. 사이트 응답이나 페이지 변경으로 찾지 못하면 직접 입력해 계속 비교할 수 있습니다.`;
+      $("personal-service-status").textContent = data.enabled === false ? "개인 비교 기능이 현재 비활성화되어 있습니다." : data.execution_mode === "worker" ? data.worker?.online === true ? "조회 서비스가 연결되어 있습니다." : "조회 서비스 연결 대기 중입니다. 잠시 후 연결을 다시 확인해 주세요. 직접 입력과 비교는 계속할 수 있습니다." : "";
+      $("personal-reconnect").hidden = data.execution_mode !== "worker";
+      $("personal-search-help").textContent = data.search_enabled === false ? "자동검색이 꺼져 있습니다. 원문에서 확인한 매물을 직접 입력하면 계속 비교할 수 있습니다." : unavailable("search") ? "조회 서비스에 연결되면 자동검색을 시작할 수 있습니다. 입력한 조건은 유지됩니다." : `자동검색 출처: ${automaticSourceName()}. 사이트 응답이나 페이지 변경으로 찾지 못하면 직접 입력해 계속 비교할 수 있습니다.`;
       const importNames = Array.isArray(data.import_sources) ? data.import_sources.filter((source) => typeof source?.name === "string" && source.name.trim()).map((source) => source.name.trim()).join(" · ") : "지원하는 공개 매물 사이트";
-      $("personal-import-help").textContent = data.import_enabled === false || data.search_enabled === false ? "현재 링크 불러오기가 꺼져 있습니다. 매물 원문을 확인해 아래에 직접 입력하세요." : `${importNames || "지원하는 공개 매물 사이트"} 상세 링크를 지원합니다. 불러오기에 성공하면 아래 입력을 교체하고 확인하지 못한 항목은 비웁니다.`;
+      $("personal-import-help").textContent = data.import_enabled === false || data.search_enabled === false ? "현재 링크 불러오기가 꺼져 있습니다. 매물 원문을 확인해 아래에 직접 입력하세요." : unavailable("import") ? "조회 서비스에 연결되면 링크의 조건을 불러올 수 있습니다. 지금은 아래에 직접 입력할 수 있습니다." : `${importNames || "지원하는 공개 매물 사이트"} 상세 링크를 지원합니다. 불러오기에 성공하면 아래 입력을 교체하고 확인하지 못한 항목은 비웁니다.`;
       updateButtons();
       errorAt("personal-access-error");
-    } catch (error) { if (sequence === state.optionsSequence) $("personal-service-status").textContent = error.message; }
+    } catch (error) { if (sequence === state.optionsSequence && authSequence === state.authSequence) { state.connectionFailed = true; $("personal-service-status").textContent = error.message; $("personal-reconnect").hidden = false; } }
+    finally { if (sequence === state.optionsSequence) { state.optionsLoading = false; updateButtons(); } }
   }
   function renderImportReview(data, imported) {
     const review = $("personal-import-review"); review.replaceChildren();
@@ -253,17 +276,34 @@
   }
   async function importSubject(event) {
     event.preventDefault();
-    if (state.importing || state.search || state.compare || state.options?.enabled === false || state.options?.search_enabled === false || state.options?.import_enabled === false || !$("personal-import-form").reportValidity()) return;
+    if (state.importing || state.search || state.compare || unavailable("import") || state.options?.enabled === false || state.options?.search_enabled === false || state.options?.import_enabled === false || !$("personal-import-form").reportValidity()) return;
     const url = $("personal-import-url").value.trim();
     if (!safeUrl(url)) { errorAt("personal-import-error", "인증정보가 없는 매물 상세 URL을 입력하세요."); return; }
     const sequence = ++state.importSequence; const authSequence = state.authSequence;
-    const controller = new AbortController(); state.importing = controller;
+    const controller = new AbortController(); state.importing = controller; state.importJobId = null;
+    const started = Date.now();
     errorAt("personal-import-error"); $("personal-import-status").textContent = "매물 원문에서 조건을 확인하고 있습니다…"; updateButtons();
     try {
-      const data = await request("/api/v2/personal/import", { method: "POST", data: { url }, signal: controller.signal });
-      if (sequence !== state.importSequence) return;
+      let data = await request("/api/v2/personal/import", { method: "POST", data: { url }, signal: controller.signal });
+      if (sequence !== state.importSequence || authSequence !== state.authSequence) { if (authSequence === state.authSequence) cancelImportJob(data?.job_id); return; }
+      if (!data || typeof data !== "object" || Array.isArray(data)) throw new Error("매물 조건 응답을 확인하지 못했습니다. 기존 입력은 유지됩니다.");
+      if (data.job_id !== undefined) {
+        if (typeof data.job_id !== "string" || !/^[A-Za-z0-9_-]{1,128}$/.test(data.job_id)) throw new Error("불러오기 작업을 확인하지 못했습니다. 기존 입력은 유지됩니다.");
+        const jobId = data.job_id; state.importJobId = jobId;
+        let job = data;
+        while (["pending", "running"].includes(job.status)) {
+          if (Date.now() - started > 100000) throw new Error("불러오기가 오래 걸려 대기를 마쳤습니다. 기존 입력을 유지하며 직접 수정할 수 있습니다.");
+          $("personal-import-status").textContent = job.status === "pending" ? "조회 서비스에서 불러오기를 준비하고 있습니다…" : "매물 원문에서 조건을 확인하고 있습니다…";
+          await delay(2000, controller.signal);
+          job = await request(`/api/v2/personal/import/${encodeURIComponent(jobId)}`, { signal: controller.signal });
+          if (sequence !== state.importSequence || authSequence !== state.authSequence) return;
+          if (!job || job.job_id !== jobId) throw new Error("불러오기 작업 응답이 일치하지 않습니다. 기존 입력은 유지됩니다.");
+        }
+        if (job.status !== "complete") { const error = new Error(job.error?.message || (job.status === "cancelled" ? "불러오기가 중단되었습니다. 기존 입력은 유지됩니다." : "매물 조건을 불러오지 못했습니다. 기존 입력은 유지됩니다.")); error.code = job.error?.code; throw error; }
+        data = job.result; state.importJobId = null;
+      }
       if (authSequence !== state.authSequence || url !== $("personal-import-url").value.trim()) { stopImport("입력이나 접속 상태가 바뀌어 불러오기를 중단했습니다."); return; }
-      if (!["ok", "partial"].includes(data.status) || !data.listing || typeof data.listing !== "object" || Array.isArray(data.listing)) throw new Error("매물 조건을 읽지 못했습니다. 기존 입력은 유지됩니다.");
+      if (!data || !["ok", "partial"].includes(data.status) || !data.listing || typeof data.listing !== "object" || Array.isArray(data.listing)) throw new Error("매물 조건을 읽지 못했습니다. 기존 입력은 유지됩니다.");
       const imported = Object.fromEntries(fields.map((field) => [field.key, data.listing[field.key] ?? null]));
       imported.source_url = imported.source_url || data.source?.url || null;
       if (!safeUrl(imported.source_url)) throw new Error("매물 원문 링크를 확인하지 못했습니다. 기존 입력은 유지됩니다.");
@@ -277,8 +317,8 @@
       $("personal-import-status").textContent = "조건을 불러왔습니다. 미상 항목과 원문을 확인해 주세요.";
       reveal($("personal-import-review"));
     } catch (error) {
-      if (sequence === state.importSequence && error.name !== "AbortError") { errorAt("personal-import-error", error.message); $("personal-import-status").textContent = "불러오지 못했습니다. 기존 입력을 유지하며 직접 수정할 수 있습니다."; }
-    } finally { if (sequence === state.importSequence) { state.importing = null; updateButtons(); } }
+      if (sequence === state.importSequence && error.name !== "AbortError") { cancelImportJob(state.importJobId); serviceDisconnected(error); errorAt("personal-import-error", error.message); $("personal-import-status").textContent = "불러오지 못했습니다. 기존 입력을 유지하며 직접 수정할 수 있습니다."; }
+    } finally { if (sequence === state.importSequence) { state.importing = null; state.importJobId = null; updateButtons(); } }
   }
   function reportCard(report) {
     const card = element("div", null, "personal-source-report");
@@ -383,7 +423,7 @@
   });
   async function search(event) {
     event.preventDefault();
-    if (state.options?.enabled === false || state.options?.search_enabled === false) return;
+    if (unavailable("search") || state.options?.enabled === false || state.options?.search_enabled === false) return;
     if (state.importing || state.search || state.compare || !$("personal-subject-form").reportValidity()) return;
     let subject;
     try { subject = values($("personal-subject-form")); } catch (error) { errorAt("personal-subject-error", error.message); return; }
@@ -402,14 +442,14 @@
         job = await request(`/api/v2/personal/search/${encodeURIComponent(job.job_id)}`, { signal: controller.signal });
       }
       if (sequence !== state.searchSequence) return;
-      if (job.status !== "complete") throw new Error(job.message || "자동검색을 완료하지 못했습니다. 직접 입력한 매물은 유지됩니다.");
+      if (job.status !== "complete") { const error = new Error(job.error?.message || job.message || "자동검색을 완료하지 못했습니다. 직접 입력한 매물은 유지됩니다."); error.code = job.error?.code; throw error; }
       renderReports(job.result?.source_reports || []);
       const found = Array.isArray(job.result?.listings) ? job.result.listings : [];
       state.listings = state.listings.filter((row) => row.origin === "manual");
       for (const data of found) state.listings.push({ key: state.nextKey++, data, selected: true, origin: "search" });
       renderListings();
       $("personal-search-status").textContent = found.length ? `광고 ${found.length}개를 목록에 가져왔습니다. 건물 수와 검색 범위를 확인한 뒤 비교하세요.` : "이번 검색에서 광고를 가져오지 못했습니다. 주변에 매물이 없다는 의미는 아닙니다. 검색 범위와 원문을 확인하거나 직접 입력으로 계속할 수 있습니다.";
-    } catch (error) { if (sequence === state.searchSequence && error.name !== "AbortError") { errorAt("personal-subject-error", error.message); $("personal-search-status").textContent = "자동검색에 실패해도 직접 입력으로 비교할 수 있습니다."; } }
+    } catch (error) { if (sequence === state.searchSequence && error.name !== "AbortError") { serviceDisconnected(error); errorAt("personal-subject-error", error.message); $("personal-search-status").textContent = "자동검색에 실패해도 직접 입력으로 비교할 수 있습니다."; } }
     finally { if (sequence === state.searchSequence) { state.search = null; state.searchJobId = null; updateButtons(); } }
   }
   function comparableDetails(listings, basis, label, heading) {
@@ -628,6 +668,7 @@
 
   buildFields($("personal-subject-fields"), "subject"); buildFields($("personal-editor-fields"), "editor");
   $("personal-import-form").addEventListener("submit", importSubject);
+  $("personal-reconnect").addEventListener("click", loadOptions);
   $("personal-import-url").addEventListener("input", () => { stopImport(state.importing ? "링크가 바뀌어 불러오기를 중단했습니다. 새 링크로 다시 불러오세요." : ""); errorAt("personal-import-error"); });
   $("personal-import-cancel").addEventListener("click", cancelActive);
   $("personal-subject-form").addEventListener("submit", search);
@@ -675,7 +716,7 @@
     try { await loadOptions(); } finally { $("personal-access-submit").disabled = false; }
   });
   $("personal-logout").addEventListener("click", () => {
-    stopImport(); clearImportReview(); stopSearch(); state.authSequence += 1; state.accessToken = ""; state.optionsSequence += 1; state.options = null;
+    stopImport(); clearImportReview(); stopSearch(); state.authSequence += 1; state.accessToken = ""; state.optionsSequence += 1; state.options = null; state.optionsLoading = false; state.connectionFailed = false;
     clearResult(); state.listings = []; renderListings(); renderReports([]);
     $("personal-import-form").reset(); $("personal-subject-form").reset(); $("personal-editor-form").reset(); $("personal-editor").close();
     $("personal-example-note").hidden = true; $("personal-logout").hidden = true; $("personal-access-panel").hidden = false;

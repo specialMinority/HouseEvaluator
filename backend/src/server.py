@@ -17,6 +17,7 @@ from backend.v2.personal import compare as compare_personal, validate_listing
 from backend.v2.personal_jobs import SearchBusy, SearchJobs
 from backend.v2 import public_search
 from backend.v2.listing_import import ListingImportError, import_listing, import_sources, validate_payload as validate_import_payload
+from backend.v2.remote_jobs import WorkerError, WorkerJobs, WorkerSearchAdapter, MAX_RESULT_BYTES
 
 MAX_BODY = 65536
 LOG = logging.getLogger(__name__)
@@ -98,13 +99,13 @@ class _ApiHandler(BaseHTTPRequestHandler):
         if self.command != "HEAD":
             self.wfile.write(data)
 
-    def _read_json_body(self):
+    def _read_json_body(self, limit=MAX_BODY):
         lengths = self.headers.get_all("Content-Length", [])
         if self.headers.get("Transfer-Encoding") or len(lengths) != 1 or not lengths[0].isascii() or not lengths[0].isdigit():
             raise BodyError(400, "하나의 유효한 Content-Length가 필요합니다.")
         length = int(lengths[0])
-        if length > MAX_BODY:
-            raise BodyError(413, "요청은 64 KiB 이하여야 합니다.")
+        if length > limit:
+            raise BodyError(413, f"요청은 {limit // 1024} KiB 이하여야 합니다.")
         if self.headers.get("Content-Type", "").split(";")[0].strip().lower() != "application/json":
             raise BodyError(415, "application/json 요청이 필요합니다.")
         try:
@@ -123,7 +124,7 @@ class _ApiHandler(BaseHTTPRequestHandler):
     def _dispatch_error(self, error):
         if self._timed_out:
             return
-        if isinstance(error, ListingImportError):
+        if isinstance(error, (ListingImportError, WorkerError)):
             self._send_json(error.status, {"error": error.code, "message": error.message})
         elif isinstance(error, BodyError):
             self._send_json(error.status, {"error": "invalid_body", "message": str(error)})
@@ -143,6 +144,19 @@ class _ApiHandler(BaseHTTPRequestHandler):
         self.do_GET()
 
     def _guard(self, path):
+        if path.startswith('/api/v2/worker/'):
+            policy = getattr(self.server, 'worker_access_policy', None)
+            if policy is None:
+                self._send_json(404, {'error': 'not_found'})
+                return False
+            authenticated = policy.authenticated(self.headers.get('Authorization'))
+            if not policy.allow_request(self.client_address[0], authenticated=authenticated):
+                self._send_json(429, {'error': 'rate_limited', 'message': '조회 작업 요청이 많습니다.'})
+                return False
+            if not authenticated:
+                self._send_json(401, {'error': 'worker_access_required', 'message': '조회 작업자 인증이 필요합니다.'})
+                return False
+            return True
         policy = getattr(self.server, "access_policy", None)
         if not policy or not path.startswith("/api/"):
             return True
@@ -174,10 +188,20 @@ class _ApiHandler(BaseHTTPRequestHandler):
                 self._send_json(200, self.runtime.capabilities())
             elif path == "/api/v2/personal/options":
                 sources = import_sources()
+                broker = self.server.worker_jobs
+                worker = broker.state() if broker else None
+                available = worker['online'] if worker else True
                 self._send_json(200, dict(public_search.options(), enabled=self.server.personal_enabled,
                                          search_enabled=self.server.public_search_enabled,
                                          import_enabled=self.server.public_search_enabled and bool(sources),
-                                         import_sources=sources))
+                                         import_sources=sources, execution_mode=self.server.execution_mode,
+                                         worker=worker, max_search_seconds=100 if broker else public_search.SEARCH_SECONDS,
+                                         search_available=self.server.public_search_enabled and available,
+                                         import_available=self.server.public_search_enabled and bool(sources) and available))
+            elif path.startswith('/api/v2/personal/import/'):
+                self._require_personal()
+                result = self.server.worker_jobs.get('import', path.rsplit('/', 1)[-1]) if self.server.worker_jobs else None
+                self._send_json(200 if result else 404, result or {'error': 'import_expired', 'message': 'URL 조회 작업이 만료되었거나 없습니다.'})
             elif path.startswith("/api/v2/personal/search/"):
                 self._require_personal()
                 result = self.server.search_jobs.get(path.rsplit("/", 1)[-1])
@@ -252,13 +276,20 @@ class _ApiHandler(BaseHTTPRequestHandler):
             path = urlparse(self.path).path.rstrip("/")
             if not self._guard(path):
                 return
-            if path == "/api/v2/personal/import":
+            if path == '/api/v2/worker/claim':
+                self._send_json(200, self.server.worker_jobs.claim(self._read_json_body()))
+            elif path == '/api/v2/worker/result':
+                self._send_json(200, self.server.worker_jobs.finish(self._read_json_body(limit=MAX_RESULT_BYTES)))
+            elif path == "/api/v2/personal/import":
                 self._require_personal()
                 if not self.server.public_search_enabled:
                     self._send_json(403, {"error": "import_disabled", "message": "URL 자동 입력을 잠시 중단했습니다. 직접 입력해 주세요."})
                     return
                 payload = self._read_json_body()
                 validate_import_payload(payload)
+                if self.server.worker_jobs:
+                    self._send_json(202, self.server.worker_jobs.start('import', payload))
+                    return
                 deadline = self._request_started + getattr(self.server, "request_deadline_seconds", 10) - .5
                 self._send_json(200, self.server.import_fn(payload, deadline=deadline))
             elif path == "/api/v2/personal/search":
@@ -279,6 +310,11 @@ class _ApiHandler(BaseHTTPRequestHandler):
                 self._read_json_body()
                 cancelled = self.server.search_jobs.cancel(path.split("/")[-2])
                 self._send_json(200, {"cancelled": cancelled})
+            elif path.startswith('/api/v2/personal/import/') and path.endswith('/cancel'):
+                self._require_personal()
+                self._read_json_body()
+                cancelled = self.server.worker_jobs.cancel('import', path.split('/')[-2]) if self.server.worker_jobs else False
+                self._send_json(200, {'cancelled': cancelled})
             elif path in ("/api/evaluate", "/api/parse-url"):
                 if path == "/api/parse-url" or not self.legacy_enabled:
                     self._send_json(410, {"error": "retired_endpoint", "message": "v2 개인 비교 화면의 공개 검색·직접 입력을 사용해 주세요."})
@@ -363,9 +399,18 @@ class BoundedServer(ThreadingHTTPServer):
 
 def create_server(host="127.0.0.1", port=8000, *, db_path=None, demo_enabled=False, registry_path=None, legacy_enabled=False,
                   suppliers_path=None, state_db=None, release_evidence_path=None, access_token=None, requests_per_minute=120, pilot_mode=False,
-                  personal_enabled=True, public_search_enabled=True, search_fn=None, import_fn=None):
-    import_sources()  # Reject invalid operator configuration before opening a socket.
+                  personal_enabled=True, public_search_enabled=True, search_fn=None, import_fn=None,
+                  execution_mode='direct', worker_token=None):
+    sources = import_sources()  # Reject invalid operator configuration before opening a socket.
     access_policy = AccessPolicy(access_token, requests_per_minute=requests_per_minute)
+    if execution_mode not in ('direct', 'worker'):
+        raise ValidationError('조회 실행 모드는 direct 또는 worker여야 합니다.')
+    worker_policy, broker = None, None
+    if execution_mode == 'worker':
+        if not access_policy.protected or not worker_token or worker_token == access_token or pilot_mode or not personal_enabled:
+            raise ValidationError('원격 조회에는 서로 다른 사용자·작업자 코드와 개인 모드가 필요합니다.')
+        worker_policy = AccessPolicy(worker_token, requests_per_minute=240)
+        broker = WorkerJobs(public_search.selected_source(), [source['id'] for source in sources])
     if pilot_mode and (not access_policy.protected or demo_enabled or legacy_enabled or not suppliers_path):
         raise ValidationError("제한 공개 모드에는 접속 코드와 공급 설정이 필요하며 시연·레거시는 꺼야 합니다.")
     runtime = Runtime(db_path, demo_enabled=demo_enabled, registry_path=registry_path, suppliers_path=suppliers_path,
@@ -378,7 +423,10 @@ def create_server(host="127.0.0.1", port=8000, *, db_path=None, demo_enabled=Fal
     # Licensed pilot gates cannot be bypassed through personal endpoints.
     httpd.personal_enabled = personal_enabled and not pilot_mode
     httpd.public_search_enabled = public_search_enabled and httpd.personal_enabled
-    httpd.search_jobs = SearchJobs(search_fn or public_search.search)
+    httpd.execution_mode = execution_mode
+    httpd.worker_jobs = broker
+    httpd.worker_access_policy = worker_policy
+    httpd.search_jobs = WorkerSearchAdapter(broker) if broker else SearchJobs(search_fn or public_search.search)
     httpd.import_fn = import_fn or import_listing
     return httpd
 
@@ -390,7 +438,9 @@ def serve(host="127.0.0.1", port=8000):
                          release_evidence_path=os.getenv("HOUSE_EVALUATOR_RELEASE_EVIDENCE"), access_token=os.getenv("HOUSE_EVALUATOR_ACCESS_TOKEN") or None,
                          requests_per_minute=int(os.getenv("HOUSE_EVALUATOR_REQUESTS_PER_MINUTE", "120")), pilot_mode=os.getenv("HOUSE_EVALUATOR_PILOT") == "1",
                          personal_enabled=os.getenv("HOUSE_EVALUATOR_PERSONAL", "1") == "1",
-                         public_search_enabled=os.getenv("HOUSE_EVALUATOR_PUBLIC_SEARCH", "1") == "1")
+                         public_search_enabled=os.getenv("HOUSE_EVALUATOR_PUBLIC_SEARCH", "1") == "1",
+                         execution_mode=os.getenv('HOUSE_EVALUATOR_EXECUTION_MODE', 'direct'),
+                         worker_token=os.getenv('HOUSE_EVALUATOR_WORKER_TOKEN') or None)
     print(f"HouseEvaluator v2: http://{host}:{port}/frontend/v2/", flush=True)
     try:
         httpd.serve_forever()

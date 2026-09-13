@@ -39,3 +39,15 @@ Production configuration enables Yahoo search and Yahoo URL import only. Source 
 - [x] Do not count station/height/age advertisement descriptions as known building names, including previously loaded browser data.
 - [x] Warn when a source URL cannot establish whether the subject also appears on another site; do not merge units by similar prices or features.
 - [x] Final regression: 1,237 passed, one platform skip, 468 subtests passed. Recomparison of the existing local 59 advertisements required no additional source requests and displayed five comparison links with identity warnings.
+
+## Fixed pull worker integration — 2026-09-13
+
+The public Render site keeps its existing URL and browser API. An explicitly configured operator PC worker handles validated source search/import tasks. This requires the PC to be powered on, signed in and online; it is not an autonomous cloud-only deployment. No inbound PC port is exposed.
+
+- [x] W1: Separate user/worker authentication and fixed source/task contracts.
+- [x] W2: Bounded claim/lease/result queue, no expired job redelivery, identical result upload retry only, cancellation and role isolation.
+- [x] W3: Asynchronous URL import, connection state/manual refresh, stale result guards; 1,356 tests and 468 subtests passed (one platform skip).
+- [ ] W4: Deploy and connect the fixed worker with a separate private token and current-user startup task.
+- [ ] W5: Verify actual public URL import, search, graph and connection recovery. Offline/unit tests alone do not meet this acceptance condition.
+
+See docs/REMOTE_WORKER.md for setup, lifecycle, private data handling, and stopping the worker. The source request functions retain their robots, request limits and rejection handling. A failed job is not automatically retried through another source or host.
