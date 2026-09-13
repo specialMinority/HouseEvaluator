@@ -8,6 +8,7 @@ from copy import deepcopy
 from collections import Counter
 from datetime import datetime, timezone
 import math
+import os
 import re
 import threading
 import time
@@ -43,10 +44,18 @@ _LAYOUTS = {"1R": "01", "1K": "02", "1DK": "03", "1LDK": "04"}
 
 
 def options():
+    source = selected_source()
     return {"cities": [{"id": city["id"], "name": city["name"], "municipalities": deepcopy(city["municipalities"])} for city in _REGIONS],
-            "sources": [{"id": "suumo", "name": "SUUMO 공개 검색", "kind": "public_page", "automatic": True}],
+            "sources": [{"id": source, "name": ("CHINTAI" if source == "chintai" else "SUUMO") + " 공개 검색", "kind": "public_page", "automatic": True}],
             "layouts": list(_LAYOUTS), "max_search_seconds": SEARCH_SECONDS,
             "notice": "공개 검색 결과 일부를 비교합니다. 모집 중 여부와 전체 시장을 보장하지 않습니다."}
+
+
+def selected_source():
+    source = os.getenv("HOUSE_EVALUATOR_SEARCH_SOURCE", "suumo")
+    if source not in ("suumo", "chintai"):
+        raise ValueError("지원하지 않는 공개 검색 출처 설정입니다.")
+    return source
 
 
 def build_search_url(subject, *, station=None, broad=False):
@@ -310,6 +319,9 @@ def _resolve_station(subject, items, read):
 
 
 def search(subject, *, fetcher=None):
+    if selected_source() == "chintai":
+        from .chintai_search import search as search_chintai
+        return search_chintai(subject, fetcher=fetcher)
     fetcher = fetcher or fetch_public
     started = _timestamp()
     report = {"source_id": "suumo", "status": "unavailable", "message": "공개 검색에 연결하지 못했습니다.",

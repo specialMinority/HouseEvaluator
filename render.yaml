@@ -25,6 +25,8 @@ services:
         value: "1"
       - key: HOUSE_EVALUATOR_PUBLIC_SEARCH
         value: "1"
+      - key: HOUSE_EVALUATOR_SEARCH_SOURCE
+        value: chintai
       - key: HOUSE_EVALUATOR_DEMO
         value: "0"
       - key: HOUSE_EVALUATOR_LEGACY

@@ -1,6 +1,6 @@
 """Small, anonymous public-page reads; no redirects, credentials, or proxies.
 
-This transport is deliberately limited to SUUMO rental search/detail pages. It
+This transport is deliberately limited to explicit rental search/detail pages. It
 does not grant redistribution rights or establish that a room is still vacant.
 """
 
@@ -134,6 +134,9 @@ def checked_url(url):
         if not isinstance(url, str) or len(url) > 1024 or any(ord(c) < 33 or ord(c) > 126 for c in url):
             raise ValueError()
         parts = urlsplit(url)
+        if parts.netloc == "www.chintai.net":
+            from .chintai_discovery import checked_url as checked_chintai_url
+            return checked_chintai_url(url)
         if (parts.scheme != "https" or parts.netloc != "suumo.jp" or parts.hostname != "suumo.jp"
                 or parts.username is not None or parts.password is not None or parts.fragment or "\\" in url):
             raise ValueError()
@@ -174,13 +177,13 @@ def fetch_public(url, *, deadline):
     if remaining <= 0:
         raise PublicFetchError("timeout")
     try:
-        address = _bounded_dns("suumo.jp", 443, remaining)[0]
+        address = _bounded_dns(parts.hostname, 443, remaining)[0]
     except SupplyError as exc:
         raise PublicFetchError(exc.code) from None
     remaining = local_deadline - time.monotonic()
     if remaining <= 0:
         raise PublicFetchError("timeout")
-    connection = _PinnedHTTPSConnection("suumo.jp", address, timeout=remaining)
+    connection = _PinnedHTTPSConnection(parts.hostname, address, timeout=remaining)
     connection._absolute_deadline = local_deadline
     expired = threading.Event()
 
