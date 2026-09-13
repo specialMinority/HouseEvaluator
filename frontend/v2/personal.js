@@ -710,12 +710,28 @@
     fill($("personal-subject-form"), { city: "tokyo", municipality: "新宿区", station_name: "新宿", layout: "1K", area_sqm: 25, rent_yen: 95000, mgmt_fee_yen: 5000, structure: "rc", built_year: 2015, walk_min: 8, floor: 3, orientation: "S", bathroom_separate: true, furnished: false, contract_type: "standard", property_type: "apartment" });
     municipalityOptions("subject"); updateSubjectTotal(); clearResult(); $("personal-example-note").hidden = false; errorAt("personal-subject-error");
   });
+  let accessComposing = false, accessSubmitPending = false;
+  $("personal-access-code").addEventListener("compositionstart", () => { accessComposing = true; });
+  $("personal-access-code").addEventListener("compositionend", () => {
+    accessComposing = false;
+    setTimeout(() => {
+      if (accessSubmitPending && !accessComposing) { accessSubmitPending = false; $("personal-access-form").requestSubmit(); }
+    }, 0);
+  });
+  $("personal-access-code").addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && (accessComposing || event.isComposing || event.keyCode === 229)) event.preventDefault();
+  });
   $("personal-access-form").addEventListener("submit", async (event) => {
-    event.preventDefault(); stopImport(); state.authSequence += 1; state.accessToken = $("personal-access-code").value.trim().normalize("NFC"); $("personal-access-code").value = "";
+    event.preventDefault();
+    if (accessComposing) { accessSubmitPending = true; return; }
+    accessSubmitPending = false;
+    if ($("personal-access-submit").disabled) return;
+    stopImport(); state.authSequence += 1; state.accessToken = $("personal-access-code").value.trim().normalize("NFC"); $("personal-access-code").value = "";
     errorAt("personal-access-error"); $("personal-access-submit").disabled = true;
     try { await loadOptions(); } finally { $("personal-access-submit").disabled = false; }
   });
   $("personal-logout").addEventListener("click", () => {
+    accessComposing = false; accessSubmitPending = false;
     stopImport(); clearImportReview(); stopSearch(); state.authSequence += 1; state.accessToken = ""; state.optionsSequence += 1; state.options = null; state.optionsLoading = false; state.connectionFailed = false;
     clearResult(); state.listings = []; renderListings(); renderReports([]);
     $("personal-import-form").reset(); $("personal-subject-form").reset(); $("personal-editor-form").reset(); $("personal-editor").close();

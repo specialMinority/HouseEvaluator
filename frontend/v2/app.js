@@ -602,8 +602,22 @@
   costForm.addEventListener("input", () => { clearCost("입력 금액이 바뀌었습니다. 비용을 다시 계산해 주세요."); setError("cost-error", ""); });
   $("cost-cancel").addEventListener("click", () => clearCost("비용 계산을 취소했습니다."));
   $("built_year").max = String(new Date().getFullYear());
+  let accessComposing = false, accessSubmitPending = false;
+  $("access-code").addEventListener("compositionstart", () => { accessComposing = true; });
+  $("access-code").addEventListener("compositionend", () => {
+    accessComposing = false;
+    setTimeout(() => {
+      if (accessSubmitPending && !accessComposing) { accessSubmitPending = false; $("access-form").requestSubmit(); }
+    }, 0);
+  });
+  $("access-code").addEventListener("keydown", (event) => {
+    if (event.key === "Enter" && (accessComposing || event.isComposing || event.keyCode === 229)) event.preventDefault();
+  });
   $("access-form").addEventListener("submit", async (event) => {
     event.preventDefault();
+    if (accessComposing) { accessSubmitPending = true; return; }
+    accessSubmitPending = false;
+    if ($("access-submit").disabled) return;
     state.accessToken = $("access-code").value.trim().normalize("NFC");
     $("access-code").value = "";
     $("access-error").textContent = "";
@@ -612,6 +626,7 @@
     finally { $("access-submit").disabled = false; }
   });
   $("access-logout").addEventListener("click", () => {
+    accessComposing = false; accessSubmitPending = false;
     state.accessToken = "";
     state.capabilities = null;
     $("access-error").textContent = "";

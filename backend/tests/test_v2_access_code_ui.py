@@ -36,3 +36,69 @@ def test_code_login_has_ascii_header_and_logout_clears_credential(ui, code):
     page.locator('#personal-access-submit').click()
     playwright.expect(page.locator('#personal-access-error')).to_contain_text('맞지 않습니다')
     assert page.evaluate('window.__authHeaders.at(-1)') == 'Bearer ' + quote('틀린코드')
+
+
+def ime_login_page(ui):
+    page = ui()
+    page.evaluate("""expected => {
+      document.querySelector('#personal-access-panel').hidden = false;
+      window.__authHeaders = [];
+      const previous = window.fetch;
+      window.fetch = (path, options = {}) => {
+        const auth = new Headers(options.headers).get('Authorization');
+        window.__authHeaders.push(auth);
+        if (auth !== 'Bearer ' + expected) return Promise.resolve(new Response('{}', {status: 401}));
+        return previous(path, options);
+      };
+    }""", quote('테스트입장'))
+    return page
+
+
+def test_text_field_allows_composition_and_defers_submit_until_final_syllable(ui):
+    page = ime_login_page(ui)
+    field = page.locator('#personal-access-code')
+    assert field.get_attribute('type') == 'text'
+    assert field.get_attribute('spellcheck') == 'false'
+    field.fill('테스트입ㅈ')
+    field.dispatch_event('compositionstart', {'data': 'ㅈ'})
+    page.locator('#personal-access-form').evaluate('form => form.requestSubmit()')
+    assert page.evaluate('window.__authHeaders') == []
+    playwright.expect(field).to_have_value('테스트입ㅈ')
+    field.fill('테스트입장')
+    field.dispatch_event('compositionend', {'data': '장'})
+    playwright.expect(page.locator('#personal-access-panel')).to_be_hidden()
+    assert page.evaluate('window.__authHeaders') == ['Bearer ' + quote('테스트입장')]
+
+
+@pytest.mark.parametrize('keyboard', [{'isComposing': True}, {'keyCode': 229}, {}])
+def test_composition_confirmation_enter_does_not_submit_but_next_enter_does(ui, keyboard):
+    page = ime_login_page(ui)
+    field = page.locator('#personal-access-code')
+    field.fill('테스트입장')
+    field.dispatch_event('compositionstart', {'data': '장'})
+    prevented = field.evaluate("""(field, keyboard) => {
+      const event = new KeyboardEvent('keydown', {key: 'Enter', bubbles: true, cancelable: true, ...keyboard});
+      field.dispatchEvent(event); return event.defaultPrevented;
+    }""", keyboard)
+    assert prevented
+    field.dispatch_event('compositionend', {'data': '장'})
+    page.wait_for_timeout(30)
+    assert page.evaluate('window.__authHeaders') == []
+    field.press('Enter')
+    playwright.expect(page.locator('#personal-access-panel')).to_be_hidden()
+    assert page.evaluate('window.__authHeaders') == ['Bearer ' + quote('테스트입장')]
+
+
+def test_native_chromium_composition_commits_final_text_before_login(ui):
+    page = ime_login_page(ui)
+    field = page.locator('#personal-access-code')
+    field.focus()
+    session = page.context.new_cdp_session(page)
+    session.send('Input.imeSetComposition', {'text': '테스트입ㅈ', 'selectionStart': 5, 'selectionEnd': 5})
+    playwright.expect(field).to_have_value('테스트입ㅈ')
+    page.locator('#personal-access-form').evaluate('form => form.requestSubmit()')
+    assert page.evaluate('window.__authHeaders') == []
+    session.send('Input.insertText', {'text': '테스트입장'})
+    playwright.expect(page.locator('#personal-access-panel')).to_be_hidden()
+    assert page.evaluate('window.__authHeaders') == ['Bearer ' + quote('테스트입장')]
+    session.detach()

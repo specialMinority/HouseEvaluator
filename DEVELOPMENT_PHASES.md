@@ -53,3 +53,8 @@ No supplier agreement, uninterrupted availability or whole-market valuation is c
 - [x] C3: Deployed and rotated the private user code. Actual Chrome login succeeded; new-code API returned 200, previous-code and unauthenticated API returned 401. The worker remained online and URL/search actions were available. The private local code file was updated; source requests during authentication verification: zero.
 
 Application commit: 0d8aa6ad278c6c94e8f55de9cbe2927b33022bd4. Render deployment dep-daj6ao5g1s2s739ijitg became live at 2026-09-13 17:57:35 KST; public authentication verification completed at 17:58 KST. The worker credential was unchanged.
+
+## Direct Korean typing — 2026-09-13
+
+- [x] C4: Replace password-type access fields with text inputs that support Korean IME, disable spelling/capitalization corrections, suppress composition-confirmation Enter submission and defer button submission until composition completes. Preserve NFC normalization, existing code and credential separation.
+- [ ] C5: Deploy and verify the public input type, login and source-worker connection. Tests include synthetic composition events and native Chromium composition commands in an isolated local browser; they do not operate the user's physical keyboard.

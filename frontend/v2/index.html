@@ -20,7 +20,7 @@
     <section id="access-panel" class="card access-panel" aria-labelledby="access-title" hidden>
       <h2 id="access-title">초대받은 분들을 위한 미리보기</h2>
       <p>제공받은 접속 코드를 입력하세요. 코드는 이 페이지를 닫거나 새로고침하면 지워집니다.</p>
-      <form id="access-form" method="post"><label class="field">접속 코드<input id="access-code" type="password" autocomplete="off" required minlength="1" maxlength="256"></label><button class="primary-button" id="access-submit" type="submit">접속하기</button></form>
+      <form id="access-form" method="post"><label class="field">접속 코드<input id="access-code" type="text" lang="ko" inputmode="text" autocomplete="off" autocapitalize="none" spellcheck="false" required minlength="1" maxlength="256"></label><button class="primary-button" id="access-submit" type="submit">접속하기</button></form>
       <p id="access-error" class="form-message error" role="alert"></p>
     </section>
     <button id="access-logout" class="text-button" type="button" hidden>접속 코드 지우기</button>
